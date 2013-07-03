@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: jquery | 庇护祝福的分享]]></title>
+  <link href="http://xieyu33333.github.com/blog/categories/jquery/atom.xml" rel="self"/>
+  <link href="http://xieyu33333.github.com/"/>
+  <updated>2013-07-03T15:52:01+08:00</updated>
+  <id>http://xieyu33333.github.com/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    <email><![CDATA[xieyu33333@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[JQuery插件开发]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/04/22/a-jquery-example/"/>
+    <updated>2013-04-22T18:48:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/04/22/a-jquery-example</id>
+    <content type="html"><![CDATA[<p>JQuery插件的开发是有一套成熟的规范的：
+主要由以下几部分组成：</p>
+
+<h4>(function($){})(jQuery)</h4>
+
+<p>最外层的封装</p>
+
+<h4>$.fn</h4>
+
+<p>$.fn = JQuery.prototype。<br/>
+在插件制作中，所有的对象方法都添加到$.fn对象中</p>
+
+<h4>$.extend和$.fn.extend()</h4>
+
+<p>extend(dest,src1,src2):将src1,src2合并到dest中，属性名相同的则后面的自动覆盖前面的，因此常用于default值的设置
+extend(boolean dest,src1,src2):如果第一个参数为布尔值，则决定是否深层覆盖，如果为true，则嵌套的对象也将进行覆盖</p>
+
+<pre><code>$.extend(src)    //该方法将src合并到jquery的全局对象中,为JQuery添加了一个静态方法，可以用$.src()直接执行
+$.fn.extend(src) //该方法将src合并到jquery的实例对象中，只有JQuery的实例才可以调用，比如$("#input").src()
+</code></pre>
+
+<h4>this.each(function(){ })</h4>
+
+<p>编写该扩展方法执行的函数</p>
+
+<p>example：</p>
+
+<pre><code>(function($){ 
+  $.fn.tableUI = function(options){ 
+    var defaults = { 
+      evenRowClass:"evenRow", 
+      oddRowClass:"oddRow", 
+      activeRowClass:"activeRow" 
+    } 
+    var options = $.extend(defaults, options); 
+    this.each(function(){ 
+      var thisTable=$(this); 
+      $(thisTable).find("tr:even").addClass(options.evenRowClass); 
+      $(thisTable).find("tr:odd").addClass(options.oddRowClass); 
+      $(thisTable).find("tr").bind("mouseover",function(){ 
+        $(this).addClass(options.activeRowClass); 
+        }); 
+        $(thisTable).find("tr").bind("mouseout",function(){ 
+          $(this).removeClass(options.activeRowClass); 
+          }); 
+          }); 
+        }; 
+})(jQuery); 
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

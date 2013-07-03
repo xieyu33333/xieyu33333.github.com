@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: markdown | 庇护祝福的分享]]></title>
+  <link href="http://xieyu33333.github.com/blog/categories/markdown/atom.xml" rel="self"/>
+  <link href="http://xieyu33333.github.com/"/>
+  <updated>2013-07-03T15:52:01+08:00</updated>
+  <id>http://xieyu33333.github.com/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    <email><![CDATA[xieyu33333@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[github+octopress创建自己的博客]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/03/25/first-blog/"/>
+    <updated>2013-03-25T15:43:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/03/25/first-blog</id>
+    <content type="html"><![CDATA[<h3>添加SSH公钥</h3>
+
+<p><code>$ cd ~/.ssh</code>  <br/>
+<code>$ ssh-keygen -t rsa -C "your_email@example.com"</code>  <br/>
+  将id_rsa.pub文件中的公钥copy到github上  <br/>
+<code>$ ssh -T git@github.com #测试是否通过。</code></p>
+
+<h3>新建仓库</h3>
+
+<p> 在github上新建一个仓库，命名为 yourname.github.com</p>
+
+<h3>本地安装octopress</h3>
+
+<pre><code>$ git clone git://github.com/imathis/octopress.git octopress #下载octopress
+$ cd octopress
+$ bundle install 
+$ rake install #安装默认主题
+</code></pre>
+
+<h3>配置</h3>
+
+<p>编辑_config.yml文件配置博客名，扉页等  <br/>
+编辑config.rb文件配置css，图片路径等</p>
+
+<h3>编辑，上传</h3>
+
+<p><code>$ rake new_post["my first blog"] #新建blog</code> <br/>
+创建以后会在/source/_post目录下创建一个时间戳开头的文件，编辑这个文件撰写博客.
+如果无法执行可以先输入：  <br/>
+<code>$ alias rake="noglob rake"</code></p>
+
+<p><code>$ rake setup_github_pages  #配置本地与github连接</code> <br/>
+根据提示操作即可</p>
+
+<p><code>$ rake generate #项目静态化</code>   <br/>
+将配置修改，和编辑过的内容导入public中，window下控制台编码默认为GBK，需要在cmd下使用命令：
+<code>chcp 65001</code>将控制台代码格式转为utf-8</p>
+
+<p><code>$ rake preview #预览</code>   <br/>
+可以使用http://localhost:4000预览</p>
+
+<p><code>$ rake deploy #上传</code></p>
+]]></content>
+  </entry>
+  
+</feed>

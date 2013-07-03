@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 前端 | 庇护祝福的分享]]></title>
+  <link href="http://xieyu33333.github.com/blog/categories/qian-duan/atom.xml" rel="self"/>
+  <link href="http://xieyu33333.github.com/"/>
+  <updated>2013-07-03T15:52:01+08:00</updated>
+  <id>http://xieyu33333.github.com/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    <email><![CDATA[xieyu33333@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[常用前端资源整理]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/04/24/firststage/"/>
+    <updated>2013-04-24T16:24:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/04/24/firststage</id>
+    <content type="html"><![CDATA[<h3>整体解决方案</h3>
+
+<h4><a href="http://twitter.github.io/bootstrap/">Bootstrap：</a></h4>
+
+<p>大而全的前端框架，适合原型搭建。  <br/>
+<a href="http://www.bootcss.com/">中文文档1</a>
+<a href="http://wrongwaycn.github.io/bootstrap/docs/">中文文档2</a></p>
+
+<h4><a href="http://www.keqie.com/">渴切</a></h4>
+
+<p>有很多适合中国特色的解决方案。</p>
+
+<h3>兼容性问题</h3>
+
+<h4><a href="https://github.com/sofish/Alice">Alice:</a></h4>
+
+<p>支付宝团队开源的兼容性问题解决方案   <br/>
+<a href="https://github.com/sofish/Alice">github访问</a></p>
+
+<h4><a href="http://css3pie.com/">PIE：</a></h4>
+
+<p>CSS3在IE下的兼容</p>
+
+<h3>响应式设计</h3>
+
+<h3>生产力工具</h3>
+
+<h4><a href="http://sass-lang.com/">scss</a></h4>
+
+<p>基于ruby</p>
+
+<h4><a href="http://www.lesscss.net/">less</a></h4>
+
+<p>基于js</p>
+
+<h4><a href="http://compass-style.org/">compass</a></h4>
+
+<p>基于scss</p>
+
+<h3>常用效果</h3>
+
+<h4>表单前端验证：</h4>
+
+<p><a href="http://livevalidation.com/">Livevalidation</a>
+<a href="http://www.aqee.net/docs/livevalidation/examples.html">中文文档</a></p>
+
+<h4>幻灯片：</h4>
+
+<h4>表单美化与一致性：</h4>
+
+<p><a href="https://github.com/damirfoy/iCheck/">iCheck</a>:单选框与复选框的美化与一致性。</p>
+
+<h4>图表控件：</h4>
+
+<p><a href="http://www.bootcss.com/p/chart.js/docs/">Chart.js</a>:基于HTML5，通过ExplorerCanvas 可向下支持低版本IE，但只支持6种基本图表。</p>
+
+<h4>动画效果：</h4>
+]]></content>
+  </entry>
+  
+</feed>

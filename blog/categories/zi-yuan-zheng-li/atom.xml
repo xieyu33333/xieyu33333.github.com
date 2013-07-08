@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 资源整理 | 庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/blog/categories/zi-yuan-zheng-li/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2013-07-03T15:52:01+08:00</updated>
+  <updated>2013-07-08T15:26:53+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -90,7 +90,8 @@
 
 <h3>测试：</h3>
 
-<p><a href="https://github.com/rspec/rspec-rails">rspec-rails</a></p>
+<p><a href="https://github.com/rspec/rspec-rails">rspec-rails</a><br/>
+<a href="https://github.com/pry/pry">pry</a>  (命令行断点调试工具)</p>
 
 <h3>前端 ：</h3>
 
@@ -145,7 +146,7 @@
 
 <h3>memcache:</h3>
 
-<p>[dalli] (https://github.com/mperham/dalli)</p>
+<p><a href="https://github.com/mperham/dalli">dalli</a></p>
 ]]></content>
   </entry>
   

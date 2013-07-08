@@ -177,7 +177,29 @@
     arr = [1, 2, 3, 4, 5, 6]
     arr.keep_if { |a| a &lt; 4 } #=&gt; [1, 2, 3]
     arr                       #=&gt; [1, 2, 3]
-    ##连接
+</code></pre>
+
+<h2>连接</h2>
+
+<h2>判断</h2>
+
+<h3>存在性</h3>
+
+<pre><code>    arr = [1, 2, 3, 4, 5, 6]
+    arr.include? 1                 #=&gt;true
+</code></pre>
+
+<h3>为空?</h3>
+
+<pre><code>    arr.empty?                     #=&gt;false
+</code></pre>
+
+<h3>相等</h3>
+
+<pre><code>    a=[1, 2]
+    b=[1, 2]
+    a.eql? b                          #=&gt;true 
+    a.equal? b                       #=&gt;false    equal?只有当二者是同一个对象的时候才会为true
 </code></pre>
 </div>
 

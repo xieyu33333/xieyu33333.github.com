@@ -154,14 +154,38 @@ example:</p>
 
 <p>Ruby允许给单个对象添加方法，这就是单件方法。example:</p>
 
-<p>str = &#8220;hahaha&#8221;
-def str.title?</p>
-
-<pre><code>self.upcase == self
+<pre><code>str = "hahaha"
+def str.title?
+    self.upcase == self
+end
 </code></pre>
 
-<p>end
-而类方法实际就是一种单件方法，因为类也是对象，它针对这个类生效。</p>
+<p>而类方法实际就是一种单件方法，因为类也是对象，它针对这个类生效。</p>
+
+<h3>类宏</h3>
+
+<p>Ruby对象没有属性，如果想要定义属性，就需要定义两个拟态方法，一个读方法和一个写方法。</p>
+
+<pre><code>class MyClass
+    def height=(val)
+        @height = val
+    end
+
+    def height
+        @height
+    end
+end
+obj = MyClass.new
+obj.height = "160cm"
+obj.height     #=&gt;"160cm"
+
+这样非常麻烦，我们可以使用module#attr_*系列方法，其中attr_reader()可以生成一个读方法；attr_writer()可以生成写方法；attr_accessor()则可以生成读写方法。
+那么上面的例子就可以改写为：
+
+class MyClass
+    attr_accessor :height
+end
+</code></pre>
 </div>
 
 

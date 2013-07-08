@@ -163,14 +163,38 @@ example:</p>
 
 <p>Ruby允许给单个对象添加方法，这就是单件方法。example:</p>
 
-<p>str = &#8220;hahaha&#8221;
-def str.title?</p>
-
-<pre><code>self.upcase == self
+<pre><code>str = "hahaha"
+def str.title?
+    self.upcase == self
+end
 </code></pre>
 
-<p>end
-而类方法实际就是一种单件方法，因为类也是对象，它针对这个类生效。</p>
+<p>而类方法实际就是一种单件方法，因为类也是对象，它针对这个类生效。</p>
+
+<h3>类宏</h3>
+
+<p>Ruby对象没有属性，如果想要定义属性，就需要定义两个拟态方法，一个读方法和一个写方法。</p>
+
+<pre><code>class MyClass
+    def height=(val)
+        @height = val
+    end
+
+    def height
+        @height
+    end
+end
+obj = MyClass.new
+obj.height = "160cm"
+obj.height     #=&gt;"160cm"
+
+这样非常麻烦，我们可以使用module#attr_*系列方法，其中attr_reader()可以生成一个读方法；attr_writer()可以生成写方法；attr_accessor()则可以生成读写方法。
+那么上面的例子就可以改写为：
+
+class MyClass
+    attr_accessor :height
+end
+</code></pre>
 
 		
 		
@@ -600,7 +624,29 @@ end
     arr = [1, 2, 3, 4, 5, 6]
     arr.keep_if { |a| a &lt; 4 } #=&gt; [1, 2, 3]
     arr                       #=&gt; [1, 2, 3]
-    ##连接
+</code></pre>
+
+<h2>连接</h2>
+
+<h2>判断</h2>
+
+<h3>存在性</h3>
+
+<pre><code>    arr = [1, 2, 3, 4, 5, 6]
+    arr.include? 1                 #=&gt;true
+</code></pre>
+
+<h3>为空?</h3>
+
+<pre><code>    arr.empty?                     #=&gt;false
+</code></pre>
+
+<h3>相等</h3>
+
+<pre><code>    a=[1, 2]
+    b=[1, 2]
+    a.eql? b                          #=&gt;true 
+    a.equal? b                       #=&gt;false    equal?只有当二者是同一个对象的时候才会为true
 </code></pre>
 
 		
@@ -649,6 +695,14 @@ concat()
 </code></pre>
 
 <h2>正则匹配与替换</h2>
+
+<h3>match , =~ , !~ 匹配</h3>
+
+<pre><code>"name".match(/a/)         #=&gt;true
+"name" =~ /a/               #=&gt;1                       #肯定匹配
+"name" =~ /b/               #=&gt;nil
+"name"  !~ /b/                #=&gt;false                 #否定匹配
+</code></pre>
 
 <h3>delete() &amp; delete!()  删除</h3>
 
@@ -911,6 +965,7 @@ str="bcdaaa"
     a[0..2]=["aa","bb","cc"]
     a..c
     (a..c).to_a #=&gt;[a,b,c]
+    (1..9) ===5           #=&gt; true  #可以用做间隔测试
 </code></pre>
 
 <h3>Symbol</h3>

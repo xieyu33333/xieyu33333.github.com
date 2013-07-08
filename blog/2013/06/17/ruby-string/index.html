@@ -9,7 +9,9 @@
 	
 	<meta name="description" content="字符串连接 +
 concat()
-&lt;&lt; #concat()的参数为整数则会转换成对应的字符串。 正则匹配与替换 delete() &amp; delete!() 删除 example: str="ababaaaaaccccb" str.delete("ab") #=&gt;"cccc &hellip;">
+&lt;&lt; #concat()的参数为整数则会转换成对应的字符串。 正则匹配与替换 match , =~ , !~ 匹配 "name".match(/a/) #=&gt;true
+"name" =~ /a/ #=&gt;1 #肯定匹配
+"name" =~ / &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -89,6 +91,14 @@ concat()
 </code></pre>
 
 <h2>正则匹配与替换</h2>
+
+<h3>match , =~ , !~ 匹配</h3>
+
+<pre><code>"name".match(/a/)         #=&gt;true
+"name" =~ /a/               #=&gt;1                       #肯定匹配
+"name" =~ /b/               #=&gt;nil
+"name"  !~ /b/                #=&gt;false                 #否定匹配
+</code></pre>
 
 <h3>delete() &amp; delete!()  删除</h3>
 

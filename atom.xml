@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2013-07-08T15:26:53+08:00</updated>
+  <updated>2013-07-25T10:00:10+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby元编程五：编写代码的代码]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/07/14/metaprogramming-five/"/>
+    <updated>2013-07-14T21:06:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/07/14/metaprogramming-five</id>
+    <content type="html"><![CDATA[<h2>Kernel#eval</h2>
+
+<p>kernel#eval会直接 执行字符串中的代码，并返回执行结果，和javascript中的eval()一样。</p>
+
+<h2>钩子方法</h2>
+
+<h3>Class#inherited</h3>
+
+<p>当类被继承时，调用该方法，平时它什么也不做。，可以通过覆写它来形成类似回调函数的用法。
+example:</p>
+
+<pre><code>class MyClass                         #inherited是Class的一个实例方法，对于一个特定的类，则是它的类方法。
+    def self.inherited(param)         #注意inherited方法需要一个参数，参数是继承者的类名
+        p "lala"
+    end
+end
+
+MySonClass &lt; MyClass; end       #=&gt;"lala"
+</code></pre>
+
+<h3>更多钩子方法</h3>
+
+<p>Class#inherited是最常用的，还有其他一些：
+Module#includeed
+Module#method_added
+Module#method_removed
+Module#method_undefined</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby元编程四：类定义]]></title>
@@ -122,6 +157,19 @@ obj.height     #=&gt;"160cm"
 class MyClass
     attr_accessor :height
 end
+</code></pre>
+
+<h3>环绕别名</h3>
+
+<p>从一个重新定义的方法中调用原始的，被重命名的版本。 三个步骤： 1. 通过alias 对原有方法定义一个别名 2. 覆写原有方法 3. 在该方法中调用别名方法 这样做的好处，可以改写原有方法，又不破坏原有功能 。</p>
+
+<pre><code>    class String  
+        alias :old_reverse :reverse
+        def reverse 
+            "x#{old_reverse}x"
+        end
+    end 
+    "abc".reverse  =&gt;xcbax
 </code></pre>
 ]]></content>
   </entry>
@@ -1310,6 +1358,10 @@ var o1 = Object.create({x:1 , y:2});
 <h3>memcache:</h3>
 
 <p><a href="https://github.com/mperham/dalli">dalli</a></p>
+
+<h3>JS数据引用</h3>
+
+<p><a href="https://github.com/gazay/gon">gon</a> #可以在JS中使用服务端数据</p>
 ]]></content>
   </entry>
   
@@ -1389,56 +1441,6 @@ background: rgba(200,200,200,0.4);
 <h4>自定义<code>&lt;select&gt;</code>标签样式：</h4>
 
 <h4>Bootstrap中整合的js部分：</h4>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[github+octopress创建自己的博客]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/03/25/first-blog/"/>
-    <updated>2013-03-25T15:43:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/03/25/first-blog</id>
-    <content type="html"><![CDATA[<h3>添加SSH公钥</h3>
-
-<p><code>$ cd ~/.ssh</code>  <br/>
-<code>$ ssh-keygen -t rsa -C "your_email@example.com"</code>  <br/>
-  将id_rsa.pub文件中的公钥copy到github上  <br/>
-<code>$ ssh -T git@github.com #测试是否通过。</code></p>
-
-<h3>新建仓库</h3>
-
-<p> 在github上新建一个仓库，命名为 yourname.github.com</p>
-
-<h3>本地安装octopress</h3>
-
-<pre><code>$ git clone git://github.com/imathis/octopress.git octopress #下载octopress
-$ cd octopress
-$ bundle install 
-$ rake install #安装默认主题
-</code></pre>
-
-<h3>配置</h3>
-
-<p>编辑_config.yml文件配置博客名，扉页等  <br/>
-编辑config.rb文件配置css，图片路径等</p>
-
-<h3>编辑，上传</h3>
-
-<p><code>$ rake new_post["my first blog"] #新建blog</code> <br/>
-创建以后会在/source/_post目录下创建一个时间戳开头的文件，编辑这个文件撰写博客.
-如果无法执行可以先输入：  <br/>
-<code>$ alias rake="noglob rake"</code></p>
-
-<p><code>$ rake setup_github_pages  #配置本地与github连接</code> <br/>
-根据提示操作即可</p>
-
-<p><code>$ rake generate #项目静态化</code>   <br/>
-将配置修改，和编辑过的内容导入public中，window下控制台编码默认为GBK，需要在cmd下使用命令：
-<code>chcp 65001</code>将控制台代码格式转为utf-8</p>
-
-<p><code>$ rake preview #预览</code>   <br/>
-可以使用http://localhost:4000预览</p>
-
-<p><code>$ rake deploy #上传</code></p>
 ]]></content>
   </entry>
   

@@ -1,0 +1,189 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>庇护祝福的分享</title>
+	<meta name="author" content="Your Name">
+
+	
+	<meta name="description" content="添加SSH公钥 $ cd ~/.ssh $ ssh-keygen -t rsa -C "your_email@example.com" 将id_rsa.pub文件中的公钥copy到github上 $ ssh -T git@github.com #测试是否通过。 新建仓库 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="庇护祝福的分享" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">庇护祝福的分享</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:xieyu33333.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		<a class="google" href="https://plus.google.com/xieyu33333@gmail.com?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/xieyu33333@gmail.com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/xieyu33333" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:xieyu33333.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/03/25/first-blog/">
+		
+			Github+octopress创建自己的博客</a>
+	</h2>
+	<div class="entry-content">
+		<h3>添加SSH公钥</h3>
+
+<p><code>$ cd ~/.ssh</code>  <br/>
+<code>$ ssh-keygen -t rsa -C "your_email@example.com"</code>  <br/>
+  将id_rsa.pub文件中的公钥copy到github上  <br/>
+<code>$ ssh -T git@github.com #测试是否通过。</code></p>
+
+<h3>新建仓库</h3>
+
+<p> 在github上新建一个仓库，命名为 yourname.github.com</p>
+
+<h3>本地安装octopress</h3>
+
+<pre><code>$ git clone git://github.com/imathis/octopress.git octopress #下载octopress
+$ cd octopress
+$ bundle install 
+$ rake install #安装默认主题
+</code></pre>
+
+<h3>配置</h3>
+
+<p>编辑_config.yml文件配置博客名，扉页等  <br/>
+编辑config.rb文件配置css，图片路径等</p>
+
+<h3>编辑，上传</h3>
+
+<p><code>$ rake new_post["my first blog"] #新建blog</code> <br/>
+创建以后会在/source/_post目录下创建一个时间戳开头的文件，编辑这个文件撰写博客.
+如果无法执行可以先输入：  <br/>
+<code>$ alias rake="noglob rake"</code></p>
+
+<p><code>$ rake setup_github_pages  #配置本地与github连接</code> <br/>
+根据提示操作即可</p>
+
+<p><code>$ rake generate #项目静态化</code>   <br/>
+将配置修改，和编辑过的内容导入public中，window下控制台编码默认为GBK，需要在cmd下使用命令：
+<code>chcp 65001</code>将控制台代码格式转为utf-8</p>
+
+<p><code>$ rake preview #预览</code>   <br/>
+可以使用http://localhost:4000预览</p>
+
+<p><code>$ rake deploy #上传</code></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-25T15:43:00+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gitpage/'>gitpage</a>, <a class='category' href='/blog/categories/markdown/'>markdown</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+
+
+</div>
+	
+</div></article>
+
+<nav id="pagenavi">
+    
+        <a href="/blog/page/2/" class="prev">Prev</a>
+    
+    
+    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
+</nav></div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Your Name
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>

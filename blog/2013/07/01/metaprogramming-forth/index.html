@@ -186,6 +186,19 @@ class MyClass
     attr_accessor :height
 end
 </code></pre>
+
+<h3>环绕别名</h3>
+
+<p>从一个重新定义的方法中调用原始的，被重命名的版本。 三个步骤： 1. 通过alias 对原有方法定义一个别名 2. 覆写原有方法 3. 在该方法中调用别名方法 这样做的好处，可以改写原有方法，又不破坏原有功能 。</p>
+
+<pre><code>    class String  
+        alias :old_reverse :reverse
+        def reverse 
+            "x#{old_reverse}x"
+        end
+    end 
+    "abc".reverse  =&gt;xcbax
+</code></pre>
 </div>
 
 

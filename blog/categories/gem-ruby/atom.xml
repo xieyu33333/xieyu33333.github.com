@@ -4,7 +4,7 @@
   <title><![CDATA[Category: gem ruby | 庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/blog/categories/gem-ruby/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2013-07-08T15:26:53+08:00</updated>
+  <updated>2013-07-25T10:00:10+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -82,6 +82,10 @@
 <h3>memcache:</h3>
 
 <p><a href="https://github.com/mperham/dalli">dalli</a></p>
+
+<h3>JS数据引用</h3>
+
+<p><a href="https://github.com/gazay/gon">gon</a> #可以在JS中使用服务端数据</p>
 ]]></content>
   </entry>
   

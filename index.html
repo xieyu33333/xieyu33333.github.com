@@ -7,8 +7,8 @@
 	<meta name="author" content="Your Name">
 
 	
-	<meta name="description" content="Kernel#eval kernel#eval会直接 执行字符串中的代码，并返回执行结果，和javascript中的eval()一样。 钩子方法 Class#inherited 当类被继承时，调用该方法，平时它什么也不做。，可以通过覆写它来形成类似回调函数的用法。
-example: class &hellip;">
+	<meta name="description" content="新建用户 我们查看mysql的root用户的port字段，其中有值为&#8217;%&#8217;的，代表除本地外的其他地址的链接，但是port = &#8216;%&#8217;的行在root用户组中排在最下面，因此远程链接数据库就会因权限不足而失败。
+我们选择新建一个用户来进行远程数据备份 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -79,6 +79,69 @@ example: class &hellip;">
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/30/mysqldump/">
+		
+			Mysqldump及用户权限设置</a>
+	</h2>
+	<div class="entry-content">
+		<h3>新建用户</h3>
+
+<p>我们查看mysql的root用户的port字段，其中有值为&#8217;%&#8217;的，代表除本地外的其他地址的链接，但是port = &#8216;%&#8217;的行在root用户组中排在最下面，因此远程链接数据库就会因权限不足而失败。
+我们选择新建一个用户来进行远程数据备份：</p>
+
+<pre><code>mysql&gt; insert into mysql.user(Host,User,Password) values("%","yourname",password("1234"));
+</code></pre>
+
+<p>这样就创建了一个新用户，然后是给用户授权：</p>
+
+<pre><code>mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'yourname'@'%'IDENTIFIED BY '1234';
+</code></pre>
+
+<p>刷新用户权限：</p>
+
+<pre><code>mysql&gt; flush privileges;
+</code></pre>
+
+<h3>mysqldump</h3>
+
+<p>用于将远程数据库导出到本地：</p>
+
+<pre><code>mysqldump -h192.125.117.89 -uyourname -p1234 databasename &gt; /home/xieyu/databasename.sql
+</code></pre>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-30T10:32:00+08:00" pubdate data-updated="true">Aug 30<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/mysql/'>mysql</a>, <a class='category' href='/blog/categories/privileges/'>privileges</a>
+
+
+</div>
+	
+</div></article>
 
 
     <article class="post">
@@ -1014,86 +1077,6 @@ str="bcdaaa"
 
 
 <time datetime="2013-05-12T23:29:00+08:00" pubdate data-updated="true">May 12<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ruby/'>ruby</a>
-
-
-</div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/05/07/ruby-dataclass/">
-		
-			Ruby中一些特别的数据类型</a>
-	</h2>
-	<div class="entry-content">
-		<h3>Range</h3>
-
-<p>example:</p>
-
-<pre><code>    1..9
-    (1..9).to_a #=&gt;[1,2,3,4,5,6,7,8,9]
-    a=["aa","bb","cc","dd"]
-    a[0..2]=["aa","bb","cc"]
-    a..c
-    (a..c).to_a #=&gt;[a,b,c]
-    (1..9) ===5           #=&gt; true  #可以用做间隔测试
-</code></pre>
-
-<h3>Symbol</h3>
-
-<p>Symbol是ruby特有的一种数据类型，每一个变量都对应这一个同名Symbol值，每个Symbol对应一个内部id，因此查询速度很快，常用于作为键名。</p>
-
-<pre><code>    1.9以前版本只支持 :name =&gt; "xieyu"
-    新版本同时支持 name:"xieyu"
-</code></pre>
-
-<h3>block</h3>
-
-<p>数组和Range可以通过block来进行迭代
-example：</p>
-
-<pre><code>    (1..5).each{ |i| puts 2*i}
-    #=&gt;2
-    #=&gt;4
-    #=&gt;6
-    #=&gt;8
-    #=&gt;10
-    花括号可以使用do ... end来代替
-    (1..5).each do |i|
-        2*i
-    end
-</code></pre>
-
-<h3>Hash</h3>
-
-<p>Hash本质是一个数组，但是它的索引值不局限于数字，它的索引可以是任何对象。</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-07T21:03:00+08:00" pubdate data-updated="true">May 7<span>th</span>, 2013</time></div>
 	<div class="tags">
 
 

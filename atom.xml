@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2013-07-25T13:28:04+08:00</updated>
+  <updated>2013-08-30T10:45:38+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,38 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[mysqldump及用户权限设置]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/08/30/mysqldump/"/>
+    <updated>2013-08-30T10:32:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/08/30/mysqldump</id>
+    <content type="html"><![CDATA[<h3>新建用户</h3>
+
+<p>我们查看mysql的root用户的port字段，其中有值为&#8217;%&#8217;的，代表除本地外的其他地址的链接，但是port = &#8216;%&#8217;的行在root用户组中排在最下面，因此远程链接数据库就会因权限不足而失败。
+我们选择新建一个用户来进行远程数据备份：</p>
+
+<pre><code>mysql&gt; insert into mysql.user(Host,User,Password) values("%","yourname",password("1234"));
+</code></pre>
+
+<p>这样就创建了一个新用户，然后是给用户授权：</p>
+
+<pre><code>mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'yourname'@'%'IDENTIFIED BY '1234';
+</code></pre>
+
+<p>刷新用户权限：</p>
+
+<pre><code>mysql&gt; flush privileges;
+</code></pre>
+
+<h3>mysqldump</h3>
+
+<p>用于将远程数据库导出到本地：</p>
+
+<pre><code>mysqldump -h192.125.117.89 -uyourname -p1234 databasename &gt; /home/xieyu/databasename.sql
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby元编程五：编写代码的代码]]></title>
@@ -1362,85 +1394,6 @@ var o1 = Object.create({x:1 , y:2});
 <h3>JS数据引用</h3>
 
 <p><a href="https://github.com/gazay/gon">gon</a> #可以在JS中使用服务端数据</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[前端样式库小结]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/03/26/my-second-blog/"/>
-    <updated>2013-03-26T16:06:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/03/26/my-second-blog</id>
-    <content type="html"><![CDATA[<p>之前整理了一些标准化的的样式作为公司的前端类库，总结一下主要内容：</p>
-
-<h3>scss和compass的应用</h3>
-
-<h3>渐变色，圆角等在IE上的实现</h3>
-
-<p>使用<a href="http://css3pie.com/">PIE</a>，但是只能实现二维度的颜色渐变，也无法指定圆角的位置，但足以应付大多数的需求。</p>
-
-<h3>表单样式的统一与美化</h3>
-
-<h4>label标签的应用</h4>
-
-<p>example:</p>
-
-<pre><code>&lt;label class="numberborder"&gt;
-    &lt;input id="s1" class="number" value=1&gt;&lt;/input&gt;
-    &lt;div class="numberadjust" id=1&gt;
-        &lt;div class="numberup"&gt;&lt;/div&gt;
-        &lt;div class="numberdown"&gt;&lt;/div&gt;
-    &lt;/div&gt;
-&lt;/label&gt;     
-</code></pre>
-
-<p>点击label标签可以直接获取与label标签关联表单的焦点，由于表单元素在不同浏览器下的默认样式都不一样且不够美观， <br/>
-而且有些表单样式无法通过css修改，那么通过隐藏原有表单并设置label标签的样式来实现。</p>
-
-<h3>滚动条样式的美化</h3>
-
-<p>example:</p>
-
-<pre><code>::-webkit-scrollbar {
-    width: 12px;
-}
-::-webkit-scrollbar-track        //滑轨
-{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb           //滚动条里的滑块
-{
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: rgba(200,200,200,0.8); 
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-}
-::-webkit-scrollbar-thumb:window-inactive
-{
-background: rgba(200,200,200,0.4); 
-}
-</code></pre>
-
-<h3>浏览器兼容性问题整理</h3>
-
-<h4>IE6,7下的z-index问题</h4>
-
-<h4>inline-block纵向显示问题</h4>
-
-<h4>IE不支持position：fixed问题</h4>
-
-<h4>如何去除IE虚线框</h4>
-
-<h3>js插件的整理</h3>
-
-<p>作为一种面向对象的语言，实际工程中，我们更多的使用现成的js类库，需要对好用的类库做一些整理，以加速开发进度。</p>
-
-<h4>前端表单验证：</h4>
-
-<h4>自定义<code>&lt;select&gt;</code>标签样式：</h4>
-
-<h4>Bootstrap中整合的js部分：</h4>
 ]]></content>
   </entry>
   

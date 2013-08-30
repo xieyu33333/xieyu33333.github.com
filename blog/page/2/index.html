@@ -7,8 +7,7 @@
 	<meta name="author" content="Your Name">
 
 	
-	<meta name="description" content="打开类 通过 class String def to_alphanumeric gsub /[^\w\s]/,'' end
-end 可以直接打开已有的类并给其添加方法，class关键字的核心任务是把你带入到类的上下文中，让你可以定义其中的方法。 如果方法名重合，那么会覆盖原来的方法，这称为“ &hellip;">
+	<meta name="description" content="Range example: 1..9 (1..9).to_a #=&gt;[1,2,3,4,5,6,7,8,9] a=["aa","bb","cc","dd"] a[0..2]=["aa","bb","cc"] a..c (a..c).to_a #=&gt;[a,b,c] (1..9) === &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -79,6 +78,86 @@ end 可以直接打开已有的类并给其添加方法，class关键字的核�
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/05/07/ruby-dataclass/">
+		
+			Ruby中一些特别的数据类型</a>
+	</h2>
+	<div class="entry-content">
+		<h3>Range</h3>
+
+<p>example:</p>
+
+<pre><code>    1..9
+    (1..9).to_a #=&gt;[1,2,3,4,5,6,7,8,9]
+    a=["aa","bb","cc","dd"]
+    a[0..2]=["aa","bb","cc"]
+    a..c
+    (a..c).to_a #=&gt;[a,b,c]
+    (1..9) ===5           #=&gt; true  #可以用做间隔测试
+</code></pre>
+
+<h3>Symbol</h3>
+
+<p>Symbol是ruby特有的一种数据类型，每一个变量都对应这一个同名Symbol值，每个Symbol对应一个内部id，因此查询速度很快，常用于作为键名。</p>
+
+<pre><code>    1.9以前版本只支持 :name =&gt; "xieyu"
+    新版本同时支持 name:"xieyu"
+</code></pre>
+
+<h3>block</h3>
+
+<p>数组和Range可以通过block来进行迭代
+example：</p>
+
+<pre><code>    (1..5).each{ |i| puts 2*i}
+    #=&gt;2
+    #=&gt;4
+    #=&gt;6
+    #=&gt;8
+    #=&gt;10
+    花括号可以使用do ... end来代替
+    (1..5).each do |i|
+        2*i
+    end
+</code></pre>
+
+<h3>Hash</h3>
+
+<p>Hash本质是一个数组，但是它的索引值不局限于数字，它的索引可以是任何对象。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-07T21:03:00+08:00" pubdate data-updated="true">May 7<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>ruby</a>
+
+
+</div>
+	
+</div></article>
 
 
     <article class="post">
@@ -987,116 +1066,6 @@ var o1 = Object.create({x:1 , y:2});
 
 
 	<a class='category' href='/blog/categories/gem-ruby/'>gem ruby</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/zi-yuan-zheng-li/'>资源整理</a>
-
-
-</div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/03/26/my-second-blog/">
-		
-			前端样式库小结</a>
-	</h2>
-	<div class="entry-content">
-		<p>之前整理了一些标准化的的样式作为公司的前端类库，总结一下主要内容：</p>
-
-<h3>scss和compass的应用</h3>
-
-<h3>渐变色，圆角等在IE上的实现</h3>
-
-<p>使用<a href="http://css3pie.com/">PIE</a>，但是只能实现二维度的颜色渐变，也无法指定圆角的位置，但足以应付大多数的需求。</p>
-
-<h3>表单样式的统一与美化</h3>
-
-<h4>label标签的应用</h4>
-
-<p>example:</p>
-
-<pre><code>&lt;label class="numberborder"&gt;
-    &lt;input id="s1" class="number" value=1&gt;&lt;/input&gt;
-    &lt;div class="numberadjust" id=1&gt;
-        &lt;div class="numberup"&gt;&lt;/div&gt;
-        &lt;div class="numberdown"&gt;&lt;/div&gt;
-    &lt;/div&gt;
-&lt;/label&gt;     
-</code></pre>
-
-<p>点击label标签可以直接获取与label标签关联表单的焦点，由于表单元素在不同浏览器下的默认样式都不一样且不够美观， <br/>
-而且有些表单样式无法通过css修改，那么通过隐藏原有表单并设置label标签的样式来实现。</p>
-
-<h3>滚动条样式的美化</h3>
-
-<p>example:</p>
-
-<pre><code>::-webkit-scrollbar {
-    width: 12px;
-}
-::-webkit-scrollbar-track        //滑轨
-{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb           //滚动条里的滑块
-{
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: rgba(200,200,200,0.8); 
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-}
-::-webkit-scrollbar-thumb:window-inactive
-{
-background: rgba(200,200,200,0.4); 
-}
-</code></pre>
-
-<h3>浏览器兼容性问题整理</h3>
-
-<h4>IE6,7下的z-index问题</h4>
-
-<h4>inline-block纵向显示问题</h4>
-
-<h4>IE不支持position：fixed问题</h4>
-
-<h4>如何去除IE虚线框</h4>
-
-<h3>js插件的整理</h3>
-
-<p>作为一种面向对象的语言，实际工程中，我们更多的使用现成的js类库，需要对好用的类库做一些整理，以加速开发进度。</p>
-
-<h4>前端表单验证：</h4>
-
-<h4>自定义<code>&lt;select&gt;</code>标签样式：</h4>
-
-<h4>Bootstrap中整合的js部分：</h4>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-26T16:06:00+08:00" pubdate data-updated="true">Mar 26<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/css/'>css</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/liu-lan-qi-jian-rong-xing/'>浏览器兼容性</a>
 
 
 </div>

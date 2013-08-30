@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: mysql | 庇护祝福的分享]]></title>
+  <link href="http://xieyu33333.github.com/blog/categories/mysql/atom.xml" rel="self"/>
+  <link href="http://xieyu33333.github.com/"/>
+  <updated>2013-08-30T10:45:38+08:00</updated>
+  <id>http://xieyu33333.github.com/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    <email><![CDATA[xieyu33333@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[mysqldump及用户权限设置]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/08/30/mysqldump/"/>
+    <updated>2013-08-30T10:32:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/08/30/mysqldump</id>
+    <content type="html"><![CDATA[<h3>新建用户</h3>
+
+<p>我们查看mysql的root用户的port字段，其中有值为'%'的，代表除本地外的其他地址的链接，但是port = '%'的行在root用户组中排在最下面，因此远程链接数据库就会因权限不足而失败。
+我们选择新建一个用户来进行远程数据备份：</p>
+
+<pre><code>mysql&gt; insert into mysql.user(Host,User,Password) values("%","yourname",password("1234"));
+</code></pre>
+
+<p>这样就创建了一个新用户，然后是给用户授权：</p>
+
+<pre><code>mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'yourname'@'%'IDENTIFIED BY '1234';
+</code></pre>
+
+<p>刷新用户权限：</p>
+
+<pre><code>mysql&gt; flush privileges;
+</code></pre>
+
+<h3>mysqldump</h3>
+
+<p>用于将远程数据库导出到本地：</p>
+
+<pre><code>mysqldump -h192.125.117.89 -uyourname -p1234 databasename &gt; /home/xieyu/databasename.sql
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

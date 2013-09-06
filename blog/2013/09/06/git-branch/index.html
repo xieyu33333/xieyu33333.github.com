@@ -1,0 +1,216 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Git branch - 庇护祝福的分享</title>
+	<meta name="author" content="Your Name">
+
+	
+	<meta name="description" content="创建操作 git branch 列出所有的分支, -r参数表示列出所有远程的分支 git branch branchname 建立一个名为的分支,使用当前版本作为这个新分支的版本 git branch 建立一个名为的分支, 使用指定的 作为新分支的版本,这个start- &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="庇护祝福的分享" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">庇护祝福的分享</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:xieyu33333.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		<a class="google" href="https://plus.google.com/xieyu33333@gmail.com?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/xieyu33333@gmail.com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/xieyu33333" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:xieyu33333.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Git Branch</h2>
+	<div class="entry-content"><h3>创建操作</h3>
+
+<h4>git branch</h4>
+
+<p>列出所有的分支, -r参数表示列出所有远程的分支</p>
+
+<h4>git branch branchname</h4>
+
+<p>建立一个名为的分支,使用当前版本作为这个新分支的版本</p>
+
+<h4>git branch</h4>
+
+<p>建立一个名为的分支, 使用指定的 作为新分支的版本,这个start-point可以是其他的分支名称或者tag名称。</p>
+
+<h3>删除操作</h3>
+
+<h4>git branch -d</h4>
+
+<p>删除分支 ; 如果你要删除的分支并没有被merge到当前分支的话，将产生一个错误提示。</p>
+
+<h4>git branch -D</h4>
+
+<p>同-d，但是不管要删除的分支是否已经merge到当前分支，都会删除</p>
+
+<h3>切换操作</h3>
+
+<h4>git checkout</h4>
+
+<p>切换当前分支到 , 更新 working directory 到 所对应的版本</p>
+
+<h4>git checkout -b</h4>
+
+<p>按照的版本建立一个新的分支，并checkout到这个新分支上。</p>
+
+<h4>git checkout -f</h4>
+
+<p>忽略差异部分，强制切换，例如：
+修改branch test, 但是没有commit，这时如果切换到master，会提示错误。使用-f 则会丢弃test中的修改，强制切换，如果切回test分支，刚才的修改也没了</p>
+
+<p>一个特殊符号 “HEAD” 总是指向当前分支. 实际上git使用一个在.git目录中叫 “HEAD”的文件来记录当前分支:</p>
+
+<pre><code>$ cat .git/HEAD
+ref: refs/heads/master
+</code></pre>
+
+<p>示例：“master”分支是当初你执行git-clone时候，clone的一个远程repository的HEAD版本的一个copy.</p>
+
+<pre><code>$ git branch -r
+  origin/HEAD
+  origin/html
+  origin/maint
+  origin/man
+  origin/master
+  origin/next
+  origin/pu
+  origin/todo
+</code></pre>
+
+<p>列出所有远程版本，origin是用来表示你当初执行git-clone时候的repository，你不可以直接checkout远程repository，但是你可以根据远程repository生成一个本地repository：</p>
+
+<pre><code>$ git checkout -b my-todo-copy origin/todo
+</code></pre>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-06T11:14:00+08:00" pubdate data-updated="true">Sep 6<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/git/'>Git</a>
+
+
+</div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Your Name
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42718452-1', 'xieyu33333.github.io');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

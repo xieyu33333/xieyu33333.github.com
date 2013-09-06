@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2013-08-30T10:45:38+08:00</updated>
+  <updated>2013-09-06T13:23:49+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Git branch]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/09/06/git-branch/"/>
+    <updated>2013-09-06T11:14:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/09/06/git-branch</id>
+    <content type="html"><![CDATA[<h3>创建操作</h3>
+
+<h4>git branch</h4>
+
+<p>列出所有的分支, -r参数表示列出所有远程的分支</p>
+
+<h4>git branch branchname</h4>
+
+<p>建立一个名为的分支,使用当前版本作为这个新分支的版本</p>
+
+<h4>git branch</h4>
+
+<p>建立一个名为的分支, 使用指定的 作为新分支的版本,这个start-point可以是其他的分支名称或者tag名称。</p>
+
+<h3>删除操作</h3>
+
+<h4>git branch -d</h4>
+
+<p>删除分支 ; 如果你要删除的分支并没有被merge到当前分支的话，将产生一个错误提示。</p>
+
+<h4>git branch -D</h4>
+
+<p>同-d，但是不管要删除的分支是否已经merge到当前分支，都会删除</p>
+
+<h3>切换操作</h3>
+
+<h4>git checkout</h4>
+
+<p>切换当前分支到 , 更新 working directory 到 所对应的版本</p>
+
+<h4>git checkout -b</h4>
+
+<p>按照的版本建立一个新的分支，并checkout到这个新分支上。</p>
+
+<h4>git checkout -f</h4>
+
+<p>忽略差异部分，强制切换，例如：
+修改branch test, 但是没有commit，这时如果切换到master，会提示错误。使用-f 则会丢弃test中的修改，强制切换，如果切回test分支，刚才的修改也没了</p>
+
+<p>一个特殊符号 “HEAD” 总是指向当前分支. 实际上git使用一个在.git目录中叫 “HEAD”的文件来记录当前分支:</p>
+
+<pre><code>$ cat .git/HEAD
+ref: refs/heads/master
+</code></pre>
+
+<p>示例：“master”分支是当初你执行git-clone时候，clone的一个远程repository的HEAD版本的一个copy.</p>
+
+<pre><code>$ git branch -r
+  origin/HEAD
+  origin/html
+  origin/maint
+  origin/man
+  origin/master
+  origin/next
+  origin/pu
+  origin/todo
+</code></pre>
+
+<p>列出所有远程版本，origin是用来表示你当初执行git-clone时候的repository，你不可以直接checkout远程repository，但是你可以根据远程repository生成一个本地repository：</p>
+
+<pre><code>$ git checkout -b my-todo-copy origin/todo
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[mysqldump及用户权限设置]]></title>
@@ -1318,82 +1388,6 @@ var o1 = Object.create({x:1 , y:2});
 <h4>原型(prototype)</h4>
 
 <p>除了null之外所有对象都继承于Obiect.prototype</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[rails常用gem]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/03/31/my-third-blog/"/>
-    <updated>2013-03-31T21:00:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/03/31/my-third-blog</id>
-    <content type="html"><![CDATA[<h4>总结一下最近rails项目用到的gems</h4>
-
-<p><a href="http://rubygems.org">rubygems官方网站</a>  <br/>
-<a href="https://www.ruby-toolbox.com/">最流行的rubygems排名</a></p>
-
-<h3>测试：</h3>
-
-<p><a href="https://github.com/rspec/rspec-rails">rspec-rails</a><br/>
-<a href="https://github.com/pry/pry">pry</a>  (命令行断点调试工具)</p>
-
-<h3>前端 ：</h3>
-
-<p><a href="https://github.com/Compass/compass-rails">compass-rails</a><br/>
-<a href="https://github.com/kristianmandrup/masonry-rails">masonry-rails</a> （瀑布流）</p>
-
-<h3>部署：</h3>
-
-<p><a href="http://www.seeyon.com/news/4062.html">unicorn</a>     <br/>
-<a href="https://github.com/FooBarWidget/passenger">passenger</a></p>
-
-<h3>web service接口：</h3>
-
-<p><a href="https://github.com/intridea/grape">grape</a></p>
-
-<h3>数据库支持:</h3>
-
-<p><a href="https://github.com/brianmario/mysql2">mysql2</a> mysql数据库支持 <br/>
-<a href="https://github.com/mongoid/mongoid">mongoid</a> mongodb数据库支持</p>
-
-<h3>后台队列:</h3>
-
-<p><a href="https://github.com/resque/resque">resque</a></p>
-
-<h3>文件上传：</h3>
-
-<p><a href="https://github.com/jnicklas/carrierwave/">Carrierwave</a></p>
-
-<h3>分页：</h3>
-
-<p><a href="https://github.com/mislav/will_paginate">will_paginate</a> <br/>
-<a href="https://github.com/amatsuda/kaminari">Kaminari</a></p>
-
-<h3>用户系统：</h3>
-
-<p><a href="https://github.com/plataformatec/devise">devise</a> 全面的登陆注册系统    <br/>
-<a href="https://github.com/ryanb/cancan">cancan</a> 用户权限设置  <br/>
-<a href="https://github.com/codahale/bcrypt-ruby">bcrypt-ruby</a> 用于加密</p>
-
-<h3>富文本编辑：</h3>
-
-<p><a href="https://github.com/Macrow/rails_kindeditor">rails_kindeditor</a></p>
-
-<h3>Bootstrape:</h3>
-
-<p><a href="https://github.com/seyhunak/twitter-bootstrap-rails">twitter-bootstrap-rails</a> <br/>
-<a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a></p>
-
-<h3>图片处理：</h3>
-
-<p><a href="https://github.com/minimagick/minimagick">mini_magick</a>  （需要安装imagemagick）</p>
-
-<h3>memcache:</h3>
-
-<p><a href="https://github.com/mperham/dalli">dalli</a></p>
-
-<h3>JS数据引用</h3>
-
-<p><a href="https://github.com/gazay/gon">gon</a> #可以在JS中使用服务端数据</p>
 ]]></content>
   </entry>
   

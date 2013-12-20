@@ -5,15 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Ruby元编程三：代码块 - 庇护祝福的分享</title>
+  <title>rails中间层解决方案 - 庇护祝福的分享</title>
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="闭包 块可以作为一个闭包.
-example: def my_method x="Goodbye" yield("cruel")
-end
-x = "Hello"
-my_method {|y| "#{x} , #{y} world"} #=&gt;Hello, cruel world &hellip;">
+  <meta name="description" content="调用API构建前端 一般情况下，rails应用都是从数据库进行数据获取，而采用API调用的话，就不再需要model层了，只需要在控制器中用http库进行接口调用就可以了，大大简化了结构。
+example: require 'open-uri'
+require 'json'
+require 'net &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,7 +22,7 @@ my_method {|y| "#{x} , #{y} world"} #=&gt;Hello, cruel world &hellip;">
   <meta name="baidu-tc-verification" content="ab4be6be306aae217340419193ba5011" />
 
   
-  <link rel="canonical" href="http://xieyu33333.github.com/blog/2013/06/29/metaprogramming-third">
+  <link rel="canonical" href="http://xieyu33333.github.com/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="庇护祝福的分享" type="application/atom+xml">
@@ -64,7 +63,7 @@ my_method {|y| "#{x} , #{y} world"} #=&gt;Hello, cruel world &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Ruby元编程三：代码块</h1>
+      <h1 class="entry-title">Rails中间层解决方案</h1>
     
     
       <p class="meta">
@@ -80,90 +79,117 @@ my_method {|y| "#{x} , #{y} world"} #=&gt;Hello, cruel world &hellip;">
   
 
 
-<time datetime="2013-06-29T20:53:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2013</time>
+<time datetime="2013-12-20T15:34:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h2>闭包</h2>
+<div class="entry-content"><h3>调用API构建前端</h3>
 
-<p>块可以作为一个闭包.
+<p>一般情况下，rails应用都是从数据库进行数据获取，而采用API调用的话，就不再需要model层了，只需要在控制器中用http库进行接口调用就可以了，大大简化了结构。
 example:</p>
 
-<pre><code>def my_method
-    x="Goodbye"
-    yield("cruel")
+<pre><code>require 'open-uri'
+require 'json'
+require 'net/http'
+def index  
+  uri = URI("http://test.csdn.net/api/format/json")
+  req = Net::HTTP.get(uri)
+  @slides = JSON.parse(req)["data"]["contents"]
 end
-x = "Hello"
-my_method {|y| "#{x} , #{y} world"}   #=&gt;Hello, cruel world
 </code></pre>
 
-<p>块获得了局部绑定的变量x，并一直带着它。块并不能接受方法中定义的x=&#8221;Goodbye&#8221;</p>
+<h3>问题：多个API调用时的阻塞问题</h3>
 
-<h2>作用域与作用域门</h2>
-
-<p>程序会在三个地方关闭前一个作用域，同时打开一个新的作用域：
-类定义
-模块定义
-方法
-它们分别用关键字class，module，def为标志每一个关键字都充当了一个作用域门。</p>
-
-<h2>Proc类，proc，lambda , yield , &amp;操作符</h2>
-
-<h3>将块转化为对象</h3>
-
-<p>使用块需要分两步：1.把块的逻辑写好打包备用。2.调用块<br/>
-块不是对象，如果想要存储一个块供以后执行，需要一个对象。<br/>
-Ruby标准库提供Proc类，它接受一个块作为参数，从而将这个块转化为对象：</p>
-
-<pre><code>inc = Proc.new { |x| x+1}
-inc.call(2)                       #=&gt;3
+<pre><code>def index  
+  uri_one = URI("http://test.csdn.net/api/1/format/json")
+  uri_two = URI("http://test.csdn.net/api/2/format/json")
+  uri_three = URI("http://test.csdn.net/api/3/format/json")
+  ......
+  req_one = Net::HTTP.get(uri_one)
+  req_two = Net::HTTP.get(uri_two)
+  req_three = Net::HTTP.get(uri_three)
+  ......
+  @slides = JSON.parse(req)["data"]["contents"]
+  ......
+end
 </code></pre>
 
-<p>而lambda ， proc 本质也是将块转化为Proc类的实例化对象</p>
+<p>如果有10个API调用，每个<code>Net::HTTP.get(uri)</code>通信耗时30ms，那么就是300ms的时间。</p>
 
-<h3>lambda，proc的区别</h3>
+<h3>解决方案一：多线程处理</h3>
 
-<p>1.使用return关键字的时候，lambda从它本身返回，而proc则会在定义它的作用域中返回。</p>
-
-<pre><code>def double(param)
-    param.call*2
-end
-l=lambda {return 10}
-double(l)                         #=&gt;20
-p=proc {return 10}
-double(p)                         #=&gt;报错LocalJumpError
+<pre><code>threads = []
+threads &lt;&lt; Thread.new {@req_one = Net::HTTP.get(uri_one)}
+threads &lt;&lt; Thread.new {@req_two = Net::HTTP.get(uri_two)}
+threads &lt;&lt; Thread.new {@req_three = Net::HTTP.get(uri_three)}
+......
+threads.each { |t| t.join }
+data = JSON.parse(@req_one)["data"]
 </code></pre>
 
-<p>2.参数数量
-调用lambda的时候，如果参数数量不对则会报错，而proc会自动调整，忽略多余的，如果少了则会将其赋为nil</p>
+<p>开启多线程并行处理，可以很大程度上提高处理速度。但是问题在于开多个线程造成资源开销增加，实际上降低了应用的吞吐能力，而且由于Ruby存在GIL (Global Interpreter Lock)，并不能真正利用多线程进行并行计算。（JRuby 去除了 GIL，是真正意义的多线程，既能应付 IO Block，也能充分利用多核 CPU 加快整体运算速度。）</p>
 
-<h3>&amp;操作符</h3>
+<h3>解决方案二：采用异步模型处理</h3>
 
-<p>它可以实现：
-1.把这个块传递给另一个方法
-2.把一个块转化为proc,只需要去掉&amp;操作符即可。</p>
+<h4>Ruby的异步解决方案：Eventmachine</h4>
 
-<p>example1：</p>
+<p>在Gemfile中添加：</p>
 
-<pre><code>def math(a, b)
-    yield(a , b)
-end
-def teach_math(a , b , &amp;block)
-    puts math(a , b , &amp;black)
-end
-teach_math(2,3) {|x ,y| x*y}         #=&gt;6
+<pre><code>gem 'eventmachine'
+gem 'em-http-request', :require =&gt; 'em-http'
 </code></pre>
 
-<p>example2:</p>
+<p>控制器中的代码：</p>
 
-<pre><code>def test(&amp;block)
-    block
+<pre><code>EventMachine.run {
+  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
+  http.errback { 
+    render :text "接口连接失败"; 
+    EM.stop 
+  }
+  http.callback {
+    req = http.response
+    @slides = JSON.parse(req)["data"]["list"]
+    @page_count = JSON.parse(req)["data"]["count"].to_i/18+1
+    EM.stop
+  }
+}
+</code></pre>
+
+<p>这种方式不仅解决了阻塞问题，而且可以有效的提高系统的吞吐能力。但带来的问题是代码量增加，复杂逻辑下代码的复杂度成倍增加，不利于开发和维护。</p>
+
+<h4>引入纤程（Fiber）,用同步代码编写异步程序</h4>
+
+<p>在Gemfile中添加<code>gem 'em-synchrony'</code>。
+控制器代码：</p>
+
+<pre><code>EM.synchrony do
+  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
+  req = http.response
+  @slides = JSON.parse(req)["data"]["list"]
+  EM.stop
 end
-t=test {|name| "Hello,#{name}"}
-puts t.call("Tom")                         #=&gt;Hello , Tom
+</code></pre>
+
+<p>多个接口调用实例：</p>
+
+<pre><code>require "em-synchrony"
+require "em-synchrony/em-http"
+require "em-synchrony/fiber_iterator"
+EM.synchrony do
+  concurrency = 2
+  urls = ['http://url.1.com', 'http://url2.com']
+  results = []
+  EM::Synchrony::FiberIterator.new(urls, concurrency).each do |url|
+    res = EventMachine::HttpRequest.new(url).get
+    results &lt;&lt; res.response
+  end
+  puts results # all completed requests
+  EventMachine.stop
+end
 </code></pre>
 </div>
 
@@ -187,12 +213,12 @@ puts t.call("Tom")                         #=&gt;Hello , Tom
   
 
 
-<time datetime="2013-06-29T20:53:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2013</time>
+<time datetime="2013-12-20T15:34:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/ruby/'>ruby</a>
+    <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
   
 </span>
 
@@ -201,7 +227,7 @@ puts t.call("Tom")                         #=&gt;Hello , Tom
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2013/06/29/metaprogramming-third/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2013/06/29/metaprogramming-third/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/" >Tweet</a>
   
   
   
@@ -212,10 +238,8 @@ puts t.call("Tom")                         #=&gt;Hello , Tom
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/06/17/ruby-file/" title="Previous Post: ruby_file">&laquo; ruby_file</a>
+        <a class="basic-alignment left" href="/blog/2013/09/06/git-branch/" title="Previous Post: Git branch">&laquo; Git branch</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/07/01/metaprogramming-forth/" title="Next Post: Ruby元编程四：类定义">Ruby元编程四：类定义 &raquo;</a>
       
     </p>
   </footer>

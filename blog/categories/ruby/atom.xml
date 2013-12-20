@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | 庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2013-12-06T10:56:44+08:00</updated>
+  <updated>2013-12-20T17:40:59+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,119 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[rails中间层解决方案]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/"/>
+    <updated>2013-12-20T15:34:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an</id>
+    <content type="html"><![CDATA[<h3>调用API构建前端</h3>
+
+<p>一般情况下，rails应用都是从数据库进行数据获取，而采用API调用的话，就不再需要model层了，只需要在控制器中用http库进行接口调用就可以了，大大简化了结构。
+example:</p>
+
+<pre><code>require 'open-uri'
+require 'json'
+require 'net/http'
+def index  
+  uri = URI("http://test.csdn.net/api/format/json")
+  req = Net::HTTP.get(uri)
+  @slides = JSON.parse(req)["data"]["contents"]
+end
+</code></pre>
+
+<h3>问题：多个API调用时的阻塞问题</h3>
+
+<pre><code>def index  
+  uri_one = URI("http://test.csdn.net/api/1/format/json")
+  uri_two = URI("http://test.csdn.net/api/2/format/json")
+  uri_three = URI("http://test.csdn.net/api/3/format/json")
+  ......
+  req_one = Net::HTTP.get(uri_one)
+  req_two = Net::HTTP.get(uri_two)
+  req_three = Net::HTTP.get(uri_three)
+  ......
+  @slides = JSON.parse(req)["data"]["contents"]
+  ......
+end
+</code></pre>
+
+<p>如果有10个API调用，每个<code>Net::HTTP.get(uri)</code>通信耗时30ms，那么就是300ms的时间。</p>
+
+<h3>解决方案一：多线程处理</h3>
+
+<pre><code>threads = []
+threads &lt;&lt; Thread.new {@req_one = Net::HTTP.get(uri_one)}
+threads &lt;&lt; Thread.new {@req_two = Net::HTTP.get(uri_two)}
+threads &lt;&lt; Thread.new {@req_three = Net::HTTP.get(uri_three)}
+......
+threads.each { |t| t.join }
+data = JSON.parse(@req_one)["data"]
+</code></pre>
+
+<p>开启多线程并行处理，可以很大程度上提高处理速度。但是问题在于开多个线程造成资源开销增加，实际上降低了应用的吞吐能力，而且由于Ruby存在GIL (Global Interpreter Lock)，并不能真正利用多线程进行并行计算。（JRuby 去除了 GIL，是真正意义的多线程，既能应付 IO Block，也能充分利用多核 CPU 加快整体运算速度。）</p>
+
+<h3>解决方案二：采用异步模型处理</h3>
+
+<h4>Ruby的异步解决方案：Eventmachine</h4>
+
+<p>在Gemfile中添加：</p>
+
+<pre><code>gem 'eventmachine'
+gem 'em-http-request', :require =&gt; 'em-http'
+</code></pre>
+
+<p>控制器中的代码：</p>
+
+<pre><code>EventMachine.run {
+  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
+  http.errback { 
+    render :text "接口连接失败"; 
+    EM.stop 
+  }
+  http.callback {
+    req = http.response
+    @slides = JSON.parse(req)["data"]["list"]
+    @page_count = JSON.parse(req)["data"]["count"].to_i/18+1
+    EM.stop
+  }
+}
+</code></pre>
+
+<p>这种方式不仅解决了阻塞问题，而且可以有效的提高系统的吞吐能力。但带来的问题是代码量增加，复杂逻辑下代码的复杂度成倍增加，不利于开发和维护。</p>
+
+<h4>引入纤程（Fiber）,用同步代码编写异步程序</h4>
+
+<p>在Gemfile中添加<code>gem 'em-synchrony'</code>。
+控制器代码：</p>
+
+<pre><code>EM.synchrony do
+  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
+  req = http.response
+  @slides = JSON.parse(req)["data"]["list"]
+  EM.stop
+end
+</code></pre>
+
+<p>多个接口调用实例：</p>
+
+<pre><code>require "em-synchrony"
+require "em-synchrony/em-http"
+require "em-synchrony/fiber_iterator"
+EM.synchrony do
+  concurrency = 2
+  urls = ['http://url.1.com', 'http://url2.com']
+  results = []
+  EM::Synchrony::FiberIterator.new(urls, concurrency).each do |url|
+    res = EventMachine::HttpRequest.new(url).get
+    results &lt;&lt; res.response
+  end
+  puts results # all completed requests
+  EventMachine.stop
+end
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby元编程五：编写代码的代码]]></title>
@@ -309,66 +422,6 @@ end
 open("test.txt" , "a") do |f|
   f.puts("aaaaaaaa")
 end
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ruby的HTTP类库]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/06/17/ruby-net-slash-http/"/>
-    <updated>2013-06-17T13:19:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/06/17/ruby-net-slash-http</id>
-    <content type="html"><![CDATA[<h2>HTTP</h2>
-
-<h3>NET::HTTP.get</h3>
-
-<pre><code>    require "net/http"
-    Net::HTTP.get('example.com', '/index.html')      # =&gt; String
-
-    uri = URI('http://example.com/index.html?count=10')
-    Net::HTTP.get(uri)        # =&gt; String
-</code></pre>
-
-<p>可以使用get方法进行下载:</p>
-
-<pre><code>    File.open("test.jpg" , "w") do |f|
-        f.write Net::HTTP.get(uri) 
-    end
-</code></pre>
-
-<p>接收动态参数:</p>
-
-<pre><code>    uri = URI('http://bbs.csdn.net/forums/ROR')
-    params = { :limit =&gt; 10, :page =&gt; 3 }
-    uri.query = URI.encode_www_form(params)
-    res = Net::HTTP.get_response(uri)                         #get_response()方返回一个对象
-    puts res.body if res.is_a?(Net::HTTPSuccess)
-</code></pre>
-
-<h2>URI</h2>
-
-<h3>Basic</h3>
-
-<pre><code>    require 'uri'
-    uri = URI("http://foo.com/posts?id=30&amp;limit=5#time=1305298413")
-    #=&gt; #&lt;URI::HTTP:0x00000000b14880
-          URL:http://foo.com/posts?id=30&amp;limit=5#time=1305298413&gt;
-    uri.scheme                                       #=&gt; "http"
-    uri.host                                            #=&gt; "foo.com"
-    uri.path                                            #=&gt; "/posts"
-    uri.query                                          #=&gt; "id=30&amp;limit=5"
-    uri.fragment                                     #=&gt; "time=1305298413"
-    uri.to_s                                             #=&gt; "http://foo.com/posts?id=30&amp;limit=5#time=1305298413"
-</code></pre>
-
-<h3>Joins URIs.</h3>
-
-<pre><code>    require 'uri'
-    p URI.join("http://example.com/","main.rbx")                 # =&gt; #&lt; URL:http://localhost/main.rbx&gt;
-    p URI.join('http://example.com', 'foo')                            # =&gt; #&lt; URL:http://example.com/foo&gt;
-    p URI.join('http://example.com', '/foo', '/bar')                 # =&gt; #&lt; URL:http://example.com/bar&gt;
-    p URI.join('http://example.com', '/foo', 'bar')                  # =&gt; #&lt; URL:http://example.com/bar&gt;
-    p URI.join('http://example.com', '/foo/', 'bar')                 # =&gt; #&lt; URL:http://example.com/foo/bar&gt;
 </code></pre>
 ]]></content>
   </entry>

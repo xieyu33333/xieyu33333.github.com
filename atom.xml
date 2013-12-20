@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2013-12-06T10:56:44+08:00</updated>
+  <updated>2013-12-20T17:40:59+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,119 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[rails中间层解决方案]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/"/>
+    <updated>2013-12-20T15:34:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an</id>
+    <content type="html"><![CDATA[<h3>调用API构建前端</h3>
+
+<p>一般情况下，rails应用都是从数据库进行数据获取，而采用API调用的话，就不再需要model层了，只需要在控制器中用http库进行接口调用就可以了，大大简化了结构。
+example:</p>
+
+<pre><code>require 'open-uri'
+require 'json'
+require 'net/http'
+def index  
+  uri = URI("http://test.csdn.net/api/format/json")
+  req = Net::HTTP.get(uri)
+  @slides = JSON.parse(req)["data"]["contents"]
+end
+</code></pre>
+
+<h3>问题：多个API调用时的阻塞问题</h3>
+
+<pre><code>def index  
+  uri_one = URI("http://test.csdn.net/api/1/format/json")
+  uri_two = URI("http://test.csdn.net/api/2/format/json")
+  uri_three = URI("http://test.csdn.net/api/3/format/json")
+  ......
+  req_one = Net::HTTP.get(uri_one)
+  req_two = Net::HTTP.get(uri_two)
+  req_three = Net::HTTP.get(uri_three)
+  ......
+  @slides = JSON.parse(req)["data"]["contents"]
+  ......
+end
+</code></pre>
+
+<p>如果有10个API调用，每个<code>Net::HTTP.get(uri)</code>通信耗时30ms，那么就是300ms的时间。</p>
+
+<h3>解决方案一：多线程处理</h3>
+
+<pre><code>threads = []
+threads &lt;&lt; Thread.new {@req_one = Net::HTTP.get(uri_one)}
+threads &lt;&lt; Thread.new {@req_two = Net::HTTP.get(uri_two)}
+threads &lt;&lt; Thread.new {@req_three = Net::HTTP.get(uri_three)}
+......
+threads.each { |t| t.join }
+data = JSON.parse(@req_one)["data"]
+</code></pre>
+
+<p>开启多线程并行处理，可以很大程度上提高处理速度。但是问题在于开多个线程造成资源开销增加，实际上降低了应用的吞吐能力，而且由于Ruby存在GIL (Global Interpreter Lock)，并不能真正利用多线程进行并行计算。（JRuby 去除了 GIL，是真正意义的多线程，既能应付 IO Block，也能充分利用多核 CPU 加快整体运算速度。）</p>
+
+<h3>解决方案二：采用异步模型处理</h3>
+
+<h4>Ruby的异步解决方案：Eventmachine</h4>
+
+<p>在Gemfile中添加：</p>
+
+<pre><code>gem 'eventmachine'
+gem 'em-http-request', :require =&gt; 'em-http'
+</code></pre>
+
+<p>控制器中的代码：</p>
+
+<pre><code>EventMachine.run {
+  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
+  http.errback { 
+    render :text "接口连接失败"; 
+    EM.stop 
+  }
+  http.callback {
+    req = http.response
+    @slides = JSON.parse(req)["data"]["list"]
+    @page_count = JSON.parse(req)["data"]["count"].to_i/18+1
+    EM.stop
+  }
+}
+</code></pre>
+
+<p>这种方式不仅解决了阻塞问题，而且可以有效的提高系统的吞吐能力。但带来的问题是代码量增加，复杂逻辑下代码的复杂度成倍增加，不利于开发和维护。</p>
+
+<h4>引入纤程（Fiber）,用同步代码编写异步程序</h4>
+
+<p>在Gemfile中添加<code>gem 'em-synchrony'</code>。
+控制器代码：</p>
+
+<pre><code>EM.synchrony do
+  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
+  req = http.response
+  @slides = JSON.parse(req)["data"]["list"]
+  EM.stop
+end
+</code></pre>
+
+<p>多个接口调用实例：</p>
+
+<pre><code>require "em-synchrony"
+require "em-synchrony/em-http"
+require "em-synchrony/fiber_iterator"
+EM.synchrony do
+  concurrency = 2
+  urls = ['http://url.1.com', 'http://url2.com']
+  results = []
+  EM::Synchrony::FiberIterator.new(urls, concurrency).each do |url|
+    res = EventMachine::HttpRequest.new(url).get
+    results &lt;&lt; res.response
+  end
+  puts results # all completed requests
+  EventMachine.stop
+end
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Git branch]]></title>
@@ -1347,47 +1460,6 @@ var first_p = document.getElementByTagName("p")[0]  //获取第一个&lt;p&gt;�
 <h4>textContent = innerText</h4>
 
 <p>获取或修改标签内文本内容，textContent在一些IE版本中不支持</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Javascript权威指南笔记一：核心语法(对象)]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/04/01/basic-javascript-values/"/>
-    <updated>2013-04-01T14:56:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/04/01/basic-javascript-values</id>
-    <content type="html"><![CDATA[<h3>数据类型：</h3>
-
-<p>javascript中有六种基础数据类型：数字，字符串，布尔值，对象，函数，以及undefined。</p>
-
-<h3>运算符：</h3>
-
-<h3>创建对象：</h3>
-
-<h4>对象直接量：</h4>
-
-<pre><code>var empty = {}
-var book = {
-    "main title" : "javascript" , 
-    "for" : "all" ,
-    "author" : "xieyu"
-}
-</code></pre>
-
-<h4>使用new运算符创建对象：</h4>
-
-<pre><code>var o = new Object(); //创建一个空对象，和{}一样
-var a = new Array(); //创建一个空数组，和[]一样
-</code></pre>
-
-<h4>使用Object.create():</h4>
-
-<pre><code>参数是用于继承的原型对象
-var o1 = Object.create({x:1 , y:2});
-</code></pre>
-
-<h4>原型(prototype)</h4>
-
-<p>除了null之外所有对象都继承于Obiect.prototype</p>
 ]]></content>
   </entry>
   

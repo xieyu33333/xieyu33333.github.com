@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>github+octopress创建自己的博客 - 庇护祝福的分享</title>
+  <title>Category: 异步 - 庇护祝福的分享</title>
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="添加SSH公钥 $ cd ~/.ssh $ ssh-keygen -t rsa -C "your_email@example.com" 将id_rsa.pub文件中的公钥copy到github上 $ ssh -T git@github.com #测试是否通过。 新建仓库 &hellip;">
+  <meta name="description" content="Category: 异步">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@
   <meta name="baidu-tc-verification" content="ab4be6be306aae217340419193ba5011" />
 
   
-  <link rel="canonical" href="http://xieyu33333.github.com/blog/2013/03/25/first-blog">
+  <link rel="canonical" href="http://xieyu33333.github.comblog/categories/yi-bu">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="庇护祝福的分享" type="application/atom+xml">
@@ -56,127 +56,35 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Github+octopress创建自己的博客</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-25T15:43:00+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2013</time>
-        
-      </p>
+    <h1 class="entry-title">Category: 异步</h1>
     
   </header>
+  
+  <div id="blog-archives" class="category">
 
 
-<div class="entry-content"><h3>添加SSH公钥</h3>
 
-<p><code>$ cd ~/.ssh</code>  <br/>
-<code>$ ssh-keygen -t rsa -C "your_email@example.com"</code>  <br/>
-  将id_rsa.pub文件中的公钥copy到github上  <br/>
-<code>$ ssh -T git@github.com #测试是否通过。</code></p>
+  
+  <h2>2013</h2>
 
-<h3>新建仓库</h3>
+<article>
+  
+<h1><a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">ruby 同步/异步/多线程模型测试</a></h1>
+<time datetime="2013-12-25T11:30:00+08:00" pubdate><span class='month'>Dec</span> <span class='day'>25</span> <span class='year'>2013</span></time>
 
-<p> 在github上新建一个仓库，命名为 yourname.github.com</p>
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/eventmachine/'>eventmachine</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/yi-bu/'>异步</a></span>
+</footer>
 
-<h3>本地安装octopress</h3>
 
-<pre><code>$ git clone git://github.com/imathis/octopress.git octopress #下载octopress
-$ cd octopress
-$ bundle install 
-$ rake install #安装默认主题
-</code></pre>
+</article>
 
-<h3>配置</h3>
-
-<p>编辑_config.yml文件配置博客名，扉页等  <br/>
-编辑config.rb文件配置css，图片路径等</p>
-
-<h3>编辑，上传</h3>
-
-<p><code>$ rake new_post["my first blog"] #新建blog</code> <br/>
-创建以后会在/source/_post目录下创建一个时间戳开头的文件，编辑这个文件撰写博客.
-如果无法执行可以先输入：  <br/>
-<code>$ alias rake="noglob rake"</code></p>
-
-<p><code>$ rake setup_github_pages  #配置本地与github连接</code> <br/>
-根据提示操作即可</p>
-
-<p><code>$ rake generate #项目静态化</code>   <br/>
-将配置修改，和编辑过的内容导入public中，window下控制台编码默认为GBK，需要在cmd下使用命令：
-<code>chcp 65001</code>将控制台代码格式转为utf-8</p>
-
-<p><code>$ rake preview #预览</code>   <br/>
-可以使用http://localhost:4000预览</p>
-
-<p><code>$ rake deploy #上传</code></p>
 </div>
 
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-25T15:43:00+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2013</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/gitpage/'>gitpage</a>, <a class='category' href='/blog/categories/markdown/'>markdown</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2013/03/25/first-blog/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2013/03/25/first-blog/" >Tweet</a>
-  
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-      
-        <a class="basic-alignment right" href="/blog/2013/03/26/my-second-blog/" title="Next Post: 前端样式库小结">前端样式库小结 &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
 </div>

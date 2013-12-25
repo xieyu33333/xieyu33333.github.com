@@ -130,7 +130,10 @@ threads.each { |t| t.join }
 data = JSON.parse(@req_one)["data"]
 </code></pre>
 
-<p>开启多线程并行处理，可以很大程度上提高处理速度。但是问题在于开多个线程造成资源开销增加，实际上降低了应用的吞吐能力，而且由于Ruby存在GIL (Global Interpreter Lock)，并不能真正利用多线程进行并行计算。（JRuby 去除了 GIL，是真正意义的多线程，既能应付 IO Block，也能充分利用多核 CPU 加快整体运算速度。）</p>
+<p>多进程是抢占资源的一个模型，并非并行计算，比如线程1执行一个http通信后中间有30ms的I/O时间，那么这段阻塞的时间就会被线程2抢占。
+开启多线程并行处理，可以很大程度上提高处理速度。但是有两个问题：
+一、开多个线程以及线程间的切换造成资源开销增加，实际上降低了应用的吞吐能力。
+二、由于Ruby存在GIL (Global Interpreter Lock)，并不能真正利用多线程进行并行计算。（JRuby 去除了 GIL，是真正意义的多线程，既能应付 IO Block，也能充分利用多核 CPU 加快整体运算速度。）</p>
 
 <h3>解决方案二：采用异步模型处理</h3>
 
@@ -241,6 +244,8 @@ end
         <a class="basic-alignment left" href="/blog/2013/09/06/git-branch/" title="Previous Post: Git branch">&laquo; Git branch</a>
       
       
+        <a class="basic-alignment right" href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/" title="Next Post: ruby 同步/异步/多线程模型测试">ruby 同步/异步/多线程模型测试 &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -252,6 +257,10 @@ end
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">ruby 同步/异步/多线程模型测试</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/">rails中间层解决方案</a>
@@ -267,10 +276,6 @@ end
     
       <li class="post">
         <a href="/blog/2013/07/14/metaprogramming-five/">Ruby元编程五：编写代码的代码</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/07/01/metaprogramming-forth/">Ruby元编程四：类定义</a>
       </li>
     
   </ul>

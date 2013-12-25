@@ -9,7 +9,11 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="互联网方向和企业服务方向存在根本性的不同 现在OA,ERP系统等企业级服务等都在向web端，乃至移动端靠近，看起来好像和互联网服务区别越来越小，但是对于外包团队来说，区别是本质上的。 互联网产品面向普罗大众，要求是使用简单，可接受度高，个性化。 &hellip;">
+  <meta name="description" content="字符串连接 +
+concat()
+&lt;&lt; #concat()的参数为整数则会转换成对应的字符串。 正则匹配与替换 match , =~ , !~ 匹配 "name".match(/a/) #=&gt;true
+"name" =~ /a/ #=&gt;1 #肯定匹配
+"name" =~ / &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -57,6 +61,95 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/17/ruby-string/">Ruby_string</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-17T13:10:00+08:00" pubdate data-updated="true">Jun 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>字符串连接</h2>
+
+<pre><code>+
+concat()
+&lt;&lt;                              #concat()的参数为整数则会转换成对应的字符串。
+</code></pre>
+
+<h2>正则匹配与替换</h2>
+
+<h3>match , =~ , !~ 匹配</h3>
+
+<pre><code>"name".match(/a/)         #=&gt;true
+"name" =~ /a/               #=&gt;1                       #肯定匹配
+"name" =~ /b/               #=&gt;nil
+"name"  !~ /b/                #=&gt;false                 #否定匹配
+</code></pre>
+
+<h3>delete() &amp; delete!()  删除</h3>
+
+<pre><code>example:
+    str="ababaaaaaccccb"
+    str.delete("ab")  #=&gt;"cccc"        #删除所有包含的字符串，而不是删除字符串组合
+    str.delete!("ab")      #=&gt;"cccc"
+    str #=&gt;"cccc"
+    str.delete!("ab")      #=&gt;"nil"
+    str #=&gt;"cccc"
+</code></pre>
+
+<h3>sub，gsub &amp;sub!,gsub! 替换</h3>
+
+<pre><code>"abcdefaaa".sub(/a/ , "x")  #=&gt; "xbcdeaaa"
+"abcdefaaa".sub(/a/ , "x")  #=&gt; "xbcdexxx"
+第一个参数可以是正则，也可是字符串
+</code></pre>
+
+<h3>slice()&amp;slice!()</h3>
+
+<pre><code>参数可以是索引值，索引范围(range) ， 正则 ， 字符串。返回匹配的字符串。
+"abcdaaa".slice(1) #=&gt;"b"
+"abcdaaa".slice(1..3) #=&gt; "bcd"
+"abcdaaa".slice(-3..-1) #=&gt; "aaa"
+"abcdaaa".slice(/a\w{3}a/) #=&gt; "abcda"
+"abcdaaa".slice("abc") #=&gt; "abc"
+
+slice!()会对原字符串进行切割，切掉匹配参数的部分
+str ="abcdaaa"
+str.slice!(0)
+str="bcdaaa"
+</code></pre>
+
+<p>scan(regexp)
+返回一个数组，所有匹配的字符串</p>
+
+<h3>split</h3>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -878,139 +971,6 @@ mouseout , mouseleave(不冒泡)：鼠标离开元素</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/01/javascript%252Cdomyuan-su-de-cao-zuo/">Javascript权威指南笔记二：客户端js基础</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-01T16:21:00+08:00" pubdate data-updated="true">Apr 1<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>计时器</h3>
-
-<pre><code>setTimeout(fun() , 2000); //两秒后执行函数fun()
-setInterval(fun() , 2000); //每隔2秒执行一次fun()
-</code></pre>
-
-<h3>对话框</h3>
-
-<p>alert() :打印js脚本返回值，一般只用于调试  <br/>
-confirm():要求用户确认或取消，返回布尔值  <br/>
-prompt():让用户输入字符串，并返回该字符串  <br/>
-showModalDialog():第一个参数是url，第二个参数是任意值，可通过window.dialogArguments访问到，第三个参数包含以分号隔开的name=value对。 <br/>
-参数样例：&#8217;resizable:yes;scroll:yes;status:no;dialogWidth=320px;dialogHeight=230px;center=yes;help=no&#8217;</p>
-
-<h3>window对象</h3>
-
-<h4>location</h4>
-
-<p>当前显示文档的url
-window.location === document.location
-document.URL:文档首次载入后的URL字符串，如果片段标示符（如#top）发生改变，document.URL不会发生改变，而window.location会相应变化。</p>
-
-<p>URL分解：
-href：默认，获取完整url  <br/>
-search：获取？后的内容  <br/>
-protocol：返回当前url的协议  <br/>
-host：设置或返回主机名和端口号  <br/>
-hostname：设置或返回主机名 <br/>
-port：设置或返回端口号 <br/>
-pathname：设置或返回url的路径部分 <br/>
-hash：获取#后的内容</p>
-
-<p>location方法： <br/>
-assign() 加载新文档 <br/>
-reload() 刷新 <br/>
-replace() 加载新文档，并删除旧文档浏览记录</p>
-
-<h4>history</h4>
-
-<p>该窗口的浏览历史
-history方法：
-back() , forward():后退，前进 <br/>
-go()：接受一个整数参数，作为前进后退的步数</p>
-
-<h4>navigator</h4>
-
-<p>navigator属性引用的是Navigator对象，Navigator对象主要包含4种属性：</p>
-
-<p>userAgent：最常用的浏览器嗅探代码，http头中的的字符串<br/>
-appVersion：浏览器厂商和版本信息的详细字符串 <br/>
-platform：操作系统信息 <br/>
-appName：web浏览器的全称</p>
-
-<p>Navigator对象其他非标准化属性：
-onLine：判断浏览器是否连接网络</p>
-
-<h4>screen</h4>
-
-<p>height,width:屏幕宽高 <br/>
-availHeight , avaliWidth:除去任务栏等真实可用的宽高</p>
-
-<h4>open() &amp; close()</h4>
-
-<p>example:</p>
-
-<pre><code> window.open("url" , "窗口名" ,"width=400,height=350,resize=yes")
- window.close()
-</code></pre>
-
-<h3>选取元素</h3>
-
-<h4>getElementById( )</h4>
-
-<p>获取设置了id的元素</p>
-
-<h4>getElementByName( )</h4>
-
-<p>获取设置了name属性的元素</p>
-
-<h4>getElementByTagName( )</h4>
-
-<p>获取标签名，example：</p>
-
-<pre><code>var ps = document.getElementByTagName("p") //获取所有的&lt;p&gt;元素
-var first_p = document.getElementByTagName("p")[0]  //获取第一个&lt;p&gt;元素
-</code></pre>
-
-<h4>getElementByClassName( )</h4>
-
-<p>获取类名</p>
-
-<h4>innerHTML</h4>
-
-<p>获取标签内的html文档</p>
-
-<h4>textContent = innerText</h4>
-
-<p>获取或修改标签内文本内容，textContent在一些IE版本中不支持</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1028,6 +988,10 @@ var first_p = document.getElementByTagName("p")[0]  //获取第一个&lt;p&gt;�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">ruby 同步/异步/多线程模型测试</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/">rails中间层解决方案</a>
       </li>
     
@@ -1041,10 +1005,6 @@ var first_p = document.getElementByTagName("p")[0]  //获取第一个&lt;p&gt;�
     
       <li class="post">
         <a href="/blog/2013/07/14/metaprogramming-five/">Ruby元编程五：编写代码的代码</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/07/01/metaprogramming-forth/">Ruby元编程四：类定义</a>
       </li>
     
   </ul>

@@ -9,8 +9,9 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="计时器 setTimeout(fun() , 2000); //两秒后执行函数fun()
-setInterval(fun() , 2000); //每隔2秒执行一次fun() 对话框 alert() :打印js脚本返回值，一般只用于调试 confirm():要求用户确认或取消，返回布尔值 &hellip;">
+  <meta name="description" content="注册事件处理程序 为javascript对象设置事件处理 用“on+事件名”来注册事件
+example： window.onload = function(){ .......
+} 为HTML标签设置事件处理 有一系列标准方法： onfocus , onblur , onresize , &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -58,6 +59,89 @@ setInterval(fun() , 2000); //每隔2秒执行一次fun() 对话框 alert() :打�
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/02/event/">Javascript权威指南笔记三：事件处理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-02T11:11:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>注册事件处理程序</h3>
+
+<h4>为javascript对象设置事件处理</h4>
+
+<p>用“on+事件名”来注册事件
+example：</p>
+
+<pre><code>window.onload = function(){
+    .......
+}
+</code></pre>
+
+<h4>为HTML标签设置事件处理</h4>
+
+<p>有一系列标准方法： <br/>
+onfocus , onblur , onresize , ononline onafterprint , onundo , onredo , onload , onerror , onstorage , onhashchange <br/>
+onmessage , onoffline , onpagehide , onhaschange , onbeforeprint , onunload , onbeforeunload , onpopstate</p>
+
+<p>example:</p>
+
+<pre><code>&lt;button onclick = "alert("Thank you!")"&gt;click me&lt;/button&gt;
+</code></pre>
+
+<h4>addEventListener( )</h4>
+
+<p>IE8之前的版本不支持，忽略。三个参数(&#8220;click&#8221; , function(){&#8230;.} , false)</p>
+
+<h3>表单事件</h3>
+
+<h3>window事件</h3>
+
+<h3>鼠标事件</h3>
+
+<p>click：点击事件 <br/>
+dbclick:双击 <br/>
+mousedown:按下鼠标 <br/>
+mouseup：释放鼠标 <br/>
+mousemove：移动鼠标 <br/>
+mouseover , mouseenter（不冒泡）：鼠标进入元素 <br/>
+mouseout , mouseleave(不冒泡)：鼠标离开元素</p>
+
+<h3>键盘事件</h3>
+
+<h3>DOM事件</h3>
+
+<h3>HTML5事件</h3>
+
+<h3>触摸屏事件</h3>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -561,6 +645,10 @@ $ rake install #安装默认主题
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/">markdown转换为pdf的解决方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">ruby 同步/异步/多线程模型测试</a>
       </li>
     
@@ -574,10 +662,6 @@ $ rake install #安装默认主题
     
       <li class="post">
         <a href="/blog/2013/08/30/mysqldump/">mysqldump及用户权限设置</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/07/14/metaprogramming-five/">Ruby元编程五：编写代码的代码</a>
       </li>
     
   </ul>

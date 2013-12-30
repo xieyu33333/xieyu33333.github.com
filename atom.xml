@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2013-12-30T10:07:48+08:00</updated>
+  <updated>2013-12-30T10:15:14+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,181 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[markdown转换为pdf的解决方案]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/"/>
+    <updated>2013-12-30T10:10:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an</id>
+    <content type="html"><![CDATA[<h2>解决方案一：Kitabu</h2>
+
+<h3>简介</h3>
+
+<p>Kitabu是使用ruby生成电子书的方案，它本身支持markdown转换为epub和html格式，不过通过调用其他指定的依赖
+来转换为mobi、pdf、txt等其他格式。 <br/>
+<strong>依赖prince进行html向pdf的转换。</strong>      <br/>
+<strong>依赖html2text进行html向txt的转换。</strong> <br/>
+<strong>依赖KindleGen进行epub向mobi的转换。</strong> <br/>
+Kitabu支持代码高亮，默认使用codeRay，也可以安装 pygments.rb进行代替 。 <br/>
+Github地址：<a href="https://github.com/fnando/kitabu">https://github.com/fnando/kitabu</a></p>
+
+<h3>安装方法</h3>
+
+<h4>第一步 安装 Kitabu</h4>
+
+<pre><code>$ gem install kitabu            
+</code></pre>
+
+<p>安装完毕后就可以使用kitabu系列命令了。</p>
+
+<h4>第二步 检查需要的依赖是否安装</h4>
+
+<pre><code>$ kitabu check    
+</code></pre>
+
+<p>命令行中会给出哪些已经安装，哪些未安装。例如：</p>
+
+<pre><code> Prince XML: Converts HTML files into PDF files.
+ Installed.
+ KindleGen: Converts ePub e-books into .mobi files.
+ Installed.
+ html2text: Converts HTML documents into plain text.
+ Not installed.
+ pygments.rb: A generic syntax highlight. If installed, replaces CodeRay.
+ Not installed.
+</code></pre>
+
+<h4>第三步 生成电子书制作目录</h4>
+
+<pre><code>$ kitabu new mybook          
+</code></pre>
+
+<p>在当前文件夹下生成一个名为mybook的文件夹，进入文件夹后可以看到如下文件结构：</p>
+
+<pre><code>mybook
+    ├── code
+    ├── config
+    │   ├── helper.rb
+    │   └── kitabu.yml
+    ├── images
+    ├── output
+    ├── templates
+    │   ├── epub
+    │   │   ├── cover.erb
+    │   │   ├── cover.png
+    │   │   ├── page.erb
+    │   │   └── user.css
+    │   └── html
+    │       ├── layout.css
+    │       ├── layout.erb
+    │       ├── syntax.css
+    │       └── user.css
+    └── text
+        └── 01_Welcome.md
+</code></pre>
+
+<h4>第四步 生成各种格式的电子书</h4>
+
+<pre><code>$ kitabu export
+</code></pre>
+
+<p>生成的文件会放在output文件夹中。</p>
+
+<h3>使用中遇到的问题</h3>
+
+<h4>转换PDF时中文无法解析</h4>
+
+<p>解决方法： <br/>
+  1.需要在本地安装中文字体。  <br/>
+  2.在模板中添加中文字体。</p>
+
+<h4>PDF中的代码出现没有对齐的情况。</h4>
+
+<pre><code>Prince XML: Converts HTML files into PDF files.
+Installed.
+KindleGen: Converts ePub e-books into .mobi files.
+Installed.
+html2text: Converts HTML documents into plain text.
+Not installed.
+pygments.rb: A generic syntax highlight. If installed, replaces CodeRay.
+Not installed.
+</code></pre>
+
+<h2>目前最常用的解决方案：pandoc</h2>
+
+<h3>pandoc简介</h3>
+
+<p>如果你需要文件格式的转换，pandoc 可以成为你的瑞士军刀，它可以将下列格式： markdown, reStructuredText, textile, HTML
+, DocBook, LaTeX, MediaWiki markup, OPML,  Haddock 转换为：</p>
+
+<pre><code>     HTML formats: XHTML, HTML5, and HTML slide shows using Slidy, reveal.js, Slideous, S5, or DZSlides.         
+     Word processor formats: Microsoft Word docx, OpenOffice/LibreOffice ODT, OpenDocument XML
+     Ebooks: EPUB version 2 or 3, FictionBook2
+     Documentation formats: DocBook, GNU TexInfo, Groff man pages, Haddock markup
+     Outline formats: OPML
+     TeX formats: LaTeX, ConTeXt, LaTeX Beamer slides
+     PDF via LaTeX
+     Lightweight markup formats: Markdown, reStructuredText, AsciiDoc, MediaWiki markup, Emacs Org-Mode, Textile
+     Custom formats: custom writers can be written in lua.
+</code></pre>
+
+<p>pandoc支持多种格式的转换，可以直接用命令行由markdown转换为pdf。</p>
+
+<pre><code>    $ pandoc demo.md -o demo.pdf
+</code></pre>
+
+<p>虽然这个命令表面上是直接转换，但实际还是通过先转换为LaTeX格式，再转为pdf的。  <br/>
+这个命令对我们没有实际意义。因为无法加载样式，也无法解析中文。实用情况下还是
+需要将文档转换为html或者LaTeX文件格式，通过html模板或者LaTeX的tex模板进行样式定制。</p>
+
+<p><strong>LaTeX（Donald E. Knuth（高德纳）发明的）是一个科技出版界常用的格式。</strong></p>
+
+<h3>pandoc安装</h3>
+
+<h4>第一步，安装pandoc</h4>
+
+<pre><code>    $ sudo apt-get install pandoc        
+</code></pre>
+
+<h4>第二步，安装texlive</h4>
+
+<pre><code>    $ sudo apt-get install texlive-xetex texlive-latex-recommended texlive-latex-extra      
+</code></pre>
+
+<p>TexLive是LaTeX的工具集，由于转换pdf必须先转换成LaTeX。</p>
+
+<h4>第三步，安装中文字体</h4>
+
+<pre><code>    $ sudo apt-get install ttf-arphic-gbsn00lp ttf-arphic-ukai ttf-wqy-microhei ttf-wqy-zenhei        
+</code></pre>
+
+<p>本机必须安装有中文字体，否则无法正确的转换中文。</p>
+
+<h4>第四步，安装<a href="http://fletcherpenney.net/multimarkdown/install/#linux">multimarkdown</a></h4>
+
+<pre><code>    git clone git://github.com/fletcher/peg-multimarkdown.git
+</code></pre>
+
+<p>下载后是一个文件夹，cd进去后执行make命令即可。<br/>
+用于将多个md文件一起进行转化为一个pdf文件。</p>
+
+<h3>怎么使用？</h3>
+
+<h4>示例</h4>
+
+<p><a href="http://johnmacfarlane.net/pandoc/demos.html">官方网站</a></p>
+
+<pre><code>    pandoc -N --template=mytemplate.tex --variable version=1.9 SLIDES.md --latex-engine=xelatex --toc -o example14.pdf
+</code></pre>
+
+<p>示例页里还有很多别的例子，其中将markdown文件转换成网页的sldes非常吸引人</p>
+
+<pre><code>    pandoc -s –mathml -i -t dzslides SLIDES -o example14a.html
+    pandoc -s –webtex -i -t slidy SLIDES -o example14b.html
+    pandoc -s –webtex -t -t s5 SLIDES -o example14c.html
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ruby 同步/异步/多线程模型测试]]></title>
@@ -1419,62 +1594,6 @@ var scroll_module = (function(){
   scroll_module.go();
   scroll_module.hoveron();
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Javascript权威指南笔记三：事件处理]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/04/02/event/"/>
-    <updated>2013-04-02T11:11:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/04/02/event</id>
-    <content type="html"><![CDATA[<h3>注册事件处理程序</h3>
-
-<h4>为javascript对象设置事件处理</h4>
-
-<p>用“on+事件名”来注册事件
-example：</p>
-
-<pre><code>window.onload = function(){
-    .......
-}
-</code></pre>
-
-<h4>为HTML标签设置事件处理</h4>
-
-<p>有一系列标准方法： <br/>
-onfocus , onblur , onresize , ononline onafterprint , onundo , onredo , onload , onerror , onstorage , onhashchange <br/>
-onmessage , onoffline , onpagehide , onhaschange , onbeforeprint , onunload , onbeforeunload , onpopstate</p>
-
-<p>example:</p>
-
-<pre><code>&lt;button onclick = "alert("Thank you!")"&gt;click me&lt;/button&gt;
-</code></pre>
-
-<h4>addEventListener( )</h4>
-
-<p>IE8之前的版本不支持，忽略。三个参数(&#8220;click&#8221; , function(){&#8230;.} , false)</p>
-
-<h3>表单事件</h3>
-
-<h3>window事件</h3>
-
-<h3>鼠标事件</h3>
-
-<p>click：点击事件 <br/>
-dbclick:双击 <br/>
-mousedown:按下鼠标 <br/>
-mouseup：释放鼠标 <br/>
-mousemove：移动鼠标 <br/>
-mouseover , mouseenter（不冒泡）：鼠标进入元素 <br/>
-mouseout , mouseleave(不冒泡)：鼠标离开元素</p>
-
-<h3>键盘事件</h3>
-
-<h3>DOM事件</h3>
-
-<h3>HTML5事件</h3>
-
-<h3>触摸屏事件</h3>
 ]]></content>
   </entry>
   

@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>markdown转换为pdf的解决方案 - 庇护祝福的分享</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="解决方案一：Kitabu 简介 Kitabu是使用ruby生成电子书的方案，它本身支持markdown转换为epub和html格式，不过通过调用其他指定的依赖
+来转换为mobi、pdf、txt等其他格式。 依赖prince进行html向pdf的转换。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="baidu-tc-verification" content="ab4be6be306aae217340419193ba5011" />
+
+  
+  <link rel="canonical" href="http://xieyu33333.github.com/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="庇护祝福的分享" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+  
+
+</head>
+
+<body   >
+  <header role="banner">
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:xieyu33333.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Markdown转换为pdf的解决方案</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-30T10:10:00+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>解决方案一：Kitabu</h2>
+
+<h3>简介</h3>
+
+<p>Kitabu是使用ruby生成电子书的方案，它本身支持markdown转换为epub和html格式，不过通过调用其他指定的依赖
+来转换为mobi、pdf、txt等其他格式。 <br/>
+<strong>依赖prince进行html向pdf的转换。</strong>      <br/>
+<strong>依赖html2text进行html向txt的转换。</strong> <br/>
+<strong>依赖KindleGen进行epub向mobi的转换。</strong> <br/>
+Kitabu支持代码高亮，默认使用codeRay，也可以安装 pygments.rb进行代替 。 <br/>
+Github地址：<a href="https://github.com/fnando/kitabu">https://github.com/fnando/kitabu</a></p>
+
+<h3>安装方法</h3>
+
+<h4>第一步 安装 Kitabu</h4>
+
+<pre><code>$ gem install kitabu            
+</code></pre>
+
+<p>安装完毕后就可以使用kitabu系列命令了。</p>
+
+<h4>第二步 检查需要的依赖是否安装</h4>
+
+<pre><code>$ kitabu check    
+</code></pre>
+
+<p>命令行中会给出哪些已经安装，哪些未安装。例如：</p>
+
+<pre><code> Prince XML: Converts HTML files into PDF files.
+ Installed.
+ KindleGen: Converts ePub e-books into .mobi files.
+ Installed.
+ html2text: Converts HTML documents into plain text.
+ Not installed.
+ pygments.rb: A generic syntax highlight. If installed, replaces CodeRay.
+ Not installed.
+</code></pre>
+
+<h4>第三步 生成电子书制作目录</h4>
+
+<pre><code>$ kitabu new mybook          
+</code></pre>
+
+<p>在当前文件夹下生成一个名为mybook的文件夹，进入文件夹后可以看到如下文件结构：</p>
+
+<pre><code>mybook
+    ├── code
+    ├── config
+    │   ├── helper.rb
+    │   └── kitabu.yml
+    ├── images
+    ├── output
+    ├── templates
+    │   ├── epub
+    │   │   ├── cover.erb
+    │   │   ├── cover.png
+    │   │   ├── page.erb
+    │   │   └── user.css
+    │   └── html
+    │       ├── layout.css
+    │       ├── layout.erb
+    │       ├── syntax.css
+    │       └── user.css
+    └── text
+        └── 01_Welcome.md
+</code></pre>
+
+<h4>第四步 生成各种格式的电子书</h4>
+
+<pre><code>$ kitabu export
+</code></pre>
+
+<p>生成的文件会放在output文件夹中。</p>
+
+<h3>使用中遇到的问题</h3>
+
+<h4>转换PDF时中文无法解析</h4>
+
+<p>解决方法： <br/>
+  1.需要在本地安装中文字体。  <br/>
+  2.在模板中添加中文字体。</p>
+
+<h4>PDF中的代码出现没有对齐的情况。</h4>
+
+<pre><code>Prince XML: Converts HTML files into PDF files.
+Installed.
+KindleGen: Converts ePub e-books into .mobi files.
+Installed.
+html2text: Converts HTML documents into plain text.
+Not installed.
+pygments.rb: A generic syntax highlight. If installed, replaces CodeRay.
+Not installed.
+</code></pre>
+
+<h2>目前最常用的解决方案：pandoc</h2>
+
+<h3>pandoc简介</h3>
+
+<p>如果你需要文件格式的转换，pandoc 可以成为你的瑞士军刀，它可以将下列格式： markdown, reStructuredText, textile, HTML
+, DocBook, LaTeX, MediaWiki markup, OPML,  Haddock 转换为：</p>
+
+<pre><code>     HTML formats: XHTML, HTML5, and HTML slide shows using Slidy, reveal.js, Slideous, S5, or DZSlides.         
+     Word processor formats: Microsoft Word docx, OpenOffice/LibreOffice ODT, OpenDocument XML
+     Ebooks: EPUB version 2 or 3, FictionBook2
+     Documentation formats: DocBook, GNU TexInfo, Groff man pages, Haddock markup
+     Outline formats: OPML
+     TeX formats: LaTeX, ConTeXt, LaTeX Beamer slides
+     PDF via LaTeX
+     Lightweight markup formats: Markdown, reStructuredText, AsciiDoc, MediaWiki markup, Emacs Org-Mode, Textile
+     Custom formats: custom writers can be written in lua.
+</code></pre>
+
+<p>pandoc支持多种格式的转换，可以直接用命令行由markdown转换为pdf。</p>
+
+<pre><code>    $ pandoc demo.md -o demo.pdf
+</code></pre>
+
+<p>虽然这个命令表面上是直接转换，但实际还是通过先转换为LaTeX格式，再转为pdf的。  <br/>
+这个命令对我们没有实际意义。因为无法加载样式，也无法解析中文。实用情况下还是
+需要将文档转换为html或者LaTeX文件格式，通过html模板或者LaTeX的tex模板进行样式定制。</p>
+
+<p><strong>LaTeX（Donald E. Knuth（高德纳）发明的）是一个科技出版界常用的格式。</strong></p>
+
+<h3>pandoc安装</h3>
+
+<h4>第一步，安装pandoc</h4>
+
+<pre><code>    $ sudo apt-get install pandoc        
+</code></pre>
+
+<h4>第二步，安装texlive</h4>
+
+<pre><code>    $ sudo apt-get install texlive-xetex texlive-latex-recommended texlive-latex-extra      
+</code></pre>
+
+<p>TexLive是LaTeX的工具集，由于转换pdf必须先转换成LaTeX。</p>
+
+<h4>第三步，安装中文字体</h4>
+
+<pre><code>    $ sudo apt-get install ttf-arphic-gbsn00lp ttf-arphic-ukai ttf-wqy-microhei ttf-wqy-zenhei        
+</code></pre>
+
+<p>本机必须安装有中文字体，否则无法正确的转换中文。</p>
+
+<h4>第四步，安装<a href="http://fletcherpenney.net/multimarkdown/install/#linux">multimarkdown</a></h4>
+
+<pre><code>    git clone git://github.com/fletcher/peg-multimarkdown.git
+</code></pre>
+
+<p>下载后是一个文件夹，cd进去后执行make命令即可。<br/>
+用于将多个md文件一起进行转化为一个pdf文件。</p>
+
+<h3>怎么使用？</h3>
+
+<h4>示例</h4>
+
+<p><a href="http://johnmacfarlane.net/pandoc/demos.html">官方网站</a></p>
+
+<pre><code>    pandoc -N --template=mytemplate.tex --variable version=1.9 SLIDES.md --latex-engine=xelatex --toc -o example14.pdf
+</code></pre>
+
+<p>示例页里还有很多别的例子，其中将markdown文件转换成网页的sldes非常吸引人</p>
+
+<pre><code>    pandoc -s –mathml -i -t dzslides SLIDES -o example14a.html
+    pandoc -s –webtex -i -t slidy SLIDES -o example14b.html
+    pandoc -s –webtex -t -t s5 SLIDES -o example14c.html
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-30T10:10:00+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/" title="Previous Post: ruby 同步/异步/多线程模型测试">&laquo; ruby 同步/异步/多线程模型测试</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/">markdown转换为pdf的解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">ruby 同步/异步/多线程模型测试</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/">rails中间层解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/06/git-branch/">Git branch</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/30/mysqldump/">mysqldump及用户权限设置</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/xieyu33333">@xieyu33333</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'xieyu33333',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/xieyu33333@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo">Copyright &copy; 2013
+
+    Your Name
+
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+</body>
+</html>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: markdown | 庇护祝福的分享]]></title>
-  <link href="http://xieyu33333.github.com/blog/categories/markdown/atom.xml" rel="self"/>
+  <title><![CDATA[Category: pdf | 庇护祝福的分享]]></title>
+  <link href="http://xieyu33333.github.com/blog/categories/pdf/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
   <updated>2013-12-30T10:20:43+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
@@ -12,6 +12,112 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Doc转换为pdf的解决方案]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/12/30/doczhuan-huan-wei-pdfde-jie-jue-fang-an/"/>
+    <updated>2013-12-30T10:16:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/12/30/doczhuan-huan-wei-pdfde-jie-jue-fang-an</id>
+    <content type="html"><![CDATA[<p>单纯的将Doc转换为pdf很简单，使用office软件直接在图形界面下转换即可，但是如果涉及到批量转换，最好还是使用命令行工具。</p>
+
+<h2>一、unoconv</h2>
+
+<h4>简介</h4>
+
+<p>unoconv 利用 LibreOffice/OpenOffice 的 UNO 接口实现了命令行文档格式转换功能，支持所有 LibreOffice/OpenOfficee 支持的文件格式。
+因此不管机器上安装的是LibreOffice还是OpenOffice，都可以使用unoconv进行格式转换，不过需要注意的是一台机器不能同时安装LibreOffice和OpenOffice。</p>
+
+<h4>使用</h4>
+
+<p>基础转换命令：</p>
+
+<pre><code>$ unoconv -f pdf xxx.doc 
+</code></pre>
+
+<p>批量转换：
+可以默认采用2002端口开启监听器（或者通过-p/--port参数指定端口），例如：</p>
+
+<pre><code>unoconv --listener &amp;
+sleep 20
+unoconv -f pdf *.odt
+unoconv -f doc *.odt
+unoconv -f html *.odt
+kill -15 %-
+</code></pre>
+
+<p>指定转换页数，文件名等：</p>
+
+<pre><code>-e, --export=name=value  set export filter options
+ eg. -e PageRange=1-2
+</code></pre>
+
+<p>实例：</p>
+
+<pre><code>$ unoconv -f pdf -e PageRange=1-2 test.docx
+</code></pre>
+
+<p>这样就实现了只转换前两页。</p>
+
+<h4>转换效果</h4>
+
+<p>我的机器安装的是LibreOffice，效果还不错，和LibreOffic中的显示基本保持一致。不过少数doc文档在LibreOffice中显示有问题，因此转换后也是有问题的。</p>
+
+<h2>二、Abiword</h2>
+
+<h4>简介：</h4>
+
+<p>AbiWord是一个以GNU通用公共许可证授权的免费文字处理软件，名称"AbiWord"是派生自意谓开放的西班牙语单词"Abierto"；支持Linux、Mac OS X（PowerPC）、Microsoft Windows、ReactOS、BeOS与其他操作系统，但对每个操作系统的支持程度都有所不同。
+用它编辑文件后保存为.abw后缀，打开后为xml格式的文档。</p>
+
+<h4>使用</h4>
+
+<p>基础转换命令：</p>
+
+<pre><code>    $ abiword --to=pdf xxx.doc
+</code></pre>
+
+<h4>实际转换效果</h4>
+
+<p>实际转换效果并不好，测试下格式解析不佳，和原文差距较大，局部出现布局错乱的现象。</p>
+
+<h2>三、cups-pdf</h2>
+
+<h4>简介</h4>
+
+<p>cups-pdf是一个虚拟打印机，输出效果和打印预览一致。这种方案保真性应该是最高的，但是相对来说不是很灵活，只能转成pdf。</p>
+
+<h4>使用</h4>
+
+<p>安装：</p>
+
+<pre><code>$ sudo apt-get install cups-pdf
+</code></pre>
+
+<p>转换命令：</p>
+
+<pre><code>$ oowriter -pt pdf your_word_file.doc
+$ libreoffice -pt pdf your_word_file.doc
+</code></pre>
+
+<p>转换后的文件默认会保存在～/PDF文件夹中,不过中文文件的命名会有问题，会被命名为三位数字。</p>
+
+<pre><code>$ libreoffice --headless --print-to-file --printer-name pdf --outdir /home/xieyu xxx.doc
+</code></pre>
+
+<p>使用<code>--print-to-file</code>选项可以指定打印输出目录和打印机，不过这里输出的是ps后缀的文件，可以重命名成pdf.<br/>
+我这里(3.5版本)测试<code>--print-to-file</code>命令偶尔会出现文字解析不出来的情况，和使用Libreoffice的<code>--convert-to</code>选项结果一样。而4.1版本没有这个问题。  <br/>
+<strong>使用模拟打印的方式无法指定pdf文件的命名，灵活性不够好。</strong></p>
+
+<h2>四 LibreOffice自带的转换命令</h2>
+
+<pre><code>$ libreoffice --headless --convert-to pdf *.doc
+$ soffice --headless --convert-to pdf *.doc
+</code></pre>
+
+<p>注意：在GUI下使用，如果已经开启了桌面环境的Libreoffice,命令行无法生效。
+我这里(3.5版本)测试偶尔会出现文字解析不出来的情况，而4.1版本没有这个问题。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[markdown转换为pdf的解决方案]]></title>
@@ -185,56 +291,6 @@ Not installed.
     pandoc -s –webtex -i -t slidy SLIDES -o example14b.html
     pandoc -s –webtex -t -t s5 SLIDES -o example14c.html
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[github+octopress创建自己的博客]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/03/25/first-blog/"/>
-    <updated>2013-03-25T15:43:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/03/25/first-blog</id>
-    <content type="html"><![CDATA[<h3>添加SSH公钥</h3>
-
-<p><code>$ cd ~/.ssh</code>  <br/>
-<code>$ ssh-keygen -t rsa -C "your_email@example.com"</code>  <br/>
-  将id_rsa.pub文件中的公钥copy到github上  <br/>
-<code>$ ssh -T git@github.com #测试是否通过。</code></p>
-
-<h3>新建仓库</h3>
-
-<p> 在github上新建一个仓库，命名为 yourname.github.com</p>
-
-<h3>本地安装octopress</h3>
-
-<pre><code>$ git clone git://github.com/imathis/octopress.git octopress #下载octopress
-$ cd octopress
-$ bundle install 
-$ rake install #安装默认主题
-</code></pre>
-
-<h3>配置</h3>
-
-<p>编辑_config.yml文件配置博客名，扉页等  <br/>
-编辑config.rb文件配置css，图片路径等</p>
-
-<h3>编辑，上传</h3>
-
-<p><code>$ rake new_post["my first blog"] #新建blog</code> <br/>
-创建以后会在/source/_post目录下创建一个时间戳开头的文件，编辑这个文件撰写博客.
-如果无法执行可以先输入：  <br/>
-<code>$ alias rake="noglob rake"</code></p>
-
-<p><code>$ rake setup_github_pages  #配置本地与github连接</code> <br/>
-根据提示操作即可</p>
-
-<p><code>$ rake generate #项目静态化</code>   <br/>
-将配置修改，和编辑过的内容导入public中，window下控制台编码默认为GBK，需要在cmd下使用命令：
-<code>chcp 65001</code>将控制台代码格式转为utf-8</p>
-
-<p><code>$ rake preview #预览</code>   <br/>
-可以使用http://localhost:4000预览</p>
-
-<p><code>$ rake deploy #上传</code></p>
 ]]></content>
   </entry>
   

@@ -9,9 +9,10 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="注册事件处理程序 为javascript对象设置事件处理 用“on+事件名”来注册事件
-example： window.onload = function(){ .......
-} 为HTML标签设置事件处理 有一系列标准方法： onfocus , onblur , onresize , &hellip;">
+  <meta name="description" content="用一个样例来讲述javascript插件的开发过程，虽然工作中更多的使用JQuery，但是原生js基础仍然很重要。
+功能说明：一幅长长的画卷，按照一定的速度，或垂直，或水平循环滚动，在指定位置暂停X秒，鼠标进入停止，可以用按钮控制。
+可以控制的属性：
+direction: 方向水平or垂直 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -59,6 +60,108 @@ example： window.onload = function(){ .......
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/22/a-js-example/">Javascript插件开发</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-22T17:43:00+08:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>用一个样例来讲述javascript插件的开发过程，虽然工作中更多的使用JQuery，但是原生js基础仍然很重要。
+功能说明：一幅长长的画卷，按照一定的速度，或垂直，或水平循环滚动，在指定位置暂停X秒，鼠标进入停止，可以用按钮控制。
+可以控制的属性：
+direction: 方向水平or垂直
+stop_time: 暂停时间
+hover_control: 鼠标进入是否停止
+stop_position: 暂停位置（px）
+id：滚动体的id
+container:滚动体容器的id</p>
+
+<pre><code>var scroll={
+  container:"content",
+  id: "box",
+  dirction:"marginTop",
+  stop_time:3000,
+  hover_control:"on",
+  stop_position:[330, 660]
+}
+var scroll_module = (function(){
+  var container = document.getElementById(scroll.container);
+  var scroll_part = document.getElementById(scroll.id);
+  var divheight= scroll_part.offsetHeight
+  var part2 = scroll_part.cloneNode(true);
+  container.appendChild(part2);
+  var martop = parseInt(scroll_part.style.marginTop || 0 )
+  var hoverover = false;
+  var go = function(){
+    martop = martop - 2;
+    scroll_part.style.marginTop = martop + "px";
+    timer = setTimeout(go , 5);
+    for (var i=0,j=i+1;i&lt;scroll.stop_position.length+1;i++){
+      if (martop &lt;=-divheight){
+        martop = 0;
+        clearTimeout(timer);
+        setTimeout(function(){
+          go()
+        },scroll.stop_time)
+      }
+      else if (martop== -scroll.stop_position[i]){
+        clearTimeout(timer);
+        if(hoverover == false){
+          setTimeout(function(){
+            go()
+          },scroll.stop_time)
+        }
+      }
+    }
+  }
+  var hoveron = function(){
+    scroll_part.onmouseover=function(){
+      hoverover = true;
+      alert(hoverover)
+    }
+    scroll_part.onmouseout=function(){
+      go();
+      hoverover = false;
+      alert(hoverover)
+    }
+  }
+   return {
+     go : go,
+     hoveron : hoveron
+    }
+})()
+  scroll_module.go();
+  scroll_module.hoveron();
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -645,6 +748,10 @@ $ rake install #安装默认主题
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/30/doczhuan-huan-wei-pdfde-jie-jue-fang-an/">Doc转换为pdf的解决方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/">markdown转换为pdf的解决方案</a>
       </li>
     
@@ -658,10 +765,6 @@ $ rake install #安装默认主题
     
       <li class="post">
         <a href="/blog/2013/09/06/git-branch/">Git branch</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/30/mysqldump/">mysqldump及用户权限设置</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="取值 索引取值 arr = [1, 2, 3, 4, 5] arr[0] = 1 arr.at(0) = 1 take &amp; drop arr.take 3 #=&gt;[1, 2, 3] arr.drop 3 #=&gt;[4, 5] 插值 pop, push &amp;&amp; &hellip;">
+  <meta name="description" content="HTTP NET::HTTP.get require "net/http" Net::HTTP.get('example.com', '/index.html') # =&gt; String uri = URI('http://example.com/index.html?count=10') &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -57,6 +57,93 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/17/ruby-net-slash-http/">ruby的HTTP类库</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-17T13:19:00+08:00" pubdate data-updated="true">Jun 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>HTTP</h2>
+
+<h3>NET::HTTP.get</h3>
+
+<pre><code>    require "net/http"
+    Net::HTTP.get('example.com', '/index.html')      # =&gt; String
+
+    uri = URI('http://example.com/index.html?count=10')
+    Net::HTTP.get(uri)        # =&gt; String
+</code></pre>
+
+<p>可以使用get方法进行下载:</p>
+
+<pre><code>    File.open("test.jpg" , "w") do |f|
+        f.write Net::HTTP.get(uri) 
+    end
+</code></pre>
+
+<p>接收动态参数:</p>
+
+<pre><code>    uri = URI('http://bbs.csdn.net/forums/ROR')
+    params = { :limit =&gt; 10, :page =&gt; 3 }
+    uri.query = URI.encode_www_form(params)
+    res = Net::HTTP.get_response(uri)                         #get_response()方返回一个对象
+    puts res.body if res.is_a?(Net::HTTPSuccess)
+</code></pre>
+
+<h2>URI</h2>
+
+<h3>Basic</h3>
+
+<pre><code>    require 'uri'
+    uri = URI("http://foo.com/posts?id=30&amp;limit=5#time=1305298413")
+    #=&gt; #&lt;URI::HTTP:0x00000000b14880
+          URL:http://foo.com/posts?id=30&amp;limit=5#time=1305298413&gt;
+    uri.scheme                                       #=&gt; "http"
+    uri.host                                            #=&gt; "foo.com"
+    uri.path                                            #=&gt; "/posts"
+    uri.query                                          #=&gt; "id=30&amp;limit=5"
+    uri.fragment                                     #=&gt; "time=1305298413"
+    uri.to_s                                             #=&gt; "http://foo.com/posts?id=30&amp;limit=5#time=1305298413"
+</code></pre>
+
+<h3>Joins URIs.</h3>
+
+<pre><code>    require 'uri'
+    p URI.join("http://example.com/","main.rbx")                 # =&gt; #&lt; URL:http://localhost/main.rbx&gt;
+    p URI.join('http://example.com', 'foo')                            # =&gt; #&lt; URL:http://example.com/foo&gt;
+    p URI.join('http://example.com', '/foo', '/bar')                 # =&gt; #&lt; URL:http://example.com/bar&gt;
+    p URI.join('http://example.com', '/foo', 'bar')                  # =&gt; #&lt; URL:http://example.com/bar&gt;
+    p URI.join('http://example.com', '/foo/', 'bar')                 # =&gt; #&lt; URL:http://example.com/foo/bar&gt;
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -939,108 +1026,6 @@ $.fn.extend(src) //该方法将src合并到jquery的实例对象中，只有JQue
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/22/a-js-example/">Javascript插件开发</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-22T17:43:00+08:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>用一个样例来讲述javascript插件的开发过程，虽然工作中更多的使用JQuery，但是原生js基础仍然很重要。
-功能说明：一幅长长的画卷，按照一定的速度，或垂直，或水平循环滚动，在指定位置暂停X秒，鼠标进入停止，可以用按钮控制。
-可以控制的属性：
-direction: 方向水平or垂直
-stop_time: 暂停时间
-hover_control: 鼠标进入是否停止
-stop_position: 暂停位置（px）
-id：滚动体的id
-container:滚动体容器的id</p>
-
-<pre><code>var scroll={
-  container:"content",
-  id: "box",
-  dirction:"marginTop",
-  stop_time:3000,
-  hover_control:"on",
-  stop_position:[330, 660]
-}
-var scroll_module = (function(){
-  var container = document.getElementById(scroll.container);
-  var scroll_part = document.getElementById(scroll.id);
-  var divheight= scroll_part.offsetHeight
-  var part2 = scroll_part.cloneNode(true);
-  container.appendChild(part2);
-  var martop = parseInt(scroll_part.style.marginTop || 0 )
-  var hoverover = false;
-  var go = function(){
-    martop = martop - 2;
-    scroll_part.style.marginTop = martop + "px";
-    timer = setTimeout(go , 5);
-    for (var i=0,j=i+1;i&lt;scroll.stop_position.length+1;i++){
-      if (martop &lt;=-divheight){
-        martop = 0;
-        clearTimeout(timer);
-        setTimeout(function(){
-          go()
-        },scroll.stop_time)
-      }
-      else if (martop== -scroll.stop_position[i]){
-        clearTimeout(timer);
-        if(hoverover == false){
-          setTimeout(function(){
-            go()
-          },scroll.stop_time)
-        }
-      }
-    }
-  }
-  var hoveron = function(){
-    scroll_part.onmouseover=function(){
-      hoverover = true;
-      alert(hoverover)
-    }
-    scroll_part.onmouseout=function(){
-      go();
-      hoverover = false;
-      alert(hoverover)
-    }
-  }
-   return {
-     go : go,
-     hoveron : hoveron
-    }
-})()
-  scroll_module.go();
-  scroll_module.hoveron();
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1058,6 +1043,10 @@ var scroll_module = (function(){
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/30/doczhuan-huan-wei-pdfde-jie-jue-fang-an/">Doc转换为pdf的解决方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/">markdown转换为pdf的解决方案</a>
       </li>
     
@@ -1071,10 +1060,6 @@ var scroll_module = (function(){
     
       <li class="post">
         <a href="/blog/2013/09/06/git-branch/">Git branch</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/30/mysqldump/">mysqldump及用户权限设置</a>
       </li>
     
   </ul>

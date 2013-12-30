@@ -101,7 +101,7 @@ require 'net/http'
 end
 </code></pre>
 
-<p>执行总时间1：28秒。</p>
+<p>接口延迟约15ms,执行总时间1分25秒。当接口延迟5ms左右时执行总时间约25秒</p>
 
 <h3>异步模型</h3>
 
@@ -144,7 +144,7 @@ require 'em-synchrony/em-http'
 end
 </code></pre>
 
-<p>两种异步模型基本一样，测试均为50秒完成。</p>
+<p>两种异步模型基本一样，在接口延迟15ms时测试均为50秒完成，接口延迟5ms时20+秒，和同步模型基本没有差别。</p>
 
 <h3>多线程模型</h3>
 
@@ -166,7 +166,36 @@ end
 end
 </code></pre>
 
-<p>5并发执行200次测试42秒完成，最快，但是50并发执行20次时居然高达3分23秒。</p>
+<p>接口延迟15ms时，5并发执行200次测试42秒完成，最快，接口延迟5ms时8秒完成，最快。不过在测试10并发的时候会出现不稳定的情况，50并发测试高达3分半。</p>
+
+<h3>Node.js模型</h3>
+
+<pre><code>var http = require('http')
+var options = {
+  host: '117.79.93.206',
+  port: 80,
+  path: 'http://test.net/api/format/json/'
+};
+function get_message(){
+    http.get(options, function(res){
+        var body = '';
+        res.on('data', function(chunk) {
+            body += chunk;
+        });
+        res.on('end', function() {
+            var content = JSON.parse(body)
+            console.log(content.data.list[0]);
+        });
+        }).on('error', function(e) {
+        console.log("Got error: " + e.message);
+    });
+}
+for(i=0; i&lt;1000; i++){
+    get_message();
+}
+</code></pre>
+
+<p>node.js果然名不虚传，接口延迟15ms,下约4秒完成，接口延迟5ms下平均2秒钟就可以完成，秒杀ruby。</p>
 </div>
 
 

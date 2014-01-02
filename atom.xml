@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2013-12-30T10:20:43+08:00</updated>
+  <updated>2014-01-03T01:37:26+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[个人简历]]></title>
+    <link href="http://xieyu33333.github.com/blog/2014/01/02/ge-ren-zai-xian-jian-li/"/>
+    <updated>2014-01-02T15:25:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2014/01/02/ge-ren-zai-xian-jian-li</id>
+    <content type="html"><![CDATA[<h2>基本信息</h2>
+
+<p>姓   名：  谢 郁   <br/>
+性   别：  男   <br/>
+出生日期： 1989年5月20日  <br/>
+毕业院校： 电子科技大学成都学院微电子技术系</p>
+
+<h2>技术能力</h2>
+
+<p>(1) 可以同时适应MAC, Linux, Windows环境的开发，熟悉命令行工具。 <br/>
+(2) 工作以来一直使用git, 熟悉git工作流。<br/>
+(3) 熟练掌握 Ruby on Rails 框架，对sinatra、grape等轻量级框架也有一些了解。<br/>
+(4) 熟练掌握jQuery <br/>
+(5) 熟练掌握Bootstrap, 手写/使用框架构建响应式页面。 <br/>
+(6) 熟悉常见的浏览器兼容性问题，有较丰富的兼容性问题处理经验。</p>
+
+<h2>工作履历</h2>
+
+<h3>2012年1月-2012年10月：尝试互联网方向创业</h3>
+
+<p><strong>工作内容：</strong>  <br/>
+当时准备做一个评测推荐类的网站，由于资源和技术能力不足，做了大半年后放弃。</p>
+
+<h3>2012年11月-2013年5月：卓衡创盟应用科技（北京）有限公司</h3>
+
+<p><strong>工作内容：</strong> <br/>
+主要负责前端页面开发，还同时做服务端的Ruby on Rails开发。  <br/>
+<strong>项目经验：</strong> <br/>
+(1) moster产品展示网站：<a href="http://moster.cc">moster.cc</a>  <br/>
+(2) 联通云平台前端部分：内部系统，无公开网址 <br/>
+(3) 新闻出版总署网站前端部分：<a href="http://www.gapp.gov.cn/">http://www.gapp.gov.cn/</a>  <br/>
+(4) “沃缤纷”手机应用项目的后台管理部分：<a href="http://as.baidu.%20%20com/a/item?docid=2403659&amp;pre=web_am_software&amp;pos=software_1013_19&amp;f=software_1013_19">沃缤纷</a></p>
+
+<h3>2013年5月 - 至今：北京世纪乐知（CSDN）</h3>
+
+<p><strong>工作内容:</strong> <br/>
+以Ruby开发为主，主要负责<a href="http://bbs.csdn.net">CSDN论坛</a>、<a href="http://share.csdn.net">CSDN Share</a>、<a href="http://www.iteye.com">Iteye</a>、<a href="http://ask.csdn.net">CSDN Ask</a>、四个产品的维护，升级。 <br/>
+<strong>项目经验：</strong> <br/>
+CSDN Share的主要开发 <a href="http://share.csdn.net">share.csdn.net</a>。其他几个产品线主要是一些维护升级工作</p>
+
+<h2>个人项目</h2>
+
+<p><a href="http://textlearn.org">Text-Learn</a>,一个原创教程的尝试。  <br/>
+接某图书工作室的一本CSS开发相关的书籍，尚未出版。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Doc转换为pdf的解决方案]]></title>
@@ -1568,63 +1620,6 @@ end
 <h4>返回新数组：</h4>
 
 <p>concat()</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JQuery插件开发]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/04/22/a-jquery-example/"/>
-    <updated>2013-04-22T18:48:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/04/22/a-jquery-example</id>
-    <content type="html"><![CDATA[<p>JQuery插件的开发是有一套成熟的规范的：
-主要由以下几部分组成：</p>
-
-<h4>(function($){})(jQuery)</h4>
-
-<p>最外层的封装</p>
-
-<h4>$.fn</h4>
-
-<p>$.fn = JQuery.prototype。<br/>
-在插件制作中，所有的对象方法都添加到$.fn对象中</p>
-
-<h4>$.extend和$.fn.extend()</h4>
-
-<p>extend(dest,src1,src2):将src1,src2合并到dest中，属性名相同的则后面的自动覆盖前面的，因此常用于default值的设置
-extend(boolean dest,src1,src2):如果第一个参数为布尔值，则决定是否深层覆盖，如果为true，则嵌套的对象也将进行覆盖</p>
-
-<pre><code>$.extend(src)    //该方法将src合并到jquery的全局对象中,为JQuery添加了一个静态方法，可以用$.src()直接执行
-$.fn.extend(src) //该方法将src合并到jquery的实例对象中，只有JQuery的实例才可以调用，比如$("#input").src()
-</code></pre>
-
-<h4>this.each(function(){ })</h4>
-
-<p>编写该扩展方法执行的函数</p>
-
-<p>example：</p>
-
-<pre><code>(function($){ 
-  $.fn.tableUI = function(options){ 
-    var defaults = { 
-      evenRowClass:"evenRow", 
-      oddRowClass:"oddRow", 
-      activeRowClass:"activeRow" 
-    } 
-    var options = $.extend(defaults, options); 
-    this.each(function(){ 
-      var thisTable=$(this); 
-      $(thisTable).find("tr:even").addClass(options.evenRowClass); 
-      $(thisTable).find("tr:odd").addClass(options.oddRowClass); 
-      $(thisTable).find("tr").bind("mouseover",function(){ 
-        $(this).addClass(options.activeRowClass); 
-        }); 
-        $(thisTable).find("tr").bind("mouseout",function(){ 
-          $(this).removeClass(options.activeRowClass); 
-          }); 
-          }); 
-        }; 
-})(jQuery); 
-</code></pre>
 ]]></content>
   </entry>
   

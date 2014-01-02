@@ -9,7 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="单纯的将Doc转换为pdf很简单，使用office软件直接在图形界面下转换即可，但是如果涉及到批量转换，最好还是使用命令行工具。 一、unoconv 简介 unoconv 利用 LibreOffice/OpenOffice 的 UNO 接口实现了命令行文档格式转换功能，支持所有 &hellip;">
+  <meta name="description" content="基本信息 姓 名： 谢 郁 性 别： 男 出生日期： 1989年5月20日 毕业院校： 电子科技大学成都学院微电子技术系 技术能力 (1) 可以同时适应MAC, Linux, Windows环境的开发，熟悉命令行工具。 (2) 工作以来一直使用git, 熟悉git工作流。
+(3) 熟练掌握 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -57,6 +58,85 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-02T15:25:00+08:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>基本信息</h2>
+
+<p>姓   名：  谢 郁   <br/>
+性   别：  男   <br/>
+出生日期： 1989年5月20日  <br/>
+毕业院校： 电子科技大学成都学院微电子技术系</p>
+
+<h2>技术能力</h2>
+
+<p>(1) 可以同时适应MAC, Linux, Windows环境的开发，熟悉命令行工具。 <br/>
+(2) 工作以来一直使用git, 熟悉git工作流。<br/>
+(3) 熟练掌握 Ruby on Rails 框架，对sinatra、grape等轻量级框架也有一些了解。<br/>
+(4) 熟练掌握jQuery <br/>
+(5) 熟练掌握Bootstrap, 手写/使用框架构建响应式页面。 <br/>
+(6) 熟悉常见的浏览器兼容性问题，有较丰富的兼容性问题处理经验。</p>
+
+<h2>工作履历</h2>
+
+<h3>2012年1月-2012年10月：尝试互联网方向创业</h3>
+
+<p><strong>工作内容：</strong>  <br/>
+当时准备做一个评测推荐类的网站，由于资源和技术能力不足，做了大半年后放弃。</p>
+
+<h3>2012年11月-2013年5月：卓衡创盟应用科技（北京）有限公司</h3>
+
+<p><strong>工作内容：</strong> <br/>
+主要负责前端页面开发，还同时做服务端的Ruby on Rails开发。  <br/>
+<strong>项目经验：</strong> <br/>
+(1) moster产品展示网站：<a href="http://moster.cc">moster.cc</a>  <br/>
+(2) 联通云平台前端部分：内部系统，无公开网址 <br/>
+(3) 新闻出版总署网站前端部分：<a href="http://www.gapp.gov.cn/">http://www.gapp.gov.cn/</a>  <br/>
+(4) “沃缤纷”手机应用项目的后台管理部分：<a href="http://as.baidu.%20%20com/a/item?docid=2403659&amp;pre=web_am_software&amp;pos=software_1013_19&amp;f=software_1013_19">沃缤纷</a></p>
+
+<h3>2013年5月 - 至今：北京世纪乐知（CSDN）</h3>
+
+<p><strong>工作内容:</strong> <br/>
+以Ruby开发为主，主要负责<a href="http://bbs.csdn.net">CSDN论坛</a>、<a href="http://share.csdn.net">CSDN Share</a>、<a href="http://www.iteye.com">Iteye</a>、<a href="http://ask.csdn.net">CSDN Ask</a>、四个产品的维护，升级。 <br/>
+<strong>项目经验：</strong> <br/>
+CSDN Share的主要开发 <a href="http://share.csdn.net">share.csdn.net</a>。其他几个产品线主要是一些维护升级工作</p>
+
+<h2>个人项目</h2>
+
+<p><a href="http://textlearn.org">Text-Learn</a>,一个原创教程的尝试。  <br/>
+接某图书工作室的一本CSS开发相关的书籍，尚未出版。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1165,86 +1245,6 @@ puts t.call("Tom")                         #=&gt;Hello , Tom
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/17/ruby-file/">Ruby_file</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-17T13:21:00+08:00" pubdate data-updated="true">Jun 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>检验存在</h3>
-
-<pre><code>File.file? "test.txt"                  #检验文件存在性
-File.exists? "test.txt"                #只检验存在性，无论是文件夹还是其他的文件类型
-File.directory? "test.txt"             #检验文件夹存在性
-</code></pre>
-
-<h3>检验权限</h3>
-
-<pre><code>File.readable?
-File.writable?
-File.executable?
-File.owned?                         #文件是否属于当前用户组，windows下总是为true
-</code></pre>
-
-<h3>文件属性</h3>
-
-<pre><code>File.stat                    # 文件的详细属性
-&lt;File::Stat dev=0x700, ino=670451, mode=0100664, nlink=1, uid=1000, gid=1000, rdev=0x0, size=8, blksize=4096, blocks=8, atime=2013-06-05 09:37:38 +0800, mtime=2013-06-05 09:37:27 +0800, ctime=2013-06-05 09:37:27 +0800&gt;
-</code></pre>
-
-<p>atime ：最后读取的时间
-mtime ：最后修改内容的时间
-ctime ：最后修改的时间（包括修改权限等）</p>
-
-<h3>文件列表</h3>
-
-<pre><code>列出某路径下的文件列表
-Dir.getwd                           #获取工作路径
-Dir.chdir '/bin'                    #改变工作路径
-Dir.mkdir 'haha'                    #创建工作路径
-Dir.entries "/"
-Dir.foreach("/") do |file|
-  puts file
-end
-</code></pre>
-
-<h3>文件写入</h3>
-
-<pre><code>‘w’：写模式，覆盖写入
-‘a’：附加模式，不会覆盖原有内容
-open("test.txt" , "a") do |f|
-  f.puts("aaaaaaaa")
-end
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1260,6 +1260,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/30/doczhuan-huan-wei-pdfde-jie-jue-fang-an/">Doc转换为pdf的解决方案</a>
       </li>
     
@@ -1273,10 +1277,6 @@ end
     
       <li class="post">
         <a href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/">rails中间层解决方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/06/git-branch/">Git branch</a>
       </li>
     
   </ul>
@@ -1329,7 +1329,7 @@ end
 
     </div>
   </div>
-  <footer role="contentinfo">Copyright &copy; 2013
+  <footer role="contentinfo">Copyright &copy; 2014
 
     Your Name
 

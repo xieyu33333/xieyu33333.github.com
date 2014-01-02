@@ -9,10 +9,9 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="用一个样例来讲述javascript插件的开发过程，虽然工作中更多的使用JQuery，但是原生js基础仍然很重要。
-功能说明：一幅长长的画卷，按照一定的速度，或垂直，或水平循环滚动，在指定位置暂停X秒，鼠标进入停止，可以用按钮控制。
-可以控制的属性：
-direction: 方向水平or垂直 &hellip;">
+  <meta name="description" content="JQuery插件的开发是有一套成熟的规范的：
+主要由以下几部分组成： (function($){})(jQuery) 最外层的封装 $.fn $.fn = JQuery.prototype。
+在插件制作中，所有的对象方法都添加到$.fn对象中 $.extend和$.fn.extend() &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -60,6 +59,90 @@ direction: 方向水平or垂直 &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/22/a-jquery-example/">JQuery插件开发</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-22T18:48:00+08:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>JQuery插件的开发是有一套成熟的规范的：
+主要由以下几部分组成：</p>
+
+<h4>(function($){})(jQuery)</h4>
+
+<p>最外层的封装</p>
+
+<h4>$.fn</h4>
+
+<p>$.fn = JQuery.prototype。<br/>
+在插件制作中，所有的对象方法都添加到$.fn对象中</p>
+
+<h4>$.extend和$.fn.extend()</h4>
+
+<p>extend(dest,src1,src2):将src1,src2合并到dest中，属性名相同的则后面的自动覆盖前面的，因此常用于default值的设置
+extend(boolean dest,src1,src2):如果第一个参数为布尔值，则决定是否深层覆盖，如果为true，则嵌套的对象也将进行覆盖</p>
+
+<pre><code>$.extend(src)    //该方法将src合并到jquery的全局对象中,为JQuery添加了一个静态方法，可以用$.src()直接执行
+$.fn.extend(src) //该方法将src合并到jquery的实例对象中，只有JQuery的实例才可以调用，比如$("#input").src()
+</code></pre>
+
+<h4>this.each(function(){ })</h4>
+
+<p>编写该扩展方法执行的函数</p>
+
+<p>example：</p>
+
+<pre><code>(function($){ 
+  $.fn.tableUI = function(options){ 
+    var defaults = { 
+      evenRowClass:"evenRow", 
+      oddRowClass:"oddRow", 
+      activeRowClass:"activeRow" 
+    } 
+    var options = $.extend(defaults, options); 
+    this.each(function(){ 
+      var thisTable=$(this); 
+      $(thisTable).find("tr:even").addClass(options.evenRowClass); 
+      $(thisTable).find("tr:odd").addClass(options.oddRowClass); 
+      $(thisTable).find("tr").bind("mouseover",function(){ 
+        $(this).addClass(options.activeRowClass); 
+        }); 
+        $(thisTable).find("tr").bind("mouseout",function(){ 
+          $(this).removeClass(options.activeRowClass); 
+          }); 
+          }); 
+        }; 
+})(jQuery); 
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -748,6 +831,10 @@ $ rake install #安装默认主题
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/30/doczhuan-huan-wei-pdfde-jie-jue-fang-an/">Doc转换为pdf的解决方案</a>
       </li>
     
@@ -761,10 +848,6 @@ $ rake install #安装默认主题
     
       <li class="post">
         <a href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/">rails中间层解决方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/06/git-branch/">Git branch</a>
       </li>
     
   </ul>
@@ -817,7 +900,7 @@ $ rake install #安装默认主题
 
     </div>
   </div>
-  <footer role="contentinfo">Copyright &copy; 2013
+  <footer role="contentinfo">Copyright &copy; 2014
 
     Your Name
 

@@ -9,7 +9,10 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="HTTP NET::HTTP.get require "net/http" Net::HTTP.get('example.com', '/index.html') # =&gt; String uri = URI('http://example.com/index.html?count=10') &hellip;">
+  <meta name="description" content="检验存在 File.file? "test.txt" #检验文件存在性
+File.exists? "test.txt" #只检验存在性，无论是文件夹还是其他的文件类型
+File.directory? "test.txt" #检验文件夹存在性 检验权限 File.readable?
+File. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -57,6 +60,86 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/17/ruby-file/">Ruby_file</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-17T13:21:00+08:00" pubdate data-updated="true">Jun 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>检验存在</h3>
+
+<pre><code>File.file? "test.txt"                  #检验文件存在性
+File.exists? "test.txt"                #只检验存在性，无论是文件夹还是其他的文件类型
+File.directory? "test.txt"             #检验文件夹存在性
+</code></pre>
+
+<h3>检验权限</h3>
+
+<pre><code>File.readable?
+File.writable?
+File.executable?
+File.owned?                         #文件是否属于当前用户组，windows下总是为true
+</code></pre>
+
+<h3>文件属性</h3>
+
+<pre><code>File.stat                    # 文件的详细属性
+&lt;File::Stat dev=0x700, ino=670451, mode=0100664, nlink=1, uid=1000, gid=1000, rdev=0x0, size=8, blksize=4096, blocks=8, atime=2013-06-05 09:37:38 +0800, mtime=2013-06-05 09:37:27 +0800, ctime=2013-06-05 09:37:27 +0800&gt;
+</code></pre>
+
+<p>atime ：最后读取的时间
+mtime ：最后修改内容的时间
+ctime ：最后修改的时间（包括修改权限等）</p>
+
+<h3>文件列表</h3>
+
+<pre><code>列出某路径下的文件列表
+Dir.getwd                           #获取工作路径
+Dir.chdir '/bin'                    #改变工作路径
+Dir.mkdir 'haha'                    #创建工作路径
+Dir.entries "/"
+Dir.foreach("/") do |file|
+  puts file
+end
+</code></pre>
+
+<h3>文件写入</h3>
+
+<pre><code>‘w’：写模式，覆盖写入
+‘a’：附加模式，不会覆盖原有内容
+open("test.txt" , "a") do |f|
+  f.puts("aaaaaaaa")
+end
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -942,90 +1025,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/22/a-jquery-example/">JQuery插件开发</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-22T18:48:00+08:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>JQuery插件的开发是有一套成熟的规范的：
-主要由以下几部分组成：</p>
-
-<h4>(function($){})(jQuery)</h4>
-
-<p>最外层的封装</p>
-
-<h4>$.fn</h4>
-
-<p>$.fn = JQuery.prototype。<br/>
-在插件制作中，所有的对象方法都添加到$.fn对象中</p>
-
-<h4>$.extend和$.fn.extend()</h4>
-
-<p>extend(dest,src1,src2):将src1,src2合并到dest中，属性名相同的则后面的自动覆盖前面的，因此常用于default值的设置
-extend(boolean dest,src1,src2):如果第一个参数为布尔值，则决定是否深层覆盖，如果为true，则嵌套的对象也将进行覆盖</p>
-
-<pre><code>$.extend(src)    //该方法将src合并到jquery的全局对象中,为JQuery添加了一个静态方法，可以用$.src()直接执行
-$.fn.extend(src) //该方法将src合并到jquery的实例对象中，只有JQuery的实例才可以调用，比如$("#input").src()
-</code></pre>
-
-<h4>this.each(function(){ })</h4>
-
-<p>编写该扩展方法执行的函数</p>
-
-<p>example：</p>
-
-<pre><code>(function($){ 
-  $.fn.tableUI = function(options){ 
-    var defaults = { 
-      evenRowClass:"evenRow", 
-      oddRowClass:"oddRow", 
-      activeRowClass:"activeRow" 
-    } 
-    var options = $.extend(defaults, options); 
-    this.each(function(){ 
-      var thisTable=$(this); 
-      $(thisTable).find("tr:even").addClass(options.evenRowClass); 
-      $(thisTable).find("tr:odd").addClass(options.oddRowClass); 
-      $(thisTable).find("tr").bind("mouseover",function(){ 
-        $(this).addClass(options.activeRowClass); 
-        }); 
-        $(thisTable).find("tr").bind("mouseout",function(){ 
-          $(this).removeClass(options.activeRowClass); 
-          }); 
-          }); 
-        }; 
-})(jQuery); 
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1043,6 +1042,10 @@ $.fn.extend(src) //该方法将src合并到jquery的实例对象中，只有JQue
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/30/doczhuan-huan-wei-pdfde-jie-jue-fang-an/">Doc转换为pdf的解决方案</a>
       </li>
     
@@ -1056,10 +1059,6 @@ $.fn.extend(src) //该方法将src合并到jquery的实例对象中，只有JQue
     
       <li class="post">
         <a href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/">rails中间层解决方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/06/git-branch/">Git branch</a>
       </li>
     
   </ul>
@@ -1112,7 +1111,7 @@ $.fn.extend(src) //该方法将src合并到jquery的实例对象中，只有JQue
 
     </div>
   </div>
-  <footer role="contentinfo">Copyright &copy; 2013
+  <footer role="contentinfo">Copyright &copy; 2014
 
     Your Name
 

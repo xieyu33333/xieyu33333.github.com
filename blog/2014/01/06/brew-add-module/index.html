@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>brew add module - 庇护祝福的分享</title>
+  <title>为Homebrew安装的程序添加模块 - 庇护祝福的分享</title>
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="在MAC OS平台上，我们常常使用Homebrew安装程序，但是如果安装成功后需要添加模块，很多同学就不知道怎么处理了。最后往往是采用源码包编译的方式绕过这个问题。 我在安装nginx的时候就遇到了这个问题，分享一下解决的方案：
+首先使用brew uninstall nginx卸载原来的程序。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -61,7 +61,7 @@
   
   <header>
     
-      <h1 class="entry-title">Brew Add Module</h1>
+      <h1 class="entry-title">为Homebrew安装的程序添加模块</h1>
     
     
       <p class="meta">
@@ -84,7 +84,15 @@
   </header>
 
 
-<div class="entry-content">
+<div class="entry-content"><p>在MAC OS平台上，我们常常使用Homebrew安装程序，但是如果安装成功后需要添加模块，很多同学就不知道怎么处理了。最后往往是采用源码包编译的方式绕过这个问题。</p>
+
+<p>我在安装nginx的时候就遇到了这个问题，分享一下解决的方案：
+首先使用<code>brew uninstall nginx</code>卸载原来的程序。</p>
+
+<p>Homebrew安装程序是根据一个Ruby文件来定义软件包安装配置（英文叫做formula，处方，方案的意思）。
+使用<code>brew edit nginx</code> 命令可以打开这个文件，里面有一个名为args的数组，只需要把<code>"--with-your_module"</code>添加到这个数组中就可以了。</p>
+
+<p>最后重新用<code>brew install nginx</code>进行安装，安装后由于原先位于<code>/usr/local/bin</code>目录中的软链接没有删除，会报一个错误，使用<code>rm /usr/local/bin/nginx</code>删除原来的软链接，然后使用<code>brew link nginx</code>重新生成软链接即可。</p>
 </div>
 
 
@@ -109,6 +117,12 @@
 
 <time datetime="2014-01-06T17:31:00+08:00" pubdate data-updated="true">Jan 6<span>th</span>, 2014</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/homebrew/'>homebrew</a>, <a class='category' href='/blog/categories/nginx/'>nginx</a>
+  
+</span>
 
 
     </p>
@@ -142,7 +156,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/01/06/brew-add-module/">brew add module</a>
+        <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
       </li>
     
       <li class="post">

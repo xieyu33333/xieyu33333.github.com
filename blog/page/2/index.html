@@ -9,10 +9,11 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="检验存在 File.file? "test.txt" #检验文件存在性
-File.exists? "test.txt" #只检验存在性，无论是文件夹还是其他的文件类型
-File.directory? "test.txt" #检验文件夹存在性 检验权限 File.readable?
-File. &hellip;">
+  <meta name="description" content="闭包 块可以作为一个闭包.
+example: def my_method x="Goodbye" yield("cruel")
+end
+x = "Hello"
+my_method {|y| "#{x} , #{y} world"} #=&gt;Hello, cruel world &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -60,6 +61,119 @@ File. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/29/metaprogramming-third/">Ruby元编程三：代码块</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-29T20:53:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>闭包</h2>
+
+<p>块可以作为一个闭包.
+example:</p>
+
+<pre><code>def my_method
+    x="Goodbye"
+    yield("cruel")
+end
+x = "Hello"
+my_method {|y| "#{x} , #{y} world"}   #=&gt;Hello, cruel world
+</code></pre>
+
+<p>块获得了局部绑定的变量x，并一直带着它。块并不能接受方法中定义的x=&#8221;Goodbye&#8221;</p>
+
+<h2>作用域与作用域门</h2>
+
+<p>程序会在三个地方关闭前一个作用域，同时打开一个新的作用域：
+类定义
+模块定义
+方法
+它们分别用关键字class，module，def为标志每一个关键字都充当了一个作用域门。</p>
+
+<h2>Proc类，proc，lambda , yield , &amp;操作符</h2>
+
+<h3>将块转化为对象</h3>
+
+<p>使用块需要分两步：1.把块的逻辑写好打包备用。2.调用块<br/>
+块不是对象，如果想要存储一个块供以后执行，需要一个对象。<br/>
+Ruby标准库提供Proc类，它接受一个块作为参数，从而将这个块转化为对象：</p>
+
+<pre><code>inc = Proc.new { |x| x+1}
+inc.call(2)                       #=&gt;3
+</code></pre>
+
+<p>而lambda ， proc 本质也是将块转化为Proc类的实例化对象</p>
+
+<h3>lambda，proc的区别</h3>
+
+<p>1.使用return关键字的时候，lambda从它本身返回，而proc则会在定义它的作用域中返回。</p>
+
+<pre><code>def double(param)
+    param.call*2
+end
+l=lambda {return 10}
+double(l)                         #=&gt;20
+p=proc {return 10}
+double(p)                         #=&gt;报错LocalJumpError
+</code></pre>
+
+<p>2.参数数量
+调用lambda的时候，如果参数数量不对则会报错，而proc会自动调整，忽略多余的，如果少了则会将其赋为nil</p>
+
+<h3>&amp;操作符</h3>
+
+<p>它可以实现：
+1.把这个块传递给另一个方法
+2.把一个块转化为proc,只需要去掉&amp;操作符即可。</p>
+
+<p>example1：</p>
+
+<pre><code>def math(a, b)
+    yield(a , b)
+end
+def teach_math(a , b , &amp;block)
+    puts math(a , b , &amp;black)
+end
+teach_math(2,3) {|x ,y| x*y}         #=&gt;6
+</code></pre>
+
+<p>example2:</p>
+
+<pre><code>def test(&amp;block)
+    block
+end
+t=test {|name| "Hello,#{name}"}
+puts t.call("Tom")                         #=&gt;Hello , Tom
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -929,102 +1043,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/24/javascript-array/">Javascript权威指南笔记二：核心语法（数组）</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-24T14:11:00+08:00" pubdate data-updated="true">Apr 24<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>创建数组</h3>
-
-<h4>字面量直接创建</h4>
-
-<p>example:</p>
-
-<pre><code> var arr=[1,2,3,4,5];
-</code></pre>
-
-<h4>使用构造函数array创建</h4>
-
-<p>example:</p>
-
-<pre><code> var arr=new array()  // 创建一个空数组
- var arr=new array(10)  // 创建一个长度为10 的数组
- var arr=new array(1，2，3)  // 相当于字面量直接创建
-</code></pre>
-
-<h3>数组方法</h3>
-
-<h4>join()</h4>
-
-<p>将数组转化为字符串序列，参数为分隔符</p>
-
-<h4>reverse()</h4>
-
-<p>将原数组倒序排列</p>
-
-<h4>sort()</h4>
-
-<p>根据字母表排序</p>
-
-<h4>concat()</h4>
-
-<p>数组合并</p>
-
-<h4>slice()</h4>
-
-<p>返回指定的数组片段</p>
-
-<h4>splice()</h4>
-
-<p>在数组中插入或删除元素的通用方法</p>
-
-<h4>push()&amp;pop()</h4>
-
-<p>在队尾实现添加或删除，实现类似堆栈的功能</p>
-
-<h4>unshift()&amp;shift()</h4>
-
-<p>在队头实现添加或者删除。</p>
-
-<h3>数组方法分类</h3>
-
-<h4>改变原数组：</h4>
-
-<p>reverse() , splice() , push()&amp;pop() , unshift()&amp;shift()</p>
-
-<h4>返回新数组：</h4>
-
-<p>concat()</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1042,6 +1060,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/06/brew-add-module/">brew add module</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a>
       </li>
     
@@ -1055,10 +1077,6 @@ end
     
       <li class="post">
         <a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">ruby 同步/异步/多线程模型测试</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/">rails中间层解决方案</a>
       </li>
     
   </ul>

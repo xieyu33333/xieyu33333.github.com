@@ -9,8 +9,7 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="在MAC OS平台上，我们常常使用Homebrew安装程序，但是如果安装成功后需要添加模块，很多同学就不知道怎么处理了。最后往往是采用源码包编译的方式绕过这个问题。 我在安装nginx的时候就遇到了这个问题，分享一下解决的方案：
-首先使用brew uninstall nginx卸载原来的程序。 &hellip;">
+  <meta name="description" content="使用 supervisor Node.js 只有在第一次引用到某部份时才会去解析脚 本文件,以后都会直接访问内存,避免重复载入,但是在开发调试时很不方便，可以使用小工具 supervisor 在文件发生变化时自动重新加载。 $ npm install -g supervisor 安装完成后使用命令 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -58,6 +57,80 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-07T16:16:00+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>使用 supervisor</h3>
+
+<p> Node.js 只有在第一次引用到某部份时才会去解析脚 本文件,以后都会直接访问内存,避免重复载入,但是在开发调试时很不方便，可以使用小工具 supervisor 在文件发生变化时自动重新加载。</p>
+
+<pre><code>$ npm install -g supervisor
+</code></pre>
+
+<p>安装完成后使用命令</p>
+
+<pre><code>supervisor app.js
+</code></pre>
+
+<p>这样就可以了，由于该命令比较长，建议设置一个alias。</p>
+
+<h3>模块</h3>
+
+<p>模块是 Node.js 应用程序的基本组成部分,文件和模块是一一对应的。换言之,一个 Node.js 文件就是一个模块<br/>
+应用模块使用两个关键字：<code>require</code>和<code>exports</code>。如下例：在app.js中引入并使用content.js。</p>
+
+<p>app.js</p>
+
+<pre><code>content = require('./content')
+console.log(content.text);
+content.log();
+</code></pre>
+
+<p>content.js</p>
+
+<pre><code>exports.text = "Hello World!";
+exports.log = function(){
+  console.log("Success!");
+} 
+</code></pre>
+
+<p>最后执行<code>node app.js</code>的结果是</p>
+
+<pre><code>Hello World!
+Success!
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1023,159 +1096,6 @@ Module#method_undefined</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/01/metaprogramming-forth/">Ruby元编程四：类定义</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-01T22:47:00+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>类定义</h2>
-
-<p>在ruby中，类定义和其他语言有所不同，当使用class关键字时，并非是在指定对象未来的行为方式，实际上是在运行代码。
-类定义会返回最后一条语句的值。
-每当通过class关键字打开一个类，这个类就成为当前类。在类定义中，当前对象self就是正在定义的类。</p>
-
-<h3>类实例变量</h3>
-
-<pre><code>class MyClass
-    @var = 0
-    def self.method_one
-        @var = 1
-    end
-
-    def method_two
-        @var = 2
-    end
-
-    def method_three
-        @var = 3
-    end
-
-    class&lt;&lt;self 
-        def method_four
-            x=4
-        end
-
-        def method_five
-            x=5
-        end
-    end
-end
-
-obj = MyClass.new
-obj.method_two           #=&gt;2
-obj.method_threee        #=&gt;3
-MyClass.method_one       #=&gt;1
-类实例变量只有类可以调用它，而类的实例则不行，实例变量则正好相反。
-class&lt;&lt;self 用于一次性定义多个类方法
-</code></pre>
-
-<h3>类变量</h3>
-
-<p>以@@开头，它们可以被子类或者类的实例所使用
-后定义的同名类变量会覆盖之前的，不论它的位置，example：</p>
-
-<pre><code>@@v = 1
-class A
-  @@v = 2
-end
-@@v                        #=&gt;2
-</code></pre>
-
-<h3>扁平化作用域</h3>
-
-<p>使用class, def,  module关键字会产生作用域门.但是如果想在一个模块中共享变量,就需要用到扁平化作用域.
-使用ClassName = Class.new , ModuleName = module.new , define_method: method_name do &#8230;.end
-example:</p>
-
-<pre><code>    my_var = "success"
-    MyClass = Class.new do
-      puts "#{my_var} is get"
-      define_method :printvar do
-        puts "#{my_var} is in the method"
-      end
-    end
-    MyClass.new.printvar
-</code></pre>
-
-<h3>单件方法与类方法</h3>
-
-<p>Ruby允许给单个对象添加方法，这就是单件方法。example:</p>
-
-<pre><code>str = "hahaha"
-def str.title?
-    self.upcase == self
-end
-</code></pre>
-
-<p>而类方法实际就是一种单件方法，因为类也是对象，它针对这个类生效。</p>
-
-<h3>类宏</h3>
-
-<p>Ruby对象没有属性，如果想要定义属性，就需要定义两个拟态方法，一个读方法和一个写方法。</p>
-
-<pre><code>class MyClass
-    def height=(val)
-        @height = val
-    end
-
-    def height
-        @height
-    end
-end
-obj = MyClass.new
-obj.height = "160cm"
-obj.height     #=&gt;"160cm"
-
-这样非常麻烦，我们可以使用module#attr_*系列方法，其中attr_reader()可以生成一个读方法；attr_writer()可以生成写方法；attr_accessor()则可以生成读写方法。
-那么上面的例子就可以改写为：
-
-class MyClass
-    attr_accessor :height
-end
-</code></pre>
-
-<h3>环绕别名</h3>
-
-<p>从一个重新定义的方法中调用原始的，被重命名的版本。 三个步骤： 1. 通过alias 对原有方法定义一个别名 2. 覆写原有方法 3. 在该方法中调用别名方法 这样做的好处，可以改写原有方法，又不破坏原有功能 。</p>
-
-<pre><code>    class String  
-        alias :old_reverse :reverse
-        def reverse 
-            "x#{old_reverse}x"
-        end
-    end 
-    "abc".reverse  =&gt;xcbax
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1191,6 +1111,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
       </li>
     
@@ -1204,10 +1128,6 @@ end
     
       <li class="post">
         <a href="/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/">markdown转换为pdf的解决方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">ruby 同步/异步/多线程模型测试</a>
       </li>
     
   </ul>

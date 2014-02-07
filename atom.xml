@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2014-01-06T17:53:56+08:00</updated>
+  <updated>2014-02-07T17:23:05+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Node学习笔记一]]></title>
+    <link href="http://xieyu33333.github.com/blog/2014/02/07/node-note-1/"/>
+    <updated>2014-02-07T16:16:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2014/02/07/node-note-1</id>
+    <content type="html"><![CDATA[<h3>使用 supervisor</h3>
+
+<p> Node.js 只有在第一次引用到某部份时才会去解析脚 本文件,以后都会直接访问内存,避免重复载入,但是在开发调试时很不方便，可以使用小工具 supervisor 在文件发生变化时自动重新加载。</p>
+
+<pre><code>$ npm install -g supervisor
+</code></pre>
+
+<p>安装完成后使用命令</p>
+
+<pre><code>supervisor app.js
+</code></pre>
+
+<p>这样就可以了，由于该命令比较长，建议设置一个alias。</p>
+
+<h3>模块</h3>
+
+<p>模块是 Node.js 应用程序的基本组成部分,文件和模块是一一对应的。换言之,一个 Node.js 文件就是一个模块<br/>
+应用模块使用两个关键字：<code>require</code>和<code>exports</code>。如下例：在app.js中引入并使用content.js。</p>
+
+<p>app.js</p>
+
+<pre><code>content = require('./content')
+console.log(content.text);
+content.log();
+</code></pre>
+
+<p>content.js</p>
+
+<pre><code>exports.text = "Hello World!";
+exports.log = function(){
+  console.log("Success!");
+} 
+</code></pre>
+
+<p>最后执行<code>node app.js</code>的结果是</p>
+
+<pre><code>Hello World!
+Success!
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[为Homebrew安装的程序添加模块]]></title>
@@ -1503,71 +1550,6 @@ end
   end
 end
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[常用前端资源整理]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/04/24/firststage/"/>
-    <updated>2013-04-24T16:24:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/04/24/firststage</id>
-    <content type="html"><![CDATA[<h3>整体解决方案</h3>
-
-<h4><a href="http://twitter.github.io/bootstrap/">Bootstrap：</a></h4>
-
-<p>大而全的前端框架，适合原型搭建。  <br/>
-<a href="http://www.bootcss.com/">中文文档1</a>
-<a href="http://wrongwaycn.github.io/bootstrap/docs/">中文文档2</a></p>
-
-<h4><a href="http://www.keqie.com/">渴切</a></h4>
-
-<p>有很多适合中国特色的解决方案。</p>
-
-<h3>兼容性问题</h3>
-
-<h4><a href="https://github.com/sofish/Alice">Alice:</a></h4>
-
-<p>支付宝团队开源的兼容性问题解决方案   <br/>
-<a href="https://github.com/sofish/Alice">github访问</a></p>
-
-<h4><a href="http://css3pie.com/">PIE：</a></h4>
-
-<p>CSS3在IE下的兼容</p>
-
-<h3>响应式设计</h3>
-
-<h3>生产力工具</h3>
-
-<h4><a href="http://sass-lang.com/">scss</a></h4>
-
-<p>基于ruby</p>
-
-<h4><a href="http://www.lesscss.net/">less</a></h4>
-
-<p>基于js</p>
-
-<h4><a href="http://compass-style.org/">compass</a></h4>
-
-<p>基于scss</p>
-
-<h3>常用效果</h3>
-
-<h4>表单前端验证：</h4>
-
-<p><a href="http://livevalidation.com/">Livevalidation</a>
-<a href="http://www.aqee.net/docs/livevalidation/examples.html">中文文档</a></p>
-
-<h4>幻灯片：</h4>
-
-<h4>表单美化与一致性：</h4>
-
-<p><a href="https://github.com/damirfoy/iCheck/">iCheck</a>:单选框与复选框的美化与一致性。</p>
-
-<h4>图表控件：</h4>
-
-<p><a href="http://www.bootcss.com/p/chart.js/docs/">Chart.js</a>:基于HTML5，通过ExplorerCanvas 可向下支持低版本IE，但只支持6种基本图表。</p>
-
-<h4>动画效果：</h4>
 ]]></content>
   </entry>
   

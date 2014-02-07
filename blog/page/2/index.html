@@ -9,11 +9,9 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="闭包 块可以作为一个闭包.
-example: def my_method x="Goodbye" yield("cruel")
-end
-x = "Hello"
-my_method {|y| "#{x} , #{y} world"} #=&gt;Hello, cruel world &hellip;">
+  <meta name="description" content="类定义 在ruby中，类定义和其他语言有所不同，当使用class关键字时，并非是在指定对象未来的行为方式，实际上是在运行代码。
+类定义会返回最后一条语句的值。
+每当通过class关键字打开一个类，这个类就成为当前类。在类定义中，当前对象self就是正在定义的类。 类实例变量 class &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -61,6 +59,159 @@ my_method {|y| "#{x} , #{y} world"} #=&gt;Hello, cruel world &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/01/metaprogramming-forth/">Ruby元编程四：类定义</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-01T22:47:00+08:00" pubdate data-updated="true">Jul 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>类定义</h2>
+
+<p>在ruby中，类定义和其他语言有所不同，当使用class关键字时，并非是在指定对象未来的行为方式，实际上是在运行代码。
+类定义会返回最后一条语句的值。
+每当通过class关键字打开一个类，这个类就成为当前类。在类定义中，当前对象self就是正在定义的类。</p>
+
+<h3>类实例变量</h3>
+
+<pre><code>class MyClass
+    @var = 0
+    def self.method_one
+        @var = 1
+    end
+
+    def method_two
+        @var = 2
+    end
+
+    def method_three
+        @var = 3
+    end
+
+    class&lt;&lt;self 
+        def method_four
+            x=4
+        end
+
+        def method_five
+            x=5
+        end
+    end
+end
+
+obj = MyClass.new
+obj.method_two           #=&gt;2
+obj.method_threee        #=&gt;3
+MyClass.method_one       #=&gt;1
+类实例变量只有类可以调用它，而类的实例则不行，实例变量则正好相反。
+class&lt;&lt;self 用于一次性定义多个类方法
+</code></pre>
+
+<h3>类变量</h3>
+
+<p>以@@开头，它们可以被子类或者类的实例所使用
+后定义的同名类变量会覆盖之前的，不论它的位置，example：</p>
+
+<pre><code>@@v = 1
+class A
+  @@v = 2
+end
+@@v                        #=&gt;2
+</code></pre>
+
+<h3>扁平化作用域</h3>
+
+<p>使用class, def,  module关键字会产生作用域门.但是如果想在一个模块中共享变量,就需要用到扁平化作用域.
+使用ClassName = Class.new , ModuleName = module.new , define_method: method_name do &#8230;.end
+example:</p>
+
+<pre><code>    my_var = "success"
+    MyClass = Class.new do
+      puts "#{my_var} is get"
+      define_method :printvar do
+        puts "#{my_var} is in the method"
+      end
+    end
+    MyClass.new.printvar
+</code></pre>
+
+<h3>单件方法与类方法</h3>
+
+<p>Ruby允许给单个对象添加方法，这就是单件方法。example:</p>
+
+<pre><code>str = "hahaha"
+def str.title?
+    self.upcase == self
+end
+</code></pre>
+
+<p>而类方法实际就是一种单件方法，因为类也是对象，它针对这个类生效。</p>
+
+<h3>类宏</h3>
+
+<p>Ruby对象没有属性，如果想要定义属性，就需要定义两个拟态方法，一个读方法和一个写方法。</p>
+
+<pre><code>class MyClass
+    def height=(val)
+        @height = val
+    end
+
+    def height
+        @height
+    end
+end
+obj = MyClass.new
+obj.height = "160cm"
+obj.height     #=&gt;"160cm"
+
+这样非常麻烦，我们可以使用module#attr_*系列方法，其中attr_reader()可以生成一个读方法；attr_writer()可以生成写方法；attr_accessor()则可以生成读写方法。
+那么上面的例子就可以改写为：
+
+class MyClass
+    attr_accessor :height
+end
+</code></pre>
+
+<h3>环绕别名</h3>
+
+<p>从一个重新定义的方法中调用原始的，被重命名的版本。 三个步骤： 1. 通过alias 对原有方法定义一个别名 2. 覆写原有方法 3. 在该方法中调用别名方法 这样做的好处，可以改写原有方法，又不破坏原有功能 。</p>
+
+<pre><code>    class String  
+        alias :old_reverse :reverse
+        def reverse 
+            "x#{old_reverse}x"
+        end
+    end 
+    "abc".reverse  =&gt;xcbax
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -951,98 +1102,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/24/firststage/">常用前端资源整理</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-24T16:24:00+08:00" pubdate data-updated="true">Apr 24<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>整体解决方案</h3>
-
-<h4><a href="http://twitter.github.io/bootstrap/">Bootstrap：</a></h4>
-
-<p>大而全的前端框架，适合原型搭建。  <br/>
-<a href="http://www.bootcss.com/">中文文档1</a>
-<a href="http://wrongwaycn.github.io/bootstrap/docs/">中文文档2</a></p>
-
-<h4><a href="http://www.keqie.com/">渴切</a></h4>
-
-<p>有很多适合中国特色的解决方案。</p>
-
-<h3>兼容性问题</h3>
-
-<h4><a href="https://github.com/sofish/Alice">Alice:</a></h4>
-
-<p>支付宝团队开源的兼容性问题解决方案   <br/>
-<a href="https://github.com/sofish/Alice">github访问</a></p>
-
-<h4><a href="http://css3pie.com/">PIE：</a></h4>
-
-<p>CSS3在IE下的兼容</p>
-
-<h3>响应式设计</h3>
-
-<h3>生产力工具</h3>
-
-<h4><a href="http://sass-lang.com/">scss</a></h4>
-
-<p>基于ruby</p>
-
-<h4><a href="http://www.lesscss.net/">less</a></h4>
-
-<p>基于js</p>
-
-<h4><a href="http://compass-style.org/">compass</a></h4>
-
-<p>基于scss</p>
-
-<h3>常用效果</h3>
-
-<h4>表单前端验证：</h4>
-
-<p><a href="http://livevalidation.com/">Livevalidation</a>
-<a href="http://www.aqee.net/docs/livevalidation/examples.html">中文文档</a></p>
-
-<h4>幻灯片：</h4>
-
-<h4>表单美化与一致性：</h4>
-
-<p><a href="https://github.com/damirfoy/iCheck/">iCheck</a>:单选框与复选框的美化与一致性。</p>
-
-<h4>图表控件：</h4>
-
-<p><a href="http://www.bootcss.com/p/chart.js/docs/">Chart.js</a>:基于HTML5，通过ExplorerCanvas 可向下支持低版本IE，但只支持6种基本图表。</p>
-
-<h4>动画效果：</h4>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1060,6 +1119,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
       </li>
     
@@ -1073,10 +1136,6 @@ end
     
       <li class="post">
         <a href="/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/">markdown转换为pdf的解决方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">ruby 同步/异步/多线程模型测试</a>
       </li>
     
   </ul>

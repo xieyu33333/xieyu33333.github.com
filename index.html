@@ -10,11 +10,8 @@
 
   
   <meta name="description" content="公开阅读类 知乎日报 服务器：zhihu_nginx
-传输协议：http
-数据传输格式：Json
-数据安全：无
-登录方式：微博登录，oauth2 今日头条 服务器：nginx/1.2.1，Content-Encoding:gzip
-传输协议：http
+传输协议：http 数据传输格式：Json 数据安全：无
+登录方式：微博登录，oauth2 今日头条 服务器：nginx/1.2.1，Content-Encoding:gzip 传输协议：http
 数据传输格式：Json
 数据安全：无 网易新闻 &hellip;">
   
@@ -97,22 +94,22 @@
 
 <h4>知乎日报</h4>
 
-<p>服务器：zhihu_nginx
-传输协议：http<br/>
-数据传输格式：Json<br/>
+<p>服务器：zhihu_nginx<br/>
+传输协议：http <br/>
+数据传输格式：Json <br/>
 数据安全：无<br/>
 登录方式：微博登录，oauth2</p>
 
 <h4>今日头条</h4>
 
-<p>服务器：nginx/1.2.1，Content-Encoding:gzip<br/>
+<p>服务器：nginx/1.2.1，Content-Encoding:gzip <br/>
 传输协议：http<br/>
 数据传输格式：Json<br/>
 数据安全：无</p>
 
 <h4>网易新闻</h4>
 
-<p>服务器：nginx Content-Encoding:gzip
+<p>服务器：nginx Content-Encoding:gzip<br/>
 传输协议：http, 只在登录和分享时通过https<br/>
 数据传输格式：Json<br/>
 登录方式：网易自身的登录系统</p>
@@ -121,7 +118,7 @@
 
 <h4>知乎</h4>
 
-<p>服务器：zhihu_nginx
+<p>服务器：zhihu_nginx<br/>
 传输协议：https&amp;http，主要信息通过https，图片等静态内容通过http<br/>
 数据传输格式：Json<br/>
 数据安全：即使用户不登陆，也需要一个Authorization：oauth a09343e8e67e44b29e0d850c14c7bf进行验证才能访问接口，登陆后只是验证变成了Authorization： Bearer f15bd82a1fe845ce971ddc78e5090943。<br/>
@@ -129,15 +126,15 @@
 
 <h4>新浪微博</h4>
 
-<p>服务器：nginx/1.2.0，Content-Encoding:gzip
-传输协议：https
-数据传输格式：XML&amp;Json，主要内容采用XML格式，部分采用Json格式<br/>
+<p>服务器：nginx/1.2.0，Content-Encoding:gzip<br/>
+传输协议：https<br/>
+数据传输格式：XML&amp;Json，主要内容采用XML格式，部分采用Json格式  <br/>
 数据安全：主要内容公开api,个人好友列表、私信等个人内容通过将用户token加入参数中保证一定的安全性。   <br/>
 登录：oauth登录，原先采用的oauth1，目前从参数上看，oauth1和oauth2是同时存在的。</p>
 
 <h4>大众点评</h4>
 
-<p>服务器：nginx
+<p>服务器：nginx<br/>
 传输协议：http, 只在登录和分享时通过https  <br/>
 数据传输格式：二进制<br/>
 数据安全：多数api在权限上是公开的，但由于数据传输采用二进制，不知道其编码解码规则的话一般很难获取数据，点评数据等涉及用户的数据也通过header中的token进行验证。

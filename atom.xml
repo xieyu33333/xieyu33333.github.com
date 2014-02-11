@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2014-02-07T17:23:05+08:00</updated>
+  <updated>2014-02-11T22:24:44+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,84 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[阅读类应用服务端通信分析]]></title>
+    <link href="http://xieyu33333.github.com/blog/2014/02/11/app-an/"/>
+    <updated>2014-02-11T22:22:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2014/02/11/app-an</id>
+    <content type="html"><![CDATA[<h3>公开阅读类</h3>
+
+<h4>知乎日报</h4>
+
+<p>服务器：zhihu_nginx
+传输协议：http<br/>
+数据传输格式：Json<br/>
+数据安全：无<br/>
+登录方式：微博登录，oauth2</p>
+
+<h4>今日头条</h4>
+
+<p>服务器：nginx/1.2.1，Content-Encoding:gzip<br/>
+传输协议：http<br/>
+数据传输格式：Json<br/>
+数据安全：无</p>
+
+<h4>网易新闻</h4>
+
+<p>服务器：nginx Content-Encoding:gzip
+传输协议：http, 只在登录和分享时通过https<br/>
+数据传输格式：Json<br/>
+登录方式：网易自身的登录系统</p>
+
+<h3>社交阅读类</h3>
+
+<h4>知乎</h4>
+
+<p>服务器：zhihu_nginx
+传输协议：https&amp;http，主要信息通过https，图片等静态内容通过http<br/>
+数据传输格式：Json<br/>
+数据安全：即使用户不登陆，也需要一个Authorization：oauth a09343e8e67e44b29e0d850c14c7bf进行验证才能访问接口，登陆后只是验证变成了Authorization： Bearer f15bd82a1fe845ce971ddc78e5090943。<br/>
+登录方式：支持自身的登录系统和新浪微博登录</p>
+
+<h4>新浪微博</h4>
+
+<p>服务器：nginx/1.2.0，Content-Encoding:gzip
+传输协议：https
+数据传输格式：XML&amp;Json，主要内容采用XML格式，部分采用Json格式<br/>
+数据安全：主要内容公开api,个人好友列表、私信等个人内容通过将用户token加入参数中保证一定的安全性。   <br/>
+登录：oauth登录，原先采用的oauth1，目前从参数上看，oauth1和oauth2是同时存在的。</p>
+
+<h4>大众点评</h4>
+
+<p>服务器：nginx
+传输协议：http, 只在登录和分享时通过https  <br/>
+数据传输格式：二进制<br/>
+数据安全：多数api在权限上是公开的，但由于数据传输采用二进制，不知道其编码解码规则的话一般很难获取数据，点评数据等涉及用户的数据也通过header中的token进行验证。
+登录方式：自身的登录系统，第三方登录包括：微博，微信，开心，人人，QQ</p>
+
+<h3>总结</h3>
+
+<h4>服务器</h4>
+
+<p>从http请求返回头来看，直面客户的服务器都采用了nginx，至于是做web server还是反向代理就不知道了。新浪微博，网易新闻，今日头条都开启了Gzip压缩。</p>
+
+<h4>传输协议</h4>
+
+<p>公开阅读类应用由于其数据本无需保密，使用http协议就可以了。社交阅读类采用https进行传输加密。</p>
+
+<h4>数据安全</h4>
+
+<p>公开阅读类的数据接口没有什么安全措施，社交阅读类测试的几个都是通过Authorization token进行验证，其中知乎和点评是通过在header中加入token,而微博则是将token放在参数中。点评采用了二进制的传输格式增加了额外的安全性。</p>
+
+<h4>传输格式</h4>
+
+<p>数据传输格式方面，Json的使用最为广泛。<br/>
+xml由于其传输体积大，解析慢，不适合作为C/S间的数据传输。<br/>
+二进制传输体积最小，性能最佳，但是需要开发上做更多的工作，而且需要考虑开源的二进制传输协议的语言支持问题，比如api同时为手机客户端和网页提供api的时候，网页端是难以处理二进制数据的。<br/>
+Json格式目前来看性能足够，开发效率和兼容性则更好，可以为所有平台提供api,综合来说是较为合适的选择。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Node学习笔记一]]></title>
@@ -1457,99 +1535,6 @@ example：</p>
 <h3>Hash</h3>
 
 <p>Hash本质是一个数组，但是它的索引值不局限于数字，它的索引可以是任何对象。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby元编程笔记一]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/05/06/metaprogramming-note1/"/>
-    <updated>2013-05-06T16:25:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/05/06/metaprogramming-note1</id>
-    <content type="html"><![CDATA[<h3>打开类</h3>
-
-<p>通过</p>
-
-<pre><code>class String
-  def to_alphanumeric
-    gsub /[^\w\s]/,''
-  end
-end
-</code></pre>
-
-<p>可以直接打开已有的类并给其添加方法，class关键字的核心任务是把你带入到类的上下文中，让你可以定义其中的方法。 <br/>
-如果方法名重合，那么会覆盖原来的方法，这称为“猴子补丁（Moneypatch）”。</p>
-
-<h3>对象和方法</h3>
-
-<pre><code>class MyClass
-  def my_method
-    @v=1
-  end
-end
-obj = MyClass.new
-
-obj #=&gt; &lt;MyClass:0x007f8e42830838 @v=1&gt;  #obj作为一个实例对象包含一个实例变量@v和一个类MyClss
-obj.class  #=&gt;MyClass
-obj.my_method
-obj.instance_variables #=&gt;[:@v]
-
-obj.methods.grep(/my/)  #=&gt;[:my_method] 
-MyClass.instance_methods(false) #=&gt;[:my_method] 
-MyClass.methods.grep(/my/) #=&gt;[]       
-#通过对比可以看出，my_method是MyClass的一个实例方法，只有当MyClass实例化后才能调用，MyClass类本身并没有这个方法。
-
-MyClass.class #=&gt;Class
-#类也是对象，它包含一个叫Class的类。
-</code></pre>
-
-<h3>类与模块</h3>
-
-<pre><code>Class.superclass #=&gt;Module
-#Class的超类是Module，Class实际就是一个增加了new(),allocate(),superclass()的Module，Class是Module的子类.
-#所有的类都最终继承于Object，Object继承于BasicObject
-</code></pre>
-
-<p>以Rake为例：</p>
-
-<pre><code>module Rake
-  class Task
-   #...
-   #使用Rake::Task来拓展命名空间
-</code></pre>
-
-<p>关于常量：</p>
-
-<pre><code>module MyModule
-  MyContent = "aaa"
-  class MyClass
-    MyContent = "bbb"
-  end
-end      
-#对于常量MyContent,也可以使用MyModule::MyClass::MyContent这样的格式来引用
-</code></pre>
-
-<h3>Kernel模块</h3>
-
-<p>Object引用了Kernel模块，因此Kernel模块中的方法可以对任何对象使用。那么可以用类似打开类的方式给Kernel增加方法（称为“内核方法”）</p>
-
-<pre><code>module Kernel
-  def my_method
-  end
-end
-</code></pre>
-
-<h3>self</h3>
-
-<pre><code>class MyClass
-  def testing_self
-    @var = 10
-    self.my_method()
-  end
-  def my_method
-    @var = @var+1
-  end
-end
-</code></pre>
 ]]></content>
   </entry>
   

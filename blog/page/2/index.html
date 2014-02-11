@@ -9,9 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="类定义 在ruby中，类定义和其他语言有所不同，当使用class关键字时，并非是在指定对象未来的行为方式，实际上是在运行代码。
-类定义会返回最后一条语句的值。
-每当通过class关键字打开一个类，这个类就成为当前类。在类定义中，当前对象self就是正在定义的类。 类实例变量 class &hellip;">
+  <meta name="description" content="Kernel#eval kernel#eval会直接 执行字符串中的代码，并返回执行结果，和javascript中的eval()一样。 钩子方法 Class#inherited 当类被继承时，调用该方法，平时它什么也不做。，可以通过覆写它来形成类似回调函数的用法。
+example: class &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -59,6 +58,68 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/14/metaprogramming-five/">Ruby元编程五：编写代码的代码</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-14T21:06:00+08:00" pubdate data-updated="true">Jul 14<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Kernel#eval</h2>
+
+<p>kernel#eval会直接 执行字符串中的代码，并返回执行结果，和javascript中的eval()一样。</p>
+
+<h2>钩子方法</h2>
+
+<h3>Class#inherited</h3>
+
+<p>当类被继承时，调用该方法，平时它什么也不做。，可以通过覆写它来形成类似回调函数的用法。
+example:</p>
+
+<pre><code>class MyClass                         #inherited是Class的一个实例方法，对于一个特定的类，则是它的类方法。
+    def self.inherited(param)         #注意inherited方法需要一个参数，参数是继承者的类名
+        p "lala"
+    end
+end
+
+MySonClass &lt; MyClass; end       #=&gt;"lala"
+</code></pre>
+
+<h3>更多钩子方法</h3>
+
+<p>Class#inherited是最常用的，还有其他一些：
+Module#includeed
+Module#method_added
+Module#method_removed
+Module#method_undefined</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -982,126 +1043,6 @@ example：</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/06/metaprogramming-note1/">Ruby元编程笔记一</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-06T16:25:00+08:00" pubdate data-updated="true">May 6<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>打开类</h3>
-
-<p>通过</p>
-
-<pre><code>class String
-  def to_alphanumeric
-    gsub /[^\w\s]/,''
-  end
-end
-</code></pre>
-
-<p>可以直接打开已有的类并给其添加方法，class关键字的核心任务是把你带入到类的上下文中，让你可以定义其中的方法。 <br/>
-如果方法名重合，那么会覆盖原来的方法，这称为“猴子补丁（Moneypatch）”。</p>
-
-<h3>对象和方法</h3>
-
-<pre><code>class MyClass
-  def my_method
-    @v=1
-  end
-end
-obj = MyClass.new
-
-obj #=&gt; &lt;MyClass:0x007f8e42830838 @v=1&gt;  #obj作为一个实例对象包含一个实例变量@v和一个类MyClss
-obj.class  #=&gt;MyClass
-obj.my_method
-obj.instance_variables #=&gt;[:@v]
-
-obj.methods.grep(/my/)  #=&gt;[:my_method] 
-MyClass.instance_methods(false) #=&gt;[:my_method] 
-MyClass.methods.grep(/my/) #=&gt;[]       
-#通过对比可以看出，my_method是MyClass的一个实例方法，只有当MyClass实例化后才能调用，MyClass类本身并没有这个方法。
-
-MyClass.class #=&gt;Class
-#类也是对象，它包含一个叫Class的类。
-</code></pre>
-
-<h3>类与模块</h3>
-
-<pre><code>Class.superclass #=&gt;Module
-#Class的超类是Module，Class实际就是一个增加了new(),allocate(),superclass()的Module，Class是Module的子类.
-#所有的类都最终继承于Object，Object继承于BasicObject
-</code></pre>
-
-<p>以Rake为例：</p>
-
-<pre><code>module Rake
-  class Task
-   #...
-   #使用Rake::Task来拓展命名空间
-</code></pre>
-
-<p>关于常量：</p>
-
-<pre><code>module MyModule
-  MyContent = "aaa"
-  class MyClass
-    MyContent = "bbb"
-  end
-end      
-#对于常量MyContent,也可以使用MyModule::MyClass::MyContent这样的格式来引用
-</code></pre>
-
-<h3>Kernel模块</h3>
-
-<p>Object引用了Kernel模块，因此Kernel模块中的方法可以对任何对象使用。那么可以用类似打开类的方式给Kernel增加方法（称为“内核方法”）</p>
-
-<pre><code>module Kernel
-  def my_method
-  end
-end
-</code></pre>
-
-<h3>self</h3>
-
-<pre><code>class MyClass
-  def testing_self
-    @var = 10
-    self.my_method()
-  end
-  def my_method
-    @var = @var+1
-  end
-end
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1119,6 +1060,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/11/app-an/">阅读类应用服务端通信分析</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a>
       </li>
     
@@ -1132,10 +1077,6 @@ end
     
       <li class="post">
         <a href="/blog/2013/12/30/doczhuan-huan-wei-pdfde-jie-jue-fang-an/">Doc转换为pdf的解决方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/">markdown转换为pdf的解决方案</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: JavaScript | 庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2014-02-13T09:38:27+08:00</updated>
+  <updated>2014-02-13T09:44:50+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -51,7 +51,7 @@
 <li><code>package.json</code> 必须在包的顶层目录下;</li>
 <li>二进制文件应该在 <code>bin</code> 目录下; * JavaScript代码应该在 <code>lib</code> 目录下; * 文档应该在 <code>doc</code> 目录下; * 单元测试应该在 <code>test</code> 目录下。
 包的功能完成后，使用
- npm init
+ $ npm init
 这时会让你填写package的value，依次填写即可，完成后就可以发布了。</li>
 </ul>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2014-02-11T22:28:13+08:00</updated>
+  <updated>2014-02-13T09:38:27+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Node学习笔记二]]></title>
+    <link href="http://xieyu33333.github.com/blog/2014/02/12/node-2/"/>
+    <updated>2014-02-12T10:44:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2014/02/12/node-2</id>
+    <content type="html"><![CDATA[<h3>npm包简介</h3>
+
+<p>Node可以以包的形式封装插件，不同于Ruby的gem包，Node的包默认并不是全局安装的，而是安装在项目目录中的<code>node_modules</code>目录下。只作用于项目目录。<br/>
+如果需要全局安装，比如一些带有命令行工具的npm包，在安装时需要加上<code>-g</code>命令，例如：</p>
+
+<pre><code>$ npm install -g supervisor
+</code></pre>
+
+<p>使用全局模式安装时,npm 会将包安装到系统目录,譬如 <code>/usr/local/lib/node_modules/</code>,同时 <code>package.json</code> 文件中 bin 字段包含的文件会被链接到 <code>/usr/local/bin/</code>。</p>
+
+<p>需要注意的是使用全局模式安装的包并不能直接在 JavaScript 文件中用 require 获得,因为 require 不会搜索 /usr/local/lib/node_modules/。如果想要require全局包，可以使用</p>
+
+<pre><code>$ npm link package
+</code></pre>
+
+<p>这个命令会在项目内的<code>node_modules</code>创建一个指向全局包的符号链接。通过这种方法,我们就可以把全局包当本地包来使用了。</p>
+
+<h3>制作npm包</h3>
+
+<p> 一个基本的npm包需要包含一个<code>package.json</code>文件，一个<code>lib</code>文件夹,在<code>lib</code>文件夹内编写主要的逻辑，<code>package.json</code>文件则包含了该npm包的一些信息。
+ <code>package.json</code>需要包含一个名为main的key，</p>
+
+<pre><code> {
+  "main": "./lib/test.js",
+ }  
+</code></pre>
+
+<p> 完整的npm包往往还需要一些其他的功能，例如测试，文档等</p>
+
+<ul>
+<li><code>package.json</code> 必须在包的顶层目录下;</li>
+<li>二进制文件应该在 <code>bin</code> 目录下; * JavaScript代码应该在 <code>lib</code> 目录下; * 文档应该在 <code>doc</code> 目录下; * 单元测试应该在 <code>test</code> 目录下。
+包的功能完成后，使用
+ npm init
+这时会让你填写package的value，依次填写即可，完成后就可以发布了。</li>
+</ul>
+
+
+<h3>发布npm包</h3>
+
+<p>如果要发布npm包，需要注册一个账号，首先需要执行</p>
+
+<pre><code>$ npm config set email
+</code></pre>
+
+<p>然后执行</p>
+
+<pre><code>$ npm adduser
+</code></pre>
+
+<p>之后就可以跟据提示输入用户名，密码，邮箱。完成后输入<code>npm whoami</code>可以查询是否注册成功。
+注册完成后，在项目目录输入</p>
+
+<pre><code>$ npm publish
+</code></pre>
+
+<p>稍后片刻就完成项目的发布了。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[阅读类应用服务端通信分析]]></title>
@@ -108,7 +173,7 @@ Json格式目前来看性能足够，开发效率和兼容性则更好，可以�
 <pre><code>supervisor app.js
 </code></pre>
 
-<p>这样就可以了，由于该命令比较长，建议设置一个alias。</p>
+<p>这样就可以了，由于该命令比较长，建议设置一个alias,例如我设置的是cnode，使用时直接使用<code>cnode app.js</code>就可以了</p>
 
 <h3>模块</h3>
 
@@ -1486,55 +1551,6 @@ str="bcdaaa"
 &gt;&gt; %s(#{foo} bar)
 =&gt; :"\#{foo} bar"
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby中一些特别的数据类型]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/05/07/ruby-dataclass/"/>
-    <updated>2013-05-07T21:03:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/05/07/ruby-dataclass</id>
-    <content type="html"><![CDATA[<h3>Range</h3>
-
-<p>example:</p>
-
-<pre><code>    1..9
-    (1..9).to_a #=&gt;[1,2,3,4,5,6,7,8,9]
-    a=["aa","bb","cc","dd"]
-    a[0..2]=["aa","bb","cc"]
-    a..c
-    (a..c).to_a #=&gt;[a,b,c]
-    (1..9) ===5           #=&gt; true  #可以用做间隔测试
-</code></pre>
-
-<h3>Symbol</h3>
-
-<p>Symbol是ruby特有的一种数据类型，每一个变量都对应这一个同名Symbol值，每个Symbol对应一个内部id，因此查询速度很快，常用于作为键名。</p>
-
-<pre><code>    1.9以前版本只支持 :name =&gt; "xieyu"
-    新版本同时支持 name:"xieyu"
-</code></pre>
-
-<h3>block</h3>
-
-<p>数组和Range可以通过block来进行迭代
-example：</p>
-
-<pre><code>    (1..5).each{ |i| puts 2*i}
-    #=&gt;2
-    #=&gt;4
-    #=&gt;6
-    #=&gt;8
-    #=&gt;10
-    花括号可以使用do ... end来代替
-    (1..5).each do |i|
-        2*i
-    end
-</code></pre>
-
-<h3>Hash</h3>
-
-<p>Hash本质是一个数组，但是它的索引值不局限于数字，它的索引可以是任何对象。</p>
 ]]></content>
   </entry>
   

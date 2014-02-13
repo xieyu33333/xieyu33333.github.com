@@ -9,11 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="公开阅读类 知乎日报 服务器：zhihu_nginx
-传输协议：http 数据传输格式：Json 数据安全：无
-登录方式：微博登录，oauth2 今日头条 服务器：nginx/1.2.1，Content-Encoding:gzip 传输协议：http
-数据传输格式：Json
-数据安全：无 网易新闻 &hellip;">
+  <meta name="description" content="npm包简介 Node可以以包的形式封装插件，不同于Ruby的gem包，Node的包默认并不是全局安装的，而是安装在项目目录中的node_modules目录下。只作用于项目目录。
+如果需要全局安装，比如一些带有命令行工具的npm包，在安装时需要加上-g命令，例如： $ npm install -g &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -61,6 +58,98 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/12/node-2/">Node学习笔记二</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-12T10:44:00+08:00" pubdate data-updated="true">Feb 12<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>npm包简介</h3>
+
+<p>Node可以以包的形式封装插件，不同于Ruby的gem包，Node的包默认并不是全局安装的，而是安装在项目目录中的<code>node_modules</code>目录下。只作用于项目目录。<br/>
+如果需要全局安装，比如一些带有命令行工具的npm包，在安装时需要加上<code>-g</code>命令，例如：</p>
+
+<pre><code>$ npm install -g supervisor
+</code></pre>
+
+<p>使用全局模式安装时,npm 会将包安装到系统目录,譬如 <code>/usr/local/lib/node_modules/</code>,同时 <code>package.json</code> 文件中 bin 字段包含的文件会被链接到 <code>/usr/local/bin/</code>。</p>
+
+<p>需要注意的是使用全局模式安装的包并不能直接在 JavaScript 文件中用 require 获得,因为 require 不会搜索 /usr/local/lib/node_modules/。如果想要require全局包，可以使用</p>
+
+<pre><code>$ npm link package
+</code></pre>
+
+<p>这个命令会在项目内的<code>node_modules</code>创建一个指向全局包的符号链接。通过这种方法,我们就可以把全局包当本地包来使用了。</p>
+
+<h3>制作npm包</h3>
+
+<p> 一个基本的npm包需要包含一个<code>package.json</code>文件，一个<code>lib</code>文件夹,在<code>lib</code>文件夹内编写主要的逻辑，<code>package.json</code>文件则包含了该npm包的一些信息。
+ <code>package.json</code>需要包含一个名为main的key，</p>
+
+<pre><code> {
+  "main": "./lib/test.js",
+ }  
+</code></pre>
+
+<p> 完整的npm包往往还需要一些其他的功能，例如测试，文档等</p>
+
+<ul>
+<li><code>package.json</code> 必须在包的顶层目录下;</li>
+<li>二进制文件应该在 <code>bin</code> 目录下; * JavaScript代码应该在 <code>lib</code> 目录下; * 文档应该在 <code>doc</code> 目录下; * 单元测试应该在 <code>test</code> 目录下。
+包的功能完成后，使用
+ npm init
+这时会让你填写package的value，依次填写即可，完成后就可以发布了。</li>
+</ul>
+
+
+<h3>发布npm包</h3>
+
+<p>如果要发布npm包，需要注册一个账号，首先需要执行</p>
+
+<pre><code>$ npm config set email
+</code></pre>
+
+<p>然后执行</p>
+
+<pre><code>$ npm adduser
+</code></pre>
+
+<p>之后就可以跟据提示输入用户名，密码，邮箱。完成后输入<code>npm whoami</code>可以查询是否注册成功。
+注册完成后，在项目目录输入</p>
+
+<pre><code>$ npm publish
+</code></pre>
+
+<p>稍后片刻就完成项目的发布了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -207,7 +296,7 @@ Json格式目前来看性能足够，开发效率和兼容性则更好，可以�
 <pre><code>supervisor app.js
 </code></pre>
 
-<p>这样就可以了，由于该命令比较长，建议设置一个alias。</p>
+<p>这样就可以了，由于该命令比较长，建议设置一个alias,例如我设置的是cnode，使用时直接使用<code>cnode app.js</code>就可以了</p>
 
 <h3>模块</h3>
 
@@ -1084,65 +1173,6 @@ ref: refs/heads/master
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/30/mysqldump/">Mysqldump及用户权限设置</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-30T10:32:00+08:00" pubdate data-updated="true">Aug 30<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>新建用户</h3>
-
-<p>我们查看mysql的root用户的port字段，其中有值为&#8217;%&#8217;的，代表除本地外的其他地址的链接，但是port = &#8216;%&#8217;的行在root用户组中排在最下面，因此远程链接数据库就会因权限不足而失败。
-我们选择新建一个用户来进行远程数据备份：</p>
-
-<pre><code>mysql&gt; insert into mysql.user(Host,User,Password) values("%","yourname",password("1234"));
-</code></pre>
-
-<p>这样就创建了一个新用户，然后是给用户授权：</p>
-
-<pre><code>mysql&gt; GRANT ALL PRIVILEGES ON *.* TO 'yourname'@'%'IDENTIFIED BY '1234';
-</code></pre>
-
-<p>刷新用户权限：</p>
-
-<pre><code>mysql&gt; flush privileges;
-</code></pre>
-
-<h3>mysqldump</h3>
-
-<p>用于将远程数据库导出到本地：</p>
-
-<pre><code>mysqldump -h192.125.117.89 -uyourname -p1234 databasename &gt; /home/xieyu/databasename.sql
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1158,6 +1188,10 @@ ref: refs/heads/master
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/12/node-2/">Node学习笔记二</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/11/app-an/">阅读类应用服务端通信分析</a>
       </li>
     
@@ -1171,10 +1205,6 @@ ref: refs/heads/master
     
       <li class="post">
         <a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/30/doczhuan-huan-wei-pdfde-jie-jue-fang-an/">Doc转换为pdf的解决方案</a>
       </li>
     
   </ul>

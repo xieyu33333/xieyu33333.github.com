@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Node | 庇护祝福的分享]]></title>
+  <title><![CDATA[Category: node | 庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/blog/categories/node/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2014-02-11T22:28:13+08:00</updated>
+  <updated>2014-02-13T09:38:27+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -14,49 +14,67 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Node学习笔记一]]></title>
-    <link href="http://xieyu33333.github.com/blog/2014/02/07/node-note-1/"/>
-    <updated>2014-02-07T16:16:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2014/02/07/node-note-1</id>
-    <content type="html"><![CDATA[<h3>使用 supervisor</h3>
+    <title type="html"><![CDATA[Node学习笔记二]]></title>
+    <link href="http://xieyu33333.github.com/blog/2014/02/12/node-2/"/>
+    <updated>2014-02-12T10:44:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2014/02/12/node-2</id>
+    <content type="html"><![CDATA[<h3>npm包简介</h3>
 
-<p> Node.js 只有在第一次引用到某部份时才会去解析脚 本文件,以后都会直接访问内存,避免重复载入,但是在开发调试时很不方便，可以使用小工具 supervisor 在文件发生变化时自动重新加载。</p>
+<p>Node可以以包的形式封装插件，不同于Ruby的gem包，Node的包默认并不是全局安装的，而是安装在项目目录中的<code>node_modules</code>目录下。只作用于项目目录。<br/>
+如果需要全局安装，比如一些带有命令行工具的npm包，在安装时需要加上<code>-g</code>命令，例如：</p>
 
 <pre><code>$ npm install -g supervisor
 </code></pre>
 
-<p>安装完成后使用命令</p>
+<p>使用全局模式安装时,npm 会将包安装到系统目录,譬如 <code>/usr/local/lib/node_modules/</code>,同时 <code>package.json</code> 文件中 bin 字段包含的文件会被链接到 <code>/usr/local/bin/</code>。</p>
 
-<pre><code>supervisor app.js
+<p>需要注意的是使用全局模式安装的包并不能直接在 JavaScript 文件中用 require 获得,因为 require 不会搜索 /usr/local/lib/node_modules/。如果想要require全局包，可以使用</p>
+
+<pre><code>$ npm link package
 </code></pre>
 
-<p>这样就可以了，由于该命令比较长，建议设置一个alias。</p>
+<p>这个命令会在项目内的<code>node_modules</code>创建一个指向全局包的符号链接。通过这种方法,我们就可以把全局包当本地包来使用了。</p>
 
-<h3>模块</h3>
+<h3>制作npm包</h3>
 
-<p>模块是 Node.js 应用程序的基本组成部分,文件和模块是一一对应的。换言之,一个 Node.js 文件就是一个模块<br/>
-应用模块使用两个关键字：<code>require</code>和<code>exports</code>。如下例：在app.js中引入并使用content.js。</p>
+<p> 一个基本的npm包需要包含一个<code>package.json</code>文件，一个<code>lib</code>文件夹,在<code>lib</code>文件夹内编写主要的逻辑，<code>package.json</code>文件则包含了该npm包的一些信息。
+ <code>package.json</code>需要包含一个名为main的key，</p>
 
-<p>app.js</p>
-
-<pre><code>content = require('./content')
-console.log(content.text);
-content.log();
+<pre><code> {
+  "main": "./lib/test.js",
+ }  
 </code></pre>
 
-<p>content.js</p>
+<p> 完整的npm包往往还需要一些其他的功能，例如测试，文档等</p>
 
-<pre><code>exports.text = "Hello World!";
-exports.log = function(){
-  console.log("Success!");
-} 
+<ul>
+<li><code>package.json</code> 必须在包的顶层目录下;</li>
+<li>二进制文件应该在 <code>bin</code> 目录下; * JavaScript代码应该在 <code>lib</code> 目录下; * 文档应该在 <code>doc</code> 目录下; * 单元测试应该在 <code>test</code> 目录下。
+包的功能完成后，使用
+ npm init
+这时会让你填写package的value，依次填写即可，完成后就可以发布了。</li>
+</ul>
+
+
+<h3>发布npm包</h3>
+
+<p>如果要发布npm包，需要注册一个账号，首先需要执行</p>
+
+<pre><code>$ npm config set email
 </code></pre>
 
-<p>最后执行<code>node app.js</code>的结果是</p>
+<p>然后执行</p>
 
-<pre><code>Hello World!
-Success!
+<pre><code>$ npm adduser
 </code></pre>
+
+<p>之后就可以跟据提示输入用户名，密码，邮箱。完成后输入<code>npm whoami</code>可以查询是否注册成功。
+注册完成后，在项目目录输入</p>
+
+<pre><code>$ npm publish
+</code></pre>
+
+<p>稍后片刻就完成项目的发布了。</p>
 ]]></content>
   </entry>
   

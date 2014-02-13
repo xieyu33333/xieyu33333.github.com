@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>rails常用gem - 庇护祝福的分享</title>
+  <title>Node学习笔记二 - 庇护祝福的分享</title>
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="总结一下最近rails项目用到的gems rubygems官方网站 最流行的rubygems排名 测试： rspec-rails
-pry (命令行断点调试工具) 前端 ： compass-rails
-masonry-rails （瀑布流） 部署： unicorn passenger web &hellip;">
+  <meta name="description" content="npm包简介 Node可以以包的形式封装插件，不同于Ruby的gem包，Node的包默认并不是全局安装的，而是安装在项目目录中的node_modules目录下。只作用于项目目录。
+如果需要全局安装，比如一些带有命令行工具的npm包，在安装时需要加上-g命令，例如： $ npm install -g &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +20,7 @@ masonry-rails （瀑布流） 部署： unicorn passenger web &hellip;">
   <meta name="baidu-tc-verification" content="ab4be6be306aae217340419193ba5011" />
 
   
-  <link rel="canonical" href="http://xieyu33333.github.com/blog/2013/03/31/my-third-blog">
+  <link rel="canonical" href="http://xieyu33333.github.com/blog/2014/02/12/node-2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="庇护祝福的分享" type="application/atom+xml">
@@ -62,7 +61,7 @@ masonry-rails （瀑布流） 部署： unicorn passenger web &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Rails常用gem</h1>
+      <h1 class="entry-title">Node学习笔记二</h1>
     
     
       <p class="meta">
@@ -78,81 +77,70 @@ masonry-rails （瀑布流） 部署： unicorn passenger web &hellip;">
   
 
 
-<time datetime="2013-03-31T21:00:00+08:00" pubdate data-updated="true">Mar 31<span>st</span>, 2013</time>
+<time datetime="2014-02-12T10:44:00+08:00" pubdate data-updated="true">Feb 12<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h4>总结一下最近rails项目用到的gems</h4>
+<div class="entry-content"><h3>npm包简介</h3>
 
-<p><a href="http://rubygems.org">rubygems官方网站</a>  <br/>
-<a href="https://www.ruby-toolbox.com/">最流行的rubygems排名</a></p>
+<p>Node可以以包的形式封装插件，不同于Ruby的gem包，Node的包默认并不是全局安装的，而是安装在项目目录中的<code>node_modules</code>目录下。只作用于项目目录。<br/>
+如果需要全局安装，比如一些带有命令行工具的npm包，在安装时需要加上<code>-g</code>命令，例如：</p>
 
-<h3>测试：</h3>
+<pre><code>$ npm install -g supervisor
+</code></pre>
 
-<p><a href="https://github.com/rspec/rspec-rails">rspec-rails</a><br/>
-<a href="https://github.com/pry/pry">pry</a>  (命令行断点调试工具)</p>
+<p>使用全局模式安装时,npm 会将包安装到系统目录,譬如 <code>/usr/local/lib/node_modules/</code>,同时 <code>package.json</code> 文件中 bin 字段包含的文件会被链接到 <code>/usr/local/bin/</code>。</p>
 
-<h3>前端 ：</h3>
+<p>需要注意的是使用全局模式安装的包并不能直接在 JavaScript 文件中用 require 获得,因为 require 不会搜索 /usr/local/lib/node_modules/。如果想要require全局包，可以使用</p>
 
-<p><a href="https://github.com/Compass/compass-rails">compass-rails</a><br/>
-<a href="https://github.com/kristianmandrup/masonry-rails">masonry-rails</a> （瀑布流）</p>
+<pre><code>$ npm link package
+</code></pre>
 
-<h3>部署：</h3>
+<p>这个命令会在项目内的<code>node_modules</code>创建一个指向全局包的符号链接。通过这种方法,我们就可以把全局包当本地包来使用了。</p>
 
-<p><a href="http://www.seeyon.com/news/4062.html">unicorn</a>     <br/>
-<a href="https://github.com/FooBarWidget/passenger">passenger</a></p>
+<h3>制作npm包</h3>
 
-<h3>web service接口：</h3>
+<p> 一个基本的npm包需要包含一个<code>package.json</code>文件，一个<code>lib</code>文件夹,在<code>lib</code>文件夹内编写主要的逻辑，<code>package.json</code>文件则包含了该npm包的一些信息。
+ <code>package.json</code>需要包含一个名为main的key，</p>
 
-<p><a href="https://github.com/intridea/grape">grape</a></p>
+<pre><code> {
+  "main": "./lib/test.js",
+ }  
+</code></pre>
 
-<h3>数据库支持:</h3>
+<p> 完整的npm包往往还需要一些其他的功能，例如测试，文档等</p>
 
-<p><a href="https://github.com/brianmario/mysql2">mysql2</a> mysql数据库支持 <br/>
-<a href="https://github.com/mongoid/mongoid">mongoid</a> mongodb数据库支持</p>
+<ul>
+<li><code>package.json</code> 必须在包的顶层目录下;</li>
+<li>二进制文件应该在 <code>bin</code> 目录下; * JavaScript代码应该在 <code>lib</code> 目录下; * 文档应该在 <code>doc</code> 目录下; * 单元测试应该在 <code>test</code> 目录下。
+包的功能完成后，使用
+ npm init
+这时会让你填写package的value，依次填写即可，完成后就可以发布了。</li>
+</ul>
 
-<h3>后台队列:</h3>
 
-<p><a href="https://github.com/resque/resque">resque</a></p>
+<h3>发布npm包</h3>
 
-<h3>文件上传：</h3>
+<p>如果要发布npm包，需要注册一个账号，首先需要执行</p>
 
-<p><a href="https://github.com/jnicklas/carrierwave/">Carrierwave</a></p>
+<pre><code>$ npm config set email
+</code></pre>
 
-<h3>分页：</h3>
+<p>然后执行</p>
 
-<p><a href="https://github.com/mislav/will_paginate">will_paginate</a> <br/>
-<a href="https://github.com/amatsuda/kaminari">Kaminari</a></p>
+<pre><code>$ npm adduser
+</code></pre>
 
-<h3>用户系统：</h3>
+<p>之后就可以跟据提示输入用户名，密码，邮箱。完成后输入<code>npm whoami</code>可以查询是否注册成功。
+注册完成后，在项目目录输入</p>
 
-<p><a href="https://github.com/plataformatec/devise">devise</a> 全面的登陆注册系统    <br/>
-<a href="https://github.com/ryanb/cancan">cancan</a> 用户权限设置  <br/>
-<a href="https://github.com/codahale/bcrypt-ruby">bcrypt-ruby</a> 用于加密</p>
+<pre><code>$ npm publish
+</code></pre>
 
-<h3>富文本编辑：</h3>
-
-<p><a href="https://github.com/Macrow/rails_kindeditor">rails_kindeditor</a></p>
-
-<h3>Bootstrape:</h3>
-
-<p><a href="https://github.com/seyhunak/twitter-bootstrap-rails">twitter-bootstrap-rails</a> <br/>
-<a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a></p>
-
-<h3>图片处理：</h3>
-
-<p><a href="https://github.com/minimagick/minimagick">mini_magick</a>  （需要安装imagemagick）</p>
-
-<h3>memcache:</h3>
-
-<p><a href="https://github.com/mperham/dalli">dalli</a></p>
-
-<h3>JS数据引用</h3>
-
-<p><a href="https://github.com/gazay/gon">gon</a> #可以在JS中使用服务端数据</p>
+<p>稍后片刻就完成项目的发布了。</p>
 </div>
 
 
@@ -175,12 +163,12 @@ masonry-rails （瀑布流） 部署： unicorn passenger web &hellip;">
   
 
 
-<time datetime="2013-03-31T21:00:00+08:00" pubdate data-updated="true">Mar 31<span>st</span>, 2013</time>
+<time datetime="2014-02-12T10:44:00+08:00" pubdate data-updated="true">Feb 12<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gem-ruby/'>gem ruby</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/zi-yuan-zheng-li/'>资源整理</a>
+    <a class='category' href='/blog/categories/javascript/'>JavaScript</a>, <a class='category' href='/blog/categories/node/'>node</a>
   
 </span>
 
@@ -189,7 +177,7 @@ masonry-rails （瀑布流） 部署： unicorn passenger web &hellip;">
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2013/03/31/my-third-blog/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2013/03/31/my-third-blog/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2014/02/12/node-2/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2014/02/12/node-2/" >Tweet</a>
   
   
   
@@ -200,10 +188,8 @@ masonry-rails （瀑布流） 部署： unicorn passenger web &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/03/26/my-second-blog/" title="Previous Post: 前端样式库小结">&laquo; 前端样式库小结</a>
+        <a class="basic-alignment left" href="/blog/2014/02/11/app-an/" title="Previous Post: 阅读类应用服务端通信分析">&laquo; 阅读类应用服务端通信分析</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/04/01/basic-javascript-values/" title="Next Post: Javascript权威指南笔记一：核心语法(对象)">Javascript权威指南笔记一：核心语法(对象) &raquo;</a>
       
     </p>
   </footer>

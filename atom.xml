@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2014-02-14T17:23:36+08:00</updated>
+  <updated>2014-02-17T23:40:18+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,26 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[jQuery运用jsonp时的一个问题]]></title>
+    <link href="http://xieyu33333.github.com/blog/2014/02/17/jsonp/"/>
+    <updated>2014-02-17T23:28:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2014/02/17/jsonp</id>
+    <content type="html"><![CDATA[<p>今天做一个小Demo的时候，需要跨域请求API，自然而然的想到jsonp,由于整个页面的数据来自于多个API接口，这时发现会报错：</p>
+
+<pre><code>TypeError: Property 'jsonpCallback' of object [object Object] is not a function
+</code></pre>
+
+<p>如果是异步加载的话，返回的值均为</p>
+
+<pre><code>jsonpCallback（{...json数据....}）
+</code></pre>
+
+<p>这样就造成了冲突，需要将与接口的异步通信改成同步通信，不过比较坑的是jQuery的Ajax函数内置的async参数对于jsonp是不生效的。<br/>
+目前暂时先用回调嵌套的笨办法解决问题，先记录这个问题，研究出结果了继续写~</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Node学习笔记二]]></title>
@@ -243,6 +263,7 @@ Success!
 <li>熟练掌握Bootstrap/foundation, 可以手写/使用框架构建响应式页面。</li>
 <li>熟悉LESS&amp;SCSS等CSS预处理语言。</li>
 <li>熟悉常见的浏览器兼容性问题，有较丰富的兼容性问题处理经验。</li>
+<li>了解Node.js</li>
 </ul>
 
 
@@ -1490,86 +1511,6 @@ str="bcdaaa"
 <h4>CEO来自投资方</h4>
 
 <p>由于公司是香港集团的全资子公司，CEO是该集团的一位经理，但他同时管理多家控股公司，其他公司和母公司业务比较贴近，做硬件方面，更多的是资本，渠道的东西，这方面他很了解，而我们这边做软件，设计则更多是看人。一方面CEO并非所有精力都在这边，一方面他对设计和软件业务并不了解。而现在的情况是一个本该是政委，或者监军的人坐在了主帅的位置上。虽然这不是他的错，他也尽自己最大的努力放权给更懂业务的主管们，但毕竟身在那个位置，很多决策需要他来定。不可避免的会出现外行领导内行的情况。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[%Q, %q, %W, %w, %x, %r, %s]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/05/12/percent-w-and-so-on/"/>
-    <updated>2013-05-12T23:29:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/05/12/percent-w-and-so-on</id>
-    <content type="html"><![CDATA[<h3>%Q</h3>
-
-<p>遇到引号嵌套的时候我们往往需要使用反斜线来实现转义，使用%Q(&#8230;)可以实现同样的效果，最终输出字符串，并且支持使用#{}操作变量</p>
-
-<pre><code>&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
-=&gt; "Joe said: "Frank said: "Hello!"""
-</code></pre>
-
-<p>The parenthesis “(…)” can be replaced with any other non-alphanumeric characters and non-printing characters (pairs), so the following commands are equivalent:</p>
-
-<pre><code>&gt;&gt; %Q!Joe said: "Frank said: "#{what_frank_said}""!
-&gt;&gt; %Q[Joe said: "Frank said: "#{what_frank_said}""]
-&gt;&gt; %Q+Joe said: "Frank said: "#{what_frank_said}""+
-</code></pre>
-
-<p>You can use also:</p>
-
-<pre><code>&gt;&gt; %/Joe said: "Frank said: "#{what_frank_said}""/
-=&gt; "Joe said: "Frank said: "Hello!"""
-</code></pre>
-
-<h3>%q</h3>
-
-<p>%q和%Q大同小异，只是用于单引号，因此无法支持变量</p>
-
-<pre><code>&gt;&gt; %q(Joe said: 'Frank said: '#{what_frank_said} ' ')
-=&gt; "Joe said: 'Frank said: '\#{what_frank_said} ' '"
-</code></pre>
-
-<h3>%W</h3>
-
-<p>转化为数组并支持变量</p>
-
-<pre><code>&gt;&gt; %W(#{foo} Bar Bar\ with\ space)
-=&gt; ["Foo", "Bar", "Bar with space"]
-</code></pre>
-
-<h3>%w</h3>
-
-<p>转化为数组，但不支持变量</p>
-
-<pre><code>&gt;&gt; %w(#{foo} Bar Bar\ with\ space)
-=&gt; ["\#{foo}", "Bar", "Bar with space"]
-</code></pre>
-
-<h3>%x</h3>
-
-<p>Uses the ` method and returns the standard output of running the command in a subshell.The syntax is similar to %Q.</p>
-
-<pre><code>&gt;&gt; %x(echo foo:#{foo})
-=&gt; "foo:Foo\n"
-</code></pre>
-
-<h3>%r</h3>
-
-<p>转化为正则表达式</p>
-
-<pre><code>&gt;&gt; %r(/home/#{foo})
-=&gt; "/\\/home\\/Foo/"
-</code></pre>
-
-<h3>%s</h3>
-
-<p>转化为symbols.It’s not subject to expression substitution or escape sequences.</p>
-
-<pre><code>&gt;&gt; %s(foo)
-=&gt; :foo
-&gt;&gt; %s(foo bar)
-=&gt; :"foo bar"
-&gt;&gt; %s(#{foo} bar)
-=&gt; :"\#{foo} bar"
-</code></pre>
 ]]></content>
   </entry>
   

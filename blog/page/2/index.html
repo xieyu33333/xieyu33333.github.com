@@ -9,8 +9,7 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="新建用户 我们查看mysql的root用户的port字段，其中有值为&#8217;%&#8217;的，代表除本地外的其他地址的链接，但是port = &#8216;%&#8217;的行在root用户组中排在最下面，因此远程链接数据库就会因权限不足而失败。
-我们选择新建一个用户来进行远程数据备份： &hellip;">
+  <meta name="description" content="创建操作 git branch 列出所有的分支, -r参数表示列出所有远程的分支 git branch branchname 建立一个名为的分支,使用当前版本作为这个新分支的版本 git branch 建立一个名为的分支, 使用指定的 作为新分支的版本,这个start- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -59,6 +58,103 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/06/git-branch/">Git Branch</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-06T11:14:00+08:00" pubdate data-updated="true">Sep 6<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>创建操作</h3>
+
+<h4>git branch</h4>
+
+<p>列出所有的分支, -r参数表示列出所有远程的分支</p>
+
+<h4>git branch branchname</h4>
+
+<p>建立一个名为的分支,使用当前版本作为这个新分支的版本</p>
+
+<h4>git branch</h4>
+
+<p>建立一个名为的分支, 使用指定的 作为新分支的版本,这个start-point可以是其他的分支名称或者tag名称。</p>
+
+<h3>删除操作</h3>
+
+<h4>git branch -d</h4>
+
+<p>删除分支 ; 如果你要删除的分支并没有被merge到当前分支的话，将产生一个错误提示。</p>
+
+<h4>git branch -D</h4>
+
+<p>同-d，但是不管要删除的分支是否已经merge到当前分支，都会删除</p>
+
+<h3>切换操作</h3>
+
+<h4>git checkout</h4>
+
+<p>切换当前分支到 , 更新 working directory 到 所对应的版本</p>
+
+<h4>git checkout -b</h4>
+
+<p>按照的版本建立一个新的分支，并checkout到这个新分支上。</p>
+
+<h4>git checkout -f</h4>
+
+<p>忽略差异部分，强制切换，例如：
+修改branch test, 但是没有commit，这时如果切换到master，会提示错误。使用-f 则会丢弃test中的修改，强制切换，如果切回test分支，刚才的修改也没了</p>
+
+<p>一个特殊符号 “HEAD” 总是指向当前分支. 实际上git使用一个在.git目录中叫 “HEAD”的文件来记录当前分支:</p>
+
+<pre><code>$ cat .git/HEAD
+ref: refs/heads/master
+</code></pre>
+
+<p>示例：“master”分支是当初你执行git-clone时候，clone的一个远程repository的HEAD版本的一个copy.</p>
+
+<pre><code>$ git branch -r
+  origin/HEAD
+  origin/html
+  origin/maint
+  origin/man
+  origin/master
+  origin/next
+  origin/pu
+  origin/todo
+</code></pre>
+
+<p>列出所有远程版本，origin是用来表示你当初执行git-clone时候的repository，你不可以直接checkout远程repository，但是你可以根据远程repository生成一个本地repository：</p>
+
+<pre><code>$ git checkout -b my-todo-copy origin/todo
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -920,113 +1016,6 @@ str="bcdaaa"
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/12/percent-w-and-so-on/">%Q, %q, %W, %w, %x, %r, %s</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-12T23:29:00+08:00" pubdate data-updated="true">May 12<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>%Q</h3>
-
-<p>遇到引号嵌套的时候我们往往需要使用反斜线来实现转义，使用%Q(&#8230;)可以实现同样的效果，最终输出字符串，并且支持使用#{}操作变量</p>
-
-<pre><code>&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
-=&gt; "Joe said: "Frank said: "Hello!"""
-</code></pre>
-
-<p>The parenthesis “(…)” can be replaced with any other non-alphanumeric characters and non-printing characters (pairs), so the following commands are equivalent:</p>
-
-<pre><code>&gt;&gt; %Q!Joe said: "Frank said: "#{what_frank_said}""!
-&gt;&gt; %Q[Joe said: "Frank said: "#{what_frank_said}""]
-&gt;&gt; %Q+Joe said: "Frank said: "#{what_frank_said}""+
-</code></pre>
-
-<p>You can use also:</p>
-
-<pre><code>&gt;&gt; %/Joe said: "Frank said: "#{what_frank_said}""/
-=&gt; "Joe said: "Frank said: "Hello!"""
-</code></pre>
-
-<h3>%q</h3>
-
-<p>%q和%Q大同小异，只是用于单引号，因此无法支持变量</p>
-
-<pre><code>&gt;&gt; %q(Joe said: 'Frank said: '#{what_frank_said} ' ')
-=&gt; "Joe said: 'Frank said: '\#{what_frank_said} ' '"
-</code></pre>
-
-<h3>%W</h3>
-
-<p>转化为数组并支持变量</p>
-
-<pre><code>&gt;&gt; %W(#{foo} Bar Bar\ with\ space)
-=&gt; ["Foo", "Bar", "Bar with space"]
-</code></pre>
-
-<h3>%w</h3>
-
-<p>转化为数组，但不支持变量</p>
-
-<pre><code>&gt;&gt; %w(#{foo} Bar Bar\ with\ space)
-=&gt; ["\#{foo}", "Bar", "Bar with space"]
-</code></pre>
-
-<h3>%x</h3>
-
-<p>Uses the ` method and returns the standard output of running the command in a subshell.The syntax is similar to %Q.</p>
-
-<pre><code>&gt;&gt; %x(echo foo:#{foo})
-=&gt; "foo:Foo\n"
-</code></pre>
-
-<h3>%r</h3>
-
-<p>转化为正则表达式</p>
-
-<pre><code>&gt;&gt; %r(/home/#{foo})
-=&gt; "/\\/home\\/Foo/"
-</code></pre>
-
-<h3>%s</h3>
-
-<p>转化为symbols.It’s not subject to expression substitution or escape sequences.</p>
-
-<pre><code>&gt;&gt; %s(foo)
-=&gt; :foo
-&gt;&gt; %s(foo bar)
-=&gt; :"foo bar"
-&gt;&gt; %s(#{foo} bar)
-=&gt; :"\#{foo} bar"
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1044,6 +1033,10 @@ str="bcdaaa"
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/17/jsonp/">jQuery运用jsonp时的一个问题</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/12/node-2/">Node学习笔记二</a>
       </li>
     
@@ -1057,10 +1050,6 @@ str="bcdaaa"
     
       <li class="post">
         <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a>
       </li>
     
   </ul>

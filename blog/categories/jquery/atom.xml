@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: jQuery | 庇护祝福的分享]]></title>
+  <title><![CDATA[Category: jquery | 庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/blog/categories/jquery/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2014-02-17T23:40:18+08:00</updated>
+  <updated>2014-03-16T21:29:43+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -14,22 +14,59 @@
 
   
   <entry>
-    <title type="html"><![CDATA[jQuery运用jsonp时的一个问题]]></title>
-    <link href="http://xieyu33333.github.com/blog/2014/02/17/jsonp/"/>
-    <updated>2014-02-17T23:28:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2014/02/17/jsonp</id>
-    <content type="html"><![CDATA[<p>今天做一个小Demo的时候，需要跨域请求API，自然而然的想到jsonp,由于整个页面的数据来自于多个API接口，这时发现会报错：</p>
+    <title type="html"><![CDATA[JQuery插件开发]]></title>
+    <link href="http://xieyu33333.github.com/blog/2013/04/22/a-jquery-example/"/>
+    <updated>2013-04-22T18:48:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2013/04/22/a-jquery-example</id>
+    <content type="html"><![CDATA[<p>JQuery插件的开发是有一套成熟的规范的：
+主要由以下几部分组成：</p>
 
-<pre><code>TypeError: Property 'jsonpCallback' of object [object Object] is not a function
+<h4>(function($){})(jQuery)</h4>
+
+<p>最外层的封装</p>
+
+<h4>$.fn</h4>
+
+<p>$.fn = JQuery.prototype。<br/>
+在插件制作中，所有的对象方法都添加到$.fn对象中</p>
+
+<h4>$.extend和$.fn.extend()</h4>
+
+<p>extend(dest,src1,src2):将src1,src2合并到dest中，属性名相同的则后面的自动覆盖前面的，因此常用于default值的设置
+extend(boolean dest,src1,src2):如果第一个参数为布尔值，则决定是否深层覆盖，如果为true，则嵌套的对象也将进行覆盖</p>
+
+<pre><code>$.extend(src)    //该方法将src合并到jquery的全局对象中,为JQuery添加了一个静态方法，可以用$.src()直接执行
+$.fn.extend(src) //该方法将src合并到jquery的实例对象中，只有JQuery的实例才可以调用，比如$("#input").src()
 </code></pre>
 
-<p>如果是异步加载的话，返回的值均为</p>
+<h4>this.each(function(){ })</h4>
 
-<pre><code>jsonpCallback（{...json数据....}）
+<p>编写该扩展方法执行的函数</p>
+
+<p>example：</p>
+
+<pre><code>(function($){ 
+  $.fn.tableUI = function(options){ 
+    var defaults = { 
+      evenRowClass:"evenRow", 
+      oddRowClass:"oddRow", 
+      activeRowClass:"activeRow" 
+    } 
+    var options = $.extend(defaults, options); 
+    this.each(function(){ 
+      var thisTable=$(this); 
+      $(thisTable).find("tr:even").addClass(options.evenRowClass); 
+      $(thisTable).find("tr:odd").addClass(options.oddRowClass); 
+      $(thisTable).find("tr").bind("mouseover",function(){ 
+        $(this).addClass(options.activeRowClass); 
+        }); 
+        $(thisTable).find("tr").bind("mouseout",function(){ 
+          $(this).removeClass(options.activeRowClass); 
+          }); 
+          }); 
+        }; 
+})(jQuery); 
 </code></pre>
-
-<p>这样就造成了冲突，需要将与接口的异步通信改成同步通信，不过比较坑的是jQuery的Ajax函数内置的async参数对于jsonp是不生效的。<br/>
-目前暂时先用回调嵌套的笨办法解决问题，先记录这个问题，研究出结果了继续写~</p>
 ]]></content>
   </entry>
   

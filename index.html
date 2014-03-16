@@ -9,7 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="今天做一个小Demo的时候，需要跨域请求API，自然而然的想到jsonp,由于整个页面的数据来自于多个API接口，这时发现会报错： TypeError: Property 'jsonpCallback' of object [object Object] is not a function &hellip;">
+  <meta name="description" content="npm包简介 Node可以以包的形式封装插件，不同于Ruby的gem包，Node的包默认并不是全局安装的，而是安装在项目目录中的node_modules目录下。只作用于项目目录。
+如果需要全局安装，比如一些带有命令行工具的npm包，在安装时需要加上-g命令，例如： $ npm install -g &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -58,53 +59,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/17/jsonp/">jQuery运用jsonp时的一个问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-17T23:28:00+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>今天做一个小Demo的时候，需要跨域请求API，自然而然的想到jsonp,由于整个页面的数据来自于多个API接口，这时发现会报错：</p>
-
-<pre><code>TypeError: Property 'jsonpCallback' of object [object Object] is not a function
-</code></pre>
-
-<p>如果是异步加载的话，返回的值均为</p>
-
-<pre><code>jsonpCallback（{...json数据....}）
-</code></pre>
-
-<p>这样就造成了冲突，需要将与接口的异步通信改成同步通信，不过比较坑的是jQuery的Ajax函数内置的async参数对于jsonp是不生效的。<br/>
-目前暂时先用回调嵌套的笨办法解决问题，先记录这个问题，研究出结果了继续写~</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1143,6 +1097,103 @@ end
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/06/git-branch/">Git Branch</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-06T11:14:00+08:00" pubdate data-updated="true">Sep 6<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>创建操作</h3>
+
+<h4>git branch</h4>
+
+<p>列出所有的分支, -r参数表示列出所有远程的分支</p>
+
+<h4>git branch branchname</h4>
+
+<p>建立一个名为的分支,使用当前版本作为这个新分支的版本</p>
+
+<h4>git branch</h4>
+
+<p>建立一个名为的分支, 使用指定的 作为新分支的版本,这个start-point可以是其他的分支名称或者tag名称。</p>
+
+<h3>删除操作</h3>
+
+<h4>git branch -d</h4>
+
+<p>删除分支 ; 如果你要删除的分支并没有被merge到当前分支的话，将产生一个错误提示。</p>
+
+<h4>git branch -D</h4>
+
+<p>同-d，但是不管要删除的分支是否已经merge到当前分支，都会删除</p>
+
+<h3>切换操作</h3>
+
+<h4>git checkout</h4>
+
+<p>切换当前分支到 , 更新 working directory 到 所对应的版本</p>
+
+<h4>git checkout -b</h4>
+
+<p>按照的版本建立一个新的分支，并checkout到这个新分支上。</p>
+
+<h4>git checkout -f</h4>
+
+<p>忽略差异部分，强制切换，例如：
+修改branch test, 但是没有commit，这时如果切换到master，会提示错误。使用-f 则会丢弃test中的修改，强制切换，如果切回test分支，刚才的修改也没了</p>
+
+<p>一个特殊符号 “HEAD” 总是指向当前分支. 实际上git使用一个在.git目录中叫 “HEAD”的文件来记录当前分支:</p>
+
+<pre><code>$ cat .git/HEAD
+ref: refs/heads/master
+</code></pre>
+
+<p>示例：“master”分支是当初你执行git-clone时候，clone的一个远程repository的HEAD版本的一个copy.</p>
+
+<pre><code>$ git branch -r
+  origin/HEAD
+  origin/html
+  origin/maint
+  origin/man
+  origin/master
+  origin/next
+  origin/pu
+  origin/todo
+</code></pre>
+
+<p>列出所有远程版本，origin是用来表示你当初执行git-clone时候的repository，你不可以直接checkout远程repository，但是你可以根据远程repository生成一个本地repository：</p>
+
+<pre><code>$ git checkout -b my-todo-copy origin/todo
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1158,10 +1209,6 @@ end
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/02/17/jsonp/">jQuery运用jsonp时的一个问题</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014/02/12/node-2/">Node学习笔记二</a>
       </li>
     
@@ -1175,6 +1222,10 @@ end
     
       <li class="post">
         <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a>
       </li>
     
   </ul>

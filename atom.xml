@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2014-03-16T21:35:06+08:00</updated>
+  <updated>2014-03-16T21:39:45+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -257,32 +257,26 @@ Success!
 <h3>2012年11月-2013年5月：卓衡创盟应用科技（北京）有限公司</h3>
 
 <p><strong>工作内容：</strong> <br/>
-主要负责前端页面开发，还同时做服务端的Ruby on Rails开发。  <br/>
-<strong>项目经验：</strong></p>
+主要负责前端页面开发，还同时做服务端的Ruby on Rails开发。</p>
 
-<ul>
-<li>moster产品展示网站：<a href="http://mostor.cc">mostor.cc</a></li>
-<li>联通云平台前端部分：内部系统，无公开网址</li>
-<li>新闻出版总署网站前端部分：<a href="http://www.gapp.gov.cn/">http://www.gapp.gov.cn/</a></li>
-<li>“沃缤纷”手机应用项目的后台管理部分：<a href="http://as.baidu.com/a/item?docid=2403659&amp;pre=web_am_software&amp;pos=software_1013_19&amp;f=software_1013_19">沃缤纷</a></li>
-</ul>
-
+<p><strong>项目经验：</strong> <br/>
+* moster产品展示网站：<a href="http://mostor.cc">mostor.cc</a>  <br/>
+* 联通云平台前端部分：内部系统，无公开网址 <br/>
+* 新闻出版总署网站前端部分：<a href="http://www.gapp.gov.cn/">http://www.gapp.gov.cn/</a>  <br/>
+* “沃缤纷”手机应用项目的后台管理部分：<a href="http://as.baidu.com/a/item?docid=2403659&amp;pre=web_am_software&amp;pos=software_1013_19&amp;f=software_1013_19">沃缤纷</a></p>
 
 <h3>2013年5月 - 至今：北京世纪乐知（CSDN）</h3>
 
 <p><strong>2013年5月-2014年3月</strong> <br/>
-以Ruby开发为主，主要负责<a href="http://bbs.csdn.net">CSDN论坛</a>、<a href="http://share.csdn.net">CSDN Share</a>、<a href="http://www.iteye.com">Iteye</a>、<a href="http://ask.csdn.net">CSDN Ask</a>、四个产品的维护，升级。 期间主要负责了<a href="http://share.csdn.net">CSDN Share</a>的重构。 <br/>
-<strong>2014年3月-至今</strong><br/>
+以Ruby开发为主，主要负责<a href="http://bbs.csdn.net">CSDN论坛</a>、<a href="http://share.csdn.net">CSDN Share</a>、<a href="http://www.iteye.com">Iteye</a>、<a href="http://ask.csdn.net">CSDN Ask</a>、四个产品的维护，升级。 期间主要负责了<a href="http://share.csdn.net">CSDN Share</a>的重构。</p>
+
+<p><strong>2014年3月-至今</strong><br/>
 以Node.js为开发语言，负责CSDN手机APP产品线的后台服务, 同时应用Rails开发后台管理部分。</p>
 
-<p><strong>项目经验：</strong></p>
-
-<ul>
-<li>CSDN Share的主要开发, <a href="http://share.csdn.net">share.csdn.net</a>。</li>
-<li>内部的基于sinatra的异步队列服务。</li>
-<li>社区产品线的维护升级工作</li>
-</ul>
-
+<p><strong>项目经验：</strong> <br/>
+* CSDN Share的主要开发, <a href="http://share.csdn.net">share.csdn.net</a>。<br/>
+* 内部的基于sinatra的异步队列服务。<br/>
+* 社区产品线的维护升级工作</p>
 
 <h2>个人项目</h2>
 

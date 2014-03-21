@@ -9,7 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="Range example: 1..9 (1..9).to_a #=&gt;[1,2,3,4,5,6,7,8,9] a=["aa","bb","cc","dd"] a[0..2]=["aa","bb","cc"] a..c (a..c).to_a #=&gt;[a,b,c] (1..9) ===5 &hellip;">
+  <meta name="description" content="%Q 遇到引号嵌套的时候我们往往需要使用反斜线来实现转义，使用%Q(&#8230;)可以实现同样的效果，最终输出字符串，并且支持使用#{}操作变量 &gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
+=&gt; "Joe said &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -58,6 +59,113 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/12/percent-w-and-so-on/">%Q, %q, %W, %w, %x, %r, %s</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-12T23:29:00+08:00" pubdate data-updated="true">May 12<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>%Q</h3>
+
+<p>遇到引号嵌套的时候我们往往需要使用反斜线来实现转义，使用%Q(&#8230;)可以实现同样的效果，最终输出字符串，并且支持使用#{}操作变量</p>
+
+<pre><code>&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
+=&gt; "Joe said: "Frank said: "Hello!"""
+</code></pre>
+
+<p>The parenthesis “(…)” can be replaced with any other non-alphanumeric characters and non-printing characters (pairs), so the following commands are equivalent:</p>
+
+<pre><code>&gt;&gt; %Q!Joe said: "Frank said: "#{what_frank_said}""!
+&gt;&gt; %Q[Joe said: "Frank said: "#{what_frank_said}""]
+&gt;&gt; %Q+Joe said: "Frank said: "#{what_frank_said}""+
+</code></pre>
+
+<p>You can use also:</p>
+
+<pre><code>&gt;&gt; %/Joe said: "Frank said: "#{what_frank_said}""/
+=&gt; "Joe said: "Frank said: "Hello!"""
+</code></pre>
+
+<h3>%q</h3>
+
+<p>%q和%Q大同小异，只是用于单引号，因此无法支持变量</p>
+
+<pre><code>&gt;&gt; %q(Joe said: 'Frank said: '#{what_frank_said} ' ')
+=&gt; "Joe said: 'Frank said: '\#{what_frank_said} ' '"
+</code></pre>
+
+<h3>%W</h3>
+
+<p>转化为数组并支持变量</p>
+
+<pre><code>&gt;&gt; %W(#{foo} Bar Bar\ with\ space)
+=&gt; ["Foo", "Bar", "Bar with space"]
+</code></pre>
+
+<h3>%w</h3>
+
+<p>转化为数组，但不支持变量</p>
+
+<pre><code>&gt;&gt; %w(#{foo} Bar Bar\ with\ space)
+=&gt; ["\#{foo}", "Bar", "Bar with space"]
+</code></pre>
+
+<h3>%x</h3>
+
+<p>Uses the ` method and returns the standard output of running the command in a subshell.The syntax is similar to %Q.</p>
+
+<pre><code>&gt;&gt; %x(echo foo:#{foo})
+=&gt; "foo:Foo\n"
+</code></pre>
+
+<h3>%r</h3>
+
+<p>转化为正则表达式</p>
+
+<pre><code>&gt;&gt; %r(/home/#{foo})
+=&gt; "/\\/home\\/Foo/"
+</code></pre>
+
+<h3>%s</h3>
+
+<p>转化为symbols.It’s not subject to expression substitution or escape sequences.</p>
+
+<pre><code>&gt;&gt; %s(foo)
+=&gt; :foo
+&gt;&gt; %s(foo bar)
+=&gt; :"foo bar"
+&gt;&gt; %s(#{foo} bar)
+=&gt; :"\#{foo} bar"
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -913,109 +1021,6 @@ var o1 = Object.create({x:1 , y:2});
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/31/my-third-blog/">Rails常用gem</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-31T21:00:00+08:00" pubdate data-updated="true">Mar 31<span>st</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>总结一下最近rails项目用到的gems</h4>
-
-<p><a href="http://rubygems.org">rubygems官方网站</a>  <br/>
-<a href="https://www.ruby-toolbox.com/">最流行的rubygems排名</a></p>
-
-<h3>测试：</h3>
-
-<p><a href="https://github.com/rspec/rspec-rails">rspec-rails</a><br/>
-<a href="https://github.com/pry/pry">pry</a>  (命令行断点调试工具)</p>
-
-<h3>前端 ：</h3>
-
-<p><a href="https://github.com/Compass/compass-rails">compass-rails</a><br/>
-<a href="https://github.com/kristianmandrup/masonry-rails">masonry-rails</a> （瀑布流）</p>
-
-<h3>部署：</h3>
-
-<p><a href="http://www.seeyon.com/news/4062.html">unicorn</a>     <br/>
-<a href="https://github.com/FooBarWidget/passenger">passenger</a></p>
-
-<h3>web service接口：</h3>
-
-<p><a href="https://github.com/intridea/grape">grape</a></p>
-
-<h3>数据库支持:</h3>
-
-<p><a href="https://github.com/brianmario/mysql2">mysql2</a> mysql数据库支持 <br/>
-<a href="https://github.com/mongoid/mongoid">mongoid</a> mongodb数据库支持</p>
-
-<h3>后台队列:</h3>
-
-<p><a href="https://github.com/resque/resque">resque</a></p>
-
-<h3>文件上传：</h3>
-
-<p><a href="https://github.com/jnicklas/carrierwave/">Carrierwave</a></p>
-
-<h3>分页：</h3>
-
-<p><a href="https://github.com/mislav/will_paginate">will_paginate</a> <br/>
-<a href="https://github.com/amatsuda/kaminari">Kaminari</a></p>
-
-<h3>用户系统：</h3>
-
-<p><a href="https://github.com/plataformatec/devise">devise</a> 全面的登陆注册系统    <br/>
-<a href="https://github.com/ryanb/cancan">cancan</a> 用户权限设置  <br/>
-<a href="https://github.com/codahale/bcrypt-ruby">bcrypt-ruby</a> 用于加密</p>
-
-<h3>富文本编辑：</h3>
-
-<p><a href="https://github.com/Macrow/rails_kindeditor">rails_kindeditor</a></p>
-
-<h3>Bootstrape:</h3>
-
-<p><a href="https://github.com/seyhunak/twitter-bootstrap-rails">twitter-bootstrap-rails</a> <br/>
-<a href="https://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a></p>
-
-<h3>图片处理：</h3>
-
-<p><a href="https://github.com/minimagick/minimagick">mini_magick</a>  （需要安装imagemagick）</p>
-
-<h3>memcache:</h3>
-
-<p><a href="https://github.com/mperham/dalli">dalli</a></p>
-
-<h3>JS数据引用</h3>
-
-<p><a href="https://github.com/gazay/gon">gon</a> #可以在JS中使用服务端数据</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1033,6 +1038,10 @@ var o1 = Object.create({x:1 , y:2});
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/21/headline/">2014年3月总结</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/12/node-2/">Node学习笔记二</a>
       </li>
     
@@ -1046,10 +1055,6 @@ var o1 = Object.create({x:1 , y:2});
     
       <li class="post">
         <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a>
       </li>
     
   </ul>

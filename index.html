@@ -9,8 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="npm包简介 Node可以以包的形式封装插件，不同于Ruby的gem包，Node的包默认并不是全局安装的，而是安装在项目目录中的node_modules目录下。只作用于项目目录。
-如果需要全局安装，比如一些带有命令行工具的npm包，在安装时需要加上-g命令，例如： $ npm install -g &hellip;">
+  <meta name="description" content="JavaScript中的promise模式 Promise模式简单来说就是函数返回一个promise对象，这个promise对象可能有三种状态：未完成、 已完成、 已拒绝。
+对于传统的回调函数写法来说： funcion test(){ do_something(); do_something &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -59,6 +59,145 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/21/headline/">2014年3月总结</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-21T10:21:00+08:00" pubdate data-updated="true">Mar 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>JavaScript中的promise模式</h3>
+
+<p>Promise模式简单来说就是函数返回一个promise对象，这个promise对象可能有三种状态：未完成、 已完成、 已拒绝。
+对于传统的回调函数写法来说：</p>
+
+<pre><code>funcion test(){
+  do_something();
+  do_something();
+  getData(data, function(err, data){
+    if (err){ 
+      error_handle(); 
+    }
+    else{
+      success_handle();
+    }
+  })
+}
+</code></pre>
+
+<p>错误处理和成功处理都是在回调中进行，在逻辑复杂的情况下极易形成回调嵌套。而对于promise模式来说则是这样(这里以promise库Q为例):</p>
+
+<pre><code>var Q = require('q');
+function test(){
+  var deferred = Q.defer();
+  do_something();
+  getData(data, function(err, data){
+    if(err){
+      deferred.reject();
+    }
+    else{
+      deferred.resolve()
+    }
+  })
+  return deferred.promise
+}
+test.then(success_handle, error_handle)
+</code></pre>
+
+<h3>CORS问题</h3>
+
+<p>CORS全称Cross-Origin resource sharing， 即:跨域资源共享
+对于简单请求, 在服务端设置如下响应头：</p>
+
+<pre><code>Access-Control-Allow-Origin: *
+</code></pre>
+
+<p>这样就可以完成简单的跨域请求<br/>
+如果浏览器请求不被认为是一个simple header,比如你要自定义一个头信息, 这个请求会被认为是一个<code>preflight request</code>.  这时发送请求时header中会带有如下的信息：</p>
+
+<pre><code>Request Method:OPTIONS
+Access-Control-Request-Headers:accept, params-token, content-type
+Access-Control-Request-Method:POST
+</code></pre>
+
+<p> 服务器需要设置返回头:</p>
+
+<pre><code>Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PUT
+Access-Control-Allow-Headers: X-Custom-Header
+</code></pre>
+
+<p>服务器会根据request提交的header进行检查，如果检查没通过，就抛出错误，检查通过，则会将结果进行缓存，并会在responds的header中附带上这些信息，告诉浏览器可以进行通信。然后浏览器再发送真正的http请求。<br/>
+也就是说，服务器和浏览器的第一次通信会出现两次http请求。第一次用于双方的确认，确认通过后，结果会被缓存，在缓存过期前就无需重复确认了。</p>
+
+<p><strong>参考文章:</strong> <br/>
+<a href="http://www.w3cmm.com/ajax/preflighted-requests.html">Preflighted Requests</a><br/>
+<a href="http://semicircle.github.io/blog/2013/09/29/go-with-cors/">用Go实现CORS跨域资源共享的服务器支持</a></p>
+
+<h3>nginx代理的问题</h3>
+
+<p>在部署时发现的问题：req.headers.host得到的并不是域名，而是127.0.0.1:3000, 经过查阅发现是Nginx配置的问题，需要配置如下两行：</p>
+
+<pre><code>proxy_set_header Host $http_host;
+proxy_set_header X-Forward-For $remote_addr;
+</code></pre>
+
+<p>proxy_set_header 用于覆盖或新增request的header，如果不配置上面两行，那么后台程序会认为通信来自：</p>
+
+<pre><code>nginx &lt;=&gt; server
+</code></pre>
+
+<p>那么得到的客户端ip就是nginx的ip，得到的host是后台服务的host。如果后台服务配置了访问限制，那么显然会把nginx给限制掉，配置了这两行后，后台才能得到正确的信息：</p>
+
+<pre><code>client &lt;=&gt; nginx
+</code></pre>
+
+<p>这里的<code>$http_host</code>和<code>$remote_addr</code>都是nginx的导出变量，可以在配置文件中直接使用。如果Host请求头部没有出现在请求头中，则<code>$http_host</code>值为空，但是<code>$host</code>值为主域名。因此，一般而言，会用<code>$host</code>代替<code>$http_host</code>变量，从而避免http请求中丢失Host头部的情况下Host不被重写的失误。</p>
+
+<h3>工具总结</h3>
+
+<pre><code>"restify": "~2.6.1",
+"request": "&gt;=2.0.0",
+"mongoose": "~3.8.7",
+"redis": "x",
+"async": "~0.2.10",
+"q": "~1.0.0",
+"log4js": "~0.6.10",
+"moment": "x",
+"connect": "x",
+"lodash": "~2.4.1",
+"winston": "~0.7.2",
+"winston-mongodb": "~0.4.3",
+"sanitize-html": "x"
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1093,103 +1232,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/06/git-branch/">Git Branch</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-06T11:14:00+08:00" pubdate data-updated="true">Sep 6<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>创建操作</h3>
-
-<h4>git branch</h4>
-
-<p>列出所有的分支, -r参数表示列出所有远程的分支</p>
-
-<h4>git branch branchname</h4>
-
-<p>建立一个名为的分支,使用当前版本作为这个新分支的版本</p>
-
-<h4>git branch</h4>
-
-<p>建立一个名为的分支, 使用指定的 作为新分支的版本,这个start-point可以是其他的分支名称或者tag名称。</p>
-
-<h3>删除操作</h3>
-
-<h4>git branch -d</h4>
-
-<p>删除分支 ; 如果你要删除的分支并没有被merge到当前分支的话，将产生一个错误提示。</p>
-
-<h4>git branch -D</h4>
-
-<p>同-d，但是不管要删除的分支是否已经merge到当前分支，都会删除</p>
-
-<h3>切换操作</h3>
-
-<h4>git checkout</h4>
-
-<p>切换当前分支到 , 更新 working directory 到 所对应的版本</p>
-
-<h4>git checkout -b</h4>
-
-<p>按照的版本建立一个新的分支，并checkout到这个新分支上。</p>
-
-<h4>git checkout -f</h4>
-
-<p>忽略差异部分，强制切换，例如：
-修改branch test, 但是没有commit，这时如果切换到master，会提示错误。使用-f 则会丢弃test中的修改，强制切换，如果切回test分支，刚才的修改也没了</p>
-
-<p>一个特殊符号 “HEAD” 总是指向当前分支. 实际上git使用一个在.git目录中叫 “HEAD”的文件来记录当前分支:</p>
-
-<pre><code>$ cat .git/HEAD
-ref: refs/heads/master
-</code></pre>
-
-<p>示例：“master”分支是当初你执行git-clone时候，clone的一个远程repository的HEAD版本的一个copy.</p>
-
-<pre><code>$ git branch -r
-  origin/HEAD
-  origin/html
-  origin/maint
-  origin/man
-  origin/master
-  origin/next
-  origin/pu
-  origin/todo
-</code></pre>
-
-<p>列出所有远程版本，origin是用来表示你当初执行git-clone时候的repository，你不可以直接checkout远程repository，但是你可以根据远程repository生成一个本地repository：</p>
-
-<pre><code>$ git checkout -b my-todo-copy origin/todo
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1205,6 +1247,10 @@ ref: refs/heads/master
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/21/headline/">2014年3月总结</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/12/node-2/">Node学习笔记二</a>
       </li>
     
@@ -1218,10 +1264,6 @@ ref: refs/heads/master
     
       <li class="post">
         <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/02/ge-ren-zai-xian-jian-li/">个人简历</a>
       </li>
     
   </ul>

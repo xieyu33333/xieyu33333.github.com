@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>%Q, %q, %W, %w, %x, %r, %s - 庇护祝福的分享</title>
+  <title>2014年3月总结 - 庇护祝福的分享</title>
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="%Q 遇到引号嵌套的时候我们往往需要使用反斜线来实现转义，使用%Q(&#8230;)可以实现同样的效果，最终输出字符串，并且支持使用#{}操作变量 &gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
-=&gt; "Joe said &hellip;">
+  <meta name="description" content="JavaScript中的promise模式 Promise模式简单来说就是函数返回一个promise对象，这个promise对象可能有三种状态：未完成、 已完成、 已拒绝。
+对于传统的回调函数写法来说： funcion test(){ do_something(); do_something &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +20,7 @@
   <meta name="baidu-tc-verification" content="ab4be6be306aae217340419193ba5011" />
 
   
-  <link rel="canonical" href="http://xieyu33333.github.com/blog/2013/05/12/percent-w-and-so-on">
+  <link rel="canonical" href="http://xieyu33333.github.com/blog/2014/03/21/headline">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="庇护祝福的分享" type="application/atom+xml">
@@ -62,7 +62,7 @@
   
   <header>
     
-      <h1 class="entry-title">%Q, %q, %W, %w, %x, %r, %s</h1>
+      <h1 class="entry-title">2014年3月总结</h1>
     
     
       <p class="meta">
@@ -78,84 +78,116 @@
   
 
 
-<time datetime="2013-05-12T23:29:00+08:00" pubdate data-updated="true">May 12<span>th</span>, 2013</time>
+<time datetime="2014-03-21T10:21:00+08:00" pubdate data-updated="true">Mar 21<span>st</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h3>%Q</h3>
+<div class="entry-content"><h3>JavaScript中的promise模式</h3>
 
-<p>遇到引号嵌套的时候我们往往需要使用反斜线来实现转义，使用%Q(&#8230;)可以实现同样的效果，最终输出字符串，并且支持使用#{}操作变量</p>
+<p>Promise模式简单来说就是函数返回一个promise对象，这个promise对象可能有三种状态：未完成、 已完成、 已拒绝。
+对于传统的回调函数写法来说：</p>
 
-<pre><code>&gt;&gt; %Q(Joe said: "Frank said: "#{what_frank_said}"")
-=&gt; "Joe said: "Frank said: "Hello!"""
+<pre><code>funcion test(){
+  do_something();
+  do_something();
+  getData(data, function(err, data){
+    if (err){ 
+      error_handle(); 
+    }
+    else{
+      success_handle();
+    }
+  })
+}
 </code></pre>
 
-<p>The parenthesis “(…)” can be replaced with any other non-alphanumeric characters and non-printing characters (pairs), so the following commands are equivalent:</p>
+<p>错误处理和成功处理都是在回调中进行，在逻辑复杂的情况下极易形成回调嵌套。而对于promise模式来说则是这样(这里以promise库Q为例):</p>
 
-<pre><code>&gt;&gt; %Q!Joe said: "Frank said: "#{what_frank_said}""!
-&gt;&gt; %Q[Joe said: "Frank said: "#{what_frank_said}""]
-&gt;&gt; %Q+Joe said: "Frank said: "#{what_frank_said}""+
+<pre><code>var Q = require('q');
+function test(){
+  var deferred = Q.defer();
+  do_something();
+  getData(data, function(err, data){
+    if(err){
+      deferred.reject();
+    }
+    else{
+      deferred.resolve()
+    }
+  })
+  return deferred.promise
+}
+test.then(success_handle, error_handle)
 </code></pre>
 
-<p>You can use also:</p>
+<h3>CORS问题</h3>
 
-<pre><code>&gt;&gt; %/Joe said: "Frank said: "#{what_frank_said}""/
-=&gt; "Joe said: "Frank said: "Hello!"""
+<p>CORS全称Cross-Origin resource sharing， 即:跨域资源共享
+对于简单请求, 在服务端设置如下响应头：</p>
+
+<pre><code>Access-Control-Allow-Origin: *
 </code></pre>
 
-<h3>%q</h3>
+<p>这样就可以完成简单的跨域请求<br/>
+如果浏览器请求不被认为是一个simple header,比如你要自定义一个头信息, 这个请求会被认为是一个<code>preflight request</code>.  这时发送请求时header中会带有如下的信息：</p>
 
-<p>%q和%Q大同小异，只是用于单引号，因此无法支持变量</p>
-
-<pre><code>&gt;&gt; %q(Joe said: 'Frank said: '#{what_frank_said} ' ')
-=&gt; "Joe said: 'Frank said: '\#{what_frank_said} ' '"
+<pre><code>Request Method:OPTIONS
+Access-Control-Request-Headers:accept, params-token, content-type
+Access-Control-Request-Method:POST
 </code></pre>
 
-<h3>%W</h3>
+<p> 服务器需要设置返回头:</p>
 
-<p>转化为数组并支持变量</p>
-
-<pre><code>&gt;&gt; %W(#{foo} Bar Bar\ with\ space)
-=&gt; ["Foo", "Bar", "Bar with space"]
+<pre><code>Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PUT
+Access-Control-Allow-Headers: X-Custom-Header
 </code></pre>
 
-<h3>%w</h3>
+<p>服务器会根据request提交的header进行检查，如果检查没通过，就抛出错误，检查通过，则会将结果进行缓存，并会在responds的header中附带上这些信息，告诉浏览器可以进行通信。然后浏览器再发送真正的http请求。<br/>
+也就是说，服务器和浏览器的第一次通信会出现两次http请求。第一次用于双方的确认，确认通过后，结果会被缓存，在缓存过期前就无需重复确认了。</p>
 
-<p>转化为数组，但不支持变量</p>
+<p><strong>参考文章:</strong> <br/>
+<a href="http://www.w3cmm.com/ajax/preflighted-requests.html">Preflighted Requests</a><br/>
+<a href="http://semicircle.github.io/blog/2013/09/29/go-with-cors/">用Go实现CORS跨域资源共享的服务器支持</a></p>
 
-<pre><code>&gt;&gt; %w(#{foo} Bar Bar\ with\ space)
-=&gt; ["\#{foo}", "Bar", "Bar with space"]
+<h3>nginx代理的问题</h3>
+
+<p>在部署时发现的问题：req.headers.host得到的并不是域名，而是127.0.0.1:3000, 经过查阅发现是Nginx配置的问题，需要配置如下两行：</p>
+
+<pre><code>proxy_set_header Host $http_host;
+proxy_set_header X-Forward-For $remote_addr;
 </code></pre>
 
-<h3>%x</h3>
+<p>proxy_set_header 用于覆盖或新增request的header，如果不配置上面两行，那么后台程序会认为通信来自：</p>
 
-<p>Uses the ` method and returns the standard output of running the command in a subshell.The syntax is similar to %Q.</p>
-
-<pre><code>&gt;&gt; %x(echo foo:#{foo})
-=&gt; "foo:Foo\n"
+<pre><code>nginx &lt;=&gt; server
 </code></pre>
 
-<h3>%r</h3>
+<p>那么得到的客户端ip就是nginx的ip，得到的host是后台服务的host。如果后台服务配置了访问限制，那么显然会把nginx给限制掉，配置了这两行后，后台才能得到正确的信息：</p>
 
-<p>转化为正则表达式</p>
-
-<pre><code>&gt;&gt; %r(/home/#{foo})
-=&gt; "/\\/home\\/Foo/"
+<pre><code>client &lt;=&gt; nginx
 </code></pre>
 
-<h3>%s</h3>
+<p>这里的<code>$http_host</code>和<code>$remote_addr</code>都是nginx的导出变量，可以在配置文件中直接使用。如果Host请求头部没有出现在请求头中，则<code>$http_host</code>值为空，但是<code>$host</code>值为主域名。因此，一般而言，会用<code>$host</code>代替<code>$http_host</code>变量，从而避免http请求中丢失Host头部的情况下Host不被重写的失误。</p>
 
-<p>转化为symbols.It’s not subject to expression substitution or escape sequences.</p>
+<h3>工具总结</h3>
 
-<pre><code>&gt;&gt; %s(foo)
-=&gt; :foo
-&gt;&gt; %s(foo bar)
-=&gt; :"foo bar"
-&gt;&gt; %s(#{foo} bar)
-=&gt; :"\#{foo} bar"
+<pre><code>"restify": "~2.6.1",
+"request": "&gt;=2.0.0",
+"mongoose": "~3.8.7",
+"redis": "x",
+"async": "~0.2.10",
+"q": "~1.0.0",
+"log4js": "~0.6.10",
+"moment": "x",
+"connect": "x",
+"lodash": "~2.4.1",
+"winston": "~0.7.2",
+"winston-mongodb": "~0.4.3",
+"sanitize-html": "x"
 </code></pre>
 </div>
 
@@ -179,12 +211,12 @@
   
 
 
-<time datetime="2013-05-12T23:29:00+08:00" pubdate data-updated="true">May 12<span>th</span>, 2013</time>
+<time datetime="2014-03-21T10:21:00+08:00" pubdate data-updated="true">Mar 21<span>st</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/ruby/'>ruby</a>
+    <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/node/'>node</a>
   
 </span>
 
@@ -193,7 +225,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2013/05/12/percent-w-and-so-on/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2013/05/12/percent-w-and-so-on/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2014/03/21/headline/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2014/03/21/headline/" >Tweet</a>
   
   
   
@@ -204,10 +236,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/05/07/ruby-dataclass/" title="Previous Post: Ruby中一些特别的数据类型">&laquo; Ruby中一些特别的数据类型</a>
+        <a class="basic-alignment left" href="/blog/2014/02/12/node-2/" title="Previous Post: Node学习笔记二">&laquo; Node学习笔记二</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/05/18/something-known/" title="Next Post: 离职总结">离职总结 &raquo;</a>
       
     </p>
   </footer>

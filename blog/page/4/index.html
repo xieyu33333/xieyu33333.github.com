@@ -9,9 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="总结一下最近rails项目用到的gems rubygems官方网站 最流行的rubygems排名 测试： rspec-rails
-pry (命令行断点调试工具) 前端 ： compass-rails
-masonry-rails （瀑布流） 部署： unicorn passenger web &hellip;">
+  <meta name="description" content="数据类型： javascript中有六种基础数据类型：数字，字符串，布尔值，对象，函数，以及undefined。 运算符： 创建对象： 对象直接量： var empty = {}
+var book = { "main title" : "javascript" , "for" : "all &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -60,6 +59,74 @@ masonry-rails （瀑布流） 部署： unicorn passenger web &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/01/basic-javascript-values/">Javascript权威指南笔记一：核心语法(对象)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-01T14:56:00+08:00" pubdate data-updated="true">Apr 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>数据类型：</h3>
+
+<p>javascript中有六种基础数据类型：数字，字符串，布尔值，对象，函数，以及undefined。</p>
+
+<h3>运算符：</h3>
+
+<h3>创建对象：</h3>
+
+<h4>对象直接量：</h4>
+
+<pre><code>var empty = {}
+var book = {
+    "main title" : "javascript" , 
+    "for" : "all" ,
+    "author" : "xieyu"
+}
+</code></pre>
+
+<h4>使用new运算符创建对象：</h4>
+
+<pre><code>var o = new Object(); //创建一个空对象，和{}一样
+var a = new Array(); //创建一个空数组，和[]一样
+</code></pre>
+
+<h4>使用Object.create():</h4>
+
+<pre><code>参数是用于继承的原型对象
+var o1 = Object.create({x:1 , y:2});
+</code></pre>
+
+<h4>原型(prototype)</h4>
+
+<p>除了null之外所有对象都继承于Obiect.prototype</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -362,6 +429,10 @@ $ rake install #安装默认主题
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/13/eat/">懒人菜谱</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/21/headline/">2014年3月总结</a>
       </li>
     
@@ -375,10 +446,6 @@ $ rake install #安装默认主题
     
       <li class="post">
         <a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
       </li>
     
   </ul>

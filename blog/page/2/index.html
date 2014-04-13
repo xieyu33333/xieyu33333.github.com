@@ -9,7 +9,10 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="创建操作 git branch 列出所有的分支, -r参数表示列出所有远程的分支 git branch branchname 建立一个名为的分支,使用当前版本作为这个新分支的版本 git branch 建立一个名为的分支, 使用指定的 作为新分支的版本,这个start- &hellip;">
+  <meta name="description" content="调用API构建前端 一般情况下，rails应用都是从数据库进行数据获取，而采用API调用的话，就不再需要model层了，只需要在控制器中用http库进行接口调用就可以了，大大简化了结构。
+example: require 'open-uri'
+require 'json'
+require 'net &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -58,6 +61,149 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/">Rails中间层解决方案</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-20T15:34:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>调用API构建前端</h3>
+
+<p>一般情况下，rails应用都是从数据库进行数据获取，而采用API调用的话，就不再需要model层了，只需要在控制器中用http库进行接口调用就可以了，大大简化了结构。
+example:</p>
+
+<pre><code>require 'open-uri'
+require 'json'
+require 'net/http'
+def index  
+  uri = URI("http://test.csdn.net/api/format/json")
+  req = Net::HTTP.get(uri)
+  @slides = JSON.parse(req)["data"]["contents"]
+end
+</code></pre>
+
+<h3>问题：多个API调用时的阻塞问题</h3>
+
+<pre><code>def index  
+  uri_one = URI("http://test.csdn.net/api/1/format/json")
+  uri_two = URI("http://test.csdn.net/api/2/format/json")
+  uri_three = URI("http://test.csdn.net/api/3/format/json")
+  ......
+  req_one = Net::HTTP.get(uri_one)
+  req_two = Net::HTTP.get(uri_two)
+  req_three = Net::HTTP.get(uri_three)
+  ......
+  @slides = JSON.parse(req)["data"]["contents"]
+  ......
+end
+</code></pre>
+
+<p>如果有10个API调用，每个<code>Net::HTTP.get(uri)</code>通信耗时30ms，那么就是300ms的时间。</p>
+
+<h3>解决方案一：多线程处理</h3>
+
+<pre><code>threads = []
+threads &lt;&lt; Thread.new {@req_one = Net::HTTP.get(uri_one)}
+threads &lt;&lt; Thread.new {@req_two = Net::HTTP.get(uri_two)}
+threads &lt;&lt; Thread.new {@req_three = Net::HTTP.get(uri_three)}
+......
+threads.each { |t| t.join }
+data = JSON.parse(@req_one)["data"]
+</code></pre>
+
+<p>多进程是抢占资源的一个模型，并非并行计算，比如线程1执行一个http通信后中间有30ms的I/O时间，那么这段阻塞的时间就会被线程2抢占。
+开启多线程并行处理，可以很大程度上提高处理速度。但是有两个问题：
+一、开多个线程以及线程间的切换造成资源开销增加，实际上降低了应用的吞吐能力。
+二、由于Ruby存在GIL (Global Interpreter Lock)，并不能真正利用多线程进行并行计算。（JRuby 去除了 GIL，是真正意义的多线程，既能应付 IO Block，也能充分利用多核 CPU 加快整体运算速度。）</p>
+
+<h3>解决方案二：采用异步模型处理</h3>
+
+<h4>Ruby的异步解决方案：Eventmachine</h4>
+
+<p>在Gemfile中添加：</p>
+
+<pre><code>gem 'eventmachine'
+gem 'em-http-request', :require =&gt; 'em-http'
+</code></pre>
+
+<p>控制器中的代码：</p>
+
+<pre><code>EventMachine.run {
+  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
+  http.errback { 
+    render :text "接口连接失败"; 
+    EM.stop 
+  }
+  http.callback {
+    req = http.response
+    @slides = JSON.parse(req)["data"]["list"]
+    @page_count = JSON.parse(req)["data"]["count"].to_i/18+1
+    EM.stop
+  }
+}
+</code></pre>
+
+<p>这种方式不仅解决了阻塞问题，而且可以有效的提高系统的吞吐能力。但带来的问题是代码量增加，复杂逻辑下代码的复杂度成倍增加，不利于开发和维护。</p>
+
+<h4>引入纤程（Fiber）,用同步代码编写异步程序</h4>
+
+<p>在Gemfile中添加<code>gem 'em-synchrony'</code>。
+控制器代码：</p>
+
+<pre><code>EM.synchrony do
+  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
+  req = http.response
+  @slides = JSON.parse(req)["data"]["list"]
+  EM.stop
+end
+</code></pre>
+
+<p>多个接口调用实例：</p>
+
+<pre><code>require "em-synchrony"
+require "em-synchrony/em-http"
+require "em-synchrony/fiber_iterator"
+EM.synchrony do
+  concurrency = 2
+  urls = ['http://url.1.com', 'http://url2.com']
+  results = []
+  EM::Synchrony::FiberIterator.new(urls, concurrency).each do |url|
+    res = EventMachine::HttpRequest.new(url).get
+    results &lt;&lt; res.response
+  end
+  puts results # all completed requests
+  EventMachine.stop
+end
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -956,66 +1102,6 @@ str="bcdaaa"
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/18/something-known/">离职总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-18T15:44:00+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>互联网方向和企业服务方向存在根本性的不同</h3>
-
-<p>  现在OA,ERP系统等企业级服务等都在向web端，乃至移动端靠近，看起来好像和互联网服务区别越来越小，但是对于外包团队来说，区别是本质上的。</p>
-
-<p>  互联网产品面向普罗大众，要求是使用简单，可接受度高，个性化。而且互联网方向主要客户来自创业者以及传统行业面向用户渠道的互联网化。业务逻辑相对简单，但对品质的要求是比较高的。同样，这部分客户的资金实力往往比较弱。因此如果公司面向互联网渠道提供服务，我认为应该在设计，咨询，技术支持等方面入手。消耗的时间相对少，同时可以做多个客户，以量取胜。不要轻易尝试承接整体工程。风险大，周期长，利润低，除非有渠道可以做政府的项目，或者客户需求和自有产品对的上号。</p>
-
-<p>  而需要企业级服务的企业往往规模庞大，业务逻辑相当复杂，每个项目的价格都会比较高，赚头足，但是对外包企业的要求也比较高：首先，要有自己的基础产品，开发要基于基础产品来做，而不是从头开始，其次人手必须充足，这种项目往往不是2,3个精英程序员就可以搞定的，因为有大量的基础的，低技术含量的工作需要做，做这些事情使用高级程序员是非常不划算的，因此需要将功能拆分，通过使用大量的水平一般，薪水低廉的程序员来做，一方面需求使然，一方面控制风险。我认为这也是做这种业务的企业多使用.net，jsp的原因：容易招到大量的中低水平的程序员。</p>
-
-<h3>公司的问题</h3>
-
-<h4>没有根据自身特点选准方向</h4>
-
-<p>1.外包方面的主管是设计外包出身，那么在设计人员招聘，设计咨询，忽悠客户方面是内行，并且有多年为运营商做前端，设计服务的经验。但是对技术评估方面并不在行，也没法在技术方面和客户进行沟通。</p>
-
-<p>2.技术主管虽然先后就职于百度，人人，编程能力，学习能力，沟通能力都非常强，但是经验是在互联网方向，对于企业级的服务并不在行，而且他本人也对外包毫无兴趣。</p>
-
-<p>因此很明显了，实际公司是无力组建一个面向企业的技术外包团队的，而面向互联网，也仅仅是可以做，但做不好，因为打心眼里就不想做。技术方面如果找不到适合带外包团队的人，那就干脆不要做，专心做产品去，外包全部由设计来支持，技术方面最多做一些咨询服务就好了。可偏偏公司要去接互联网前后台乃至app全包的项目。</p>
-
-<h4>明明是小公司，偏偏有大公司的毛病</h4>
-
-<p>就是一个创业型的公司，虽然有母公司的大力支持，但是实力仍然有限，但是信息隔离，缺乏激情，管理僵化，事不关己，高高挂起的毛病还是通过领导人从母公司带了过来。</p>
-
-<h4>CEO来自投资方</h4>
-
-<p>由于公司是香港集团的全资子公司，CEO是该集团的一位经理，但他同时管理多家控股公司，其他公司和母公司业务比较贴近，做硬件方面，更多的是资本，渠道的东西，这方面他很了解，而我们这边做软件，设计则更多是看人。一方面CEO并非所有精力都在这边，一方面他对设计和软件业务并不了解。而现在的情况是一个本该是政委，或者监军的人坐在了主帅的位置上。虽然这不是他的错，他也尽自己最大的努力放权给更懂业务的主管们，但毕竟身在那个位置，很多决策需要他来定。不可避免的会出现外行领导内行的情况。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1033,6 +1119,10 @@ str="bcdaaa"
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/13/eat/">懒人菜谱</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/21/headline/">2014年3月总结</a>
       </li>
     
@@ -1046,10 +1136,6 @@ str="bcdaaa"
     
       <li class="post">
         <a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
       </li>
     
   </ul>

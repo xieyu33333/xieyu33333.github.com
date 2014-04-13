@@ -9,8 +9,11 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="JavaScript中的promise模式 Promise模式简单来说就是函数返回一个promise对象，这个promise对象可能有三种状态：未完成、 已完成、 已拒绝。
-对于传统的回调函数写法来说： funcion test(){ do_something(); do_something &hellip;">
+  <meta name="description" content="一个人漂泊在外，在买菜、做饭、刷碗方面总是很懒的，对成本也比较敏感，总结一下个人的常用食谱。 炸酱面 配料： 大酱和甜面酱2：1加水混合。
+鸡蛋或肉末。
+花椒、葱、食用油。 做法： 热油下锅，小火放花椒、葱末熬出香味。
+下打好的鸡蛋/肉末。
+下混合好的酱，熬至冒泡起锅。 成本： 鸡蛋*4 = 2. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -59,6 +62,143 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/13/eat/">懒人菜谱</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-13T18:17:00+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一个人漂泊在外，在买菜、做饭、刷碗方面总是很懒的，对成本也比较敏感，总结一下个人的常用食谱。</p>
+
+<h3>炸酱面</h3>
+
+<p><strong>配料：</strong></p>
+
+<ul>
+<li>大酱和甜面酱2：1加水混合。</li>
+<li>鸡蛋或肉末。</li>
+<li>花椒、葱、食用油。</li>
+</ul>
+
+
+<p><strong>做法：</strong></p>
+
+<ul>
+<li>热油下锅，小火放花椒、葱末熬出香味。</li>
+<li>下打好的鸡蛋/肉末。</li>
+<li>下混合好的酱，熬至冒泡起锅。</li>
+</ul>
+
+
+<p><strong>成本：</strong></p>
+
+<pre><code>鸡蛋*4 = 2.5元，
+3包酱 = 4.5元，
+调料、油等 = 1元
+合计：8元
+制作一次可以吃7、8碗，一顿饭面+酱的成本约2元
+</code></pre>
+
+<p><strong>优劣：</strong><br/>
+制作简单、成本低廉、味道可以自由调控，但是营养不足，蔬菜和肉类的摄入都很少。</p>
+
+<h3>意大利面</h3>
+
+<p>全部外购，自己的工序就是把面煮熟，然后拌上酱。
+<strong>配料：</strong></p>
+
+<ul>
+<li>9元/斤的意面</li>
+<li>19元的Huns意面酱</li>
+</ul>
+
+
+<p><strong>成本：</strong></p>
+
+<pre><code>一斤面吃2.5顿
+一罐酱8顿的样子
+平均一顿饭约6元
+</code></pre>
+
+<p><strong>优劣：</strong><br/>
+非常省事，不需要任何处理工作，意面不会粘锅，好洗；而且据说意面减肥。但是营养不足，蔬菜和肉类的摄入都很少。</p>
+
+<h3>米酒年糕</h3>
+
+<p>主要偶尔甜食换换口味，做起来也简单。<br/>
+<strong>配料：</strong></p>
+
+<ul>
+<li>年糕</li>
+<li>鸡蛋</li>
+<li>糖、米酒</li>
+</ul>
+
+
+<p><strong>成本：</strong></p>
+
+<pre><code>年糕5元
+鸡蛋1元
+米酒2元
+总计约8元
+</code></pre>
+
+<h3>火锅</h3>
+
+<p>一般我购买的原料有豆腐、青菜、粉条、平菇、肉片等 <br/>
+<strong>成本：</strong></p>
+
+<pre><code>最高：
+  肉类7元
+  豆腐1元
+  青菜2元
+  底料+蘸料3元
+  米饭1元
+  合计约14元
+最低：
+  豆腐1元
+  蘑菇2元
+  底料1元
+  米饭1元
+  合计约5元
+</code></pre>
+
+<p> 根据购买的菜品5~15元不等 <br/>
+ <strong>优劣：</strong><br/>
+ 营养较为丰富、味道好、不过需要买菜、洗菜、吃完后的锅、碗比较油，不好洗。</p>
+
+<h3>蒸蛋</h3>
+
+<p>直接在煮米饭的时候放上蒸笼蒸即可。成本就是鸡蛋+米饭约3元，十分低廉。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1089,149 +1229,6 @@ for(i=0; i&lt;1000; i++){
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/">Rails中间层解决方案</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-20T15:34:00+08:00" pubdate data-updated="true">Dec 20<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>调用API构建前端</h3>
-
-<p>一般情况下，rails应用都是从数据库进行数据获取，而采用API调用的话，就不再需要model层了，只需要在控制器中用http库进行接口调用就可以了，大大简化了结构。
-example:</p>
-
-<pre><code>require 'open-uri'
-require 'json'
-require 'net/http'
-def index  
-  uri = URI("http://test.csdn.net/api/format/json")
-  req = Net::HTTP.get(uri)
-  @slides = JSON.parse(req)["data"]["contents"]
-end
-</code></pre>
-
-<h3>问题：多个API调用时的阻塞问题</h3>
-
-<pre><code>def index  
-  uri_one = URI("http://test.csdn.net/api/1/format/json")
-  uri_two = URI("http://test.csdn.net/api/2/format/json")
-  uri_three = URI("http://test.csdn.net/api/3/format/json")
-  ......
-  req_one = Net::HTTP.get(uri_one)
-  req_two = Net::HTTP.get(uri_two)
-  req_three = Net::HTTP.get(uri_three)
-  ......
-  @slides = JSON.parse(req)["data"]["contents"]
-  ......
-end
-</code></pre>
-
-<p>如果有10个API调用，每个<code>Net::HTTP.get(uri)</code>通信耗时30ms，那么就是300ms的时间。</p>
-
-<h3>解决方案一：多线程处理</h3>
-
-<pre><code>threads = []
-threads &lt;&lt; Thread.new {@req_one = Net::HTTP.get(uri_one)}
-threads &lt;&lt; Thread.new {@req_two = Net::HTTP.get(uri_two)}
-threads &lt;&lt; Thread.new {@req_three = Net::HTTP.get(uri_three)}
-......
-threads.each { |t| t.join }
-data = JSON.parse(@req_one)["data"]
-</code></pre>
-
-<p>多进程是抢占资源的一个模型，并非并行计算，比如线程1执行一个http通信后中间有30ms的I/O时间，那么这段阻塞的时间就会被线程2抢占。
-开启多线程并行处理，可以很大程度上提高处理速度。但是有两个问题：
-一、开多个线程以及线程间的切换造成资源开销增加，实际上降低了应用的吞吐能力。
-二、由于Ruby存在GIL (Global Interpreter Lock)，并不能真正利用多线程进行并行计算。（JRuby 去除了 GIL，是真正意义的多线程，既能应付 IO Block，也能充分利用多核 CPU 加快整体运算速度。）</p>
-
-<h3>解决方案二：采用异步模型处理</h3>
-
-<h4>Ruby的异步解决方案：Eventmachine</h4>
-
-<p>在Gemfile中添加：</p>
-
-<pre><code>gem 'eventmachine'
-gem 'em-http-request', :require =&gt; 'em-http'
-</code></pre>
-
-<p>控制器中的代码：</p>
-
-<pre><code>EventMachine.run {
-  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
-  http.errback { 
-    render :text "接口连接失败"; 
-    EM.stop 
-  }
-  http.callback {
-    req = http.response
-    @slides = JSON.parse(req)["data"]["list"]
-    @page_count = JSON.parse(req)["data"]["count"].to_i/18+1
-    EM.stop
-  }
-}
-</code></pre>
-
-<p>这种方式不仅解决了阻塞问题，而且可以有效的提高系统的吞吐能力。但带来的问题是代码量增加，复杂逻辑下代码的复杂度成倍增加，不利于开发和维护。</p>
-
-<h4>引入纤程（Fiber）,用同步代码编写异步程序</h4>
-
-<p>在Gemfile中添加<code>gem 'em-synchrony'</code>。
-控制器代码：</p>
-
-<pre><code>EM.synchrony do
-  http = EM::HttpRequest.new("http://test.csdn.net/api/1/format/json").get
-  req = http.response
-  @slides = JSON.parse(req)["data"]["list"]
-  EM.stop
-end
-</code></pre>
-
-<p>多个接口调用实例：</p>
-
-<pre><code>require "em-synchrony"
-require "em-synchrony/em-http"
-require "em-synchrony/fiber_iterator"
-EM.synchrony do
-  concurrency = 2
-  urls = ['http://url.1.com', 'http://url2.com']
-  results = []
-  EM::Synchrony::FiberIterator.new(urls, concurrency).each do |url|
-    res = EventMachine::HttpRequest.new(url).get
-    results &lt;&lt; res.response
-  end
-  puts results # all completed requests
-  EventMachine.stop
-end
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1247,6 +1244,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/13/eat/">懒人菜谱</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/21/headline/">2014年3月总结</a>
       </li>
     
@@ -1260,10 +1261,6 @@ end
     
       <li class="post">
         <a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/06/brew-add-module/">为Homebrew安装的程序添加模块</a>
       </li>
     
   </ul>

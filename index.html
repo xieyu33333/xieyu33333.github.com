@@ -9,11 +9,9 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="一个人漂泊在外，在买菜、做饭、刷碗方面总是很懒的，对成本也比较敏感，总结一下个人的常用食谱。 炸酱面 配料： 大酱和甜面酱2：1加水混合。
-鸡蛋或肉末。
-花椒、葱、食用油。 做法： 热油下锅，小火放花椒、葱末熬出香味。
-下打好的鸡蛋/肉末。
-下混合好的酱，熬至冒泡起锅。 成本： 鸡蛋*4 = 2. &hellip;">
+  <meta name="description" content="DashBoard的形式是一个不错的选择，不过构建DashBoard是一个相当复杂的工程，需要合理的响应式设计和美观的图表样式，因此我找了几款不错的DashBoard主题以供参考： AlmsaeedStudio 预览 &amp;
+源代码 Devoops 预览 &amp;
+源代码 Bootply &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +60,83 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/21/dashboard/">免费的Bootstrap DashBoard主题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-21T09:39:00+08:00" pubdate data-updated="true">Jul 21<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>DashBoard的形式是一个不错的选择，不过构建DashBoard是一个相当复杂的工程，需要合理的响应式设计和美观的图表样式，因此我找了几款不错的DashBoard主题以供参考：</p>
+
+<h3>AlmsaeedStudio</h3>
+
+<p><a href="http://almsaeedstudio.com/preview">预览</a> &amp;
+<a href="https://github.com/almasaeed2010/AdminLTE">源代码</a></p>
+
+<h3>Devoops</h3>
+
+<p><a href="http://devoops.me/themes/devoops/index.html">预览</a> &amp;
+<a href="https://github.com/devoopsme/devoops">源代码</a></p>
+
+<h3>Bootply</h3>
+
+<p><a href="http://www.bootply.com/render/85850#">预览</a> &amp;
+<a href="http://www.bootply.com/85850">源代码</a></p>
+
+<h3>prepbootstrap</h3>
+
+<p><a href="http://www.prepbootstrap.com/bootstrap-theme/lightway-admin/preview/index.html">预览</a> &amp;
+<a href="http://www.prepbootstrap.com/bootstrap-theme/lightway-admin">源代码</a></p>
+
+<h3>SB Admin</h3>
+
+<p><a href="http://startbootstrap.com/templates/sb-admin-v2/">预览</a> &amp;
+<a href="https://github.com/IronSummitMedia/startbootstrap/tree/master/templates/sb-admin-v2">源代码</a></p>
+
+<h3>Bootstrap-Admin-Theme</h3>
+
+<p><a href="http://vinceg.github.io/Bootstrap-Admin-Theme-3/stats.html">预览</a> &amp;
+<a href="https://github.com/VinceG/Bootstrap-Admin-Theme-3">源代码</a></p>
+
+<h3>相关博客</h3>
+
+<p><a href="http://www.daveismyname.com/free-bootstrap-admin-themes-bp#.U8v4p4CSy2I">free-bootstrap-admin-themes</a><br/>
+<a href="http://bootstrapthemes.quora.com/Top-30-Best-Quality-Bootstrap-Admin-Dashboard-Themes-And-Templates">Top-30-Best-Quality-Bootstrap-Admin-Dashboard-Themes</a><br/>
+<a href="http://speckyboy.com/2014/05/16/free-bootstrap-admin-themes/">some-bootstrap-admin-themes</a></p>
+
+<h3>付费主题</h3>
+
+<p><a href="https://wrapbootstrap.com/tag/dashboard">DashBoard</a> &amp;
+<a href="https://wrapbootstrap.com/themes/admin">admin</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1084,151 +1159,6 @@ Not installed.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">Ruby 同步/异步/多线程模型测试</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-25T11:30:00+08:00" pubdate data-updated="true">Dec 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>测试条件是对一个json接口进行1000次调用。</p>
-
-<h3>同步模型：</h3>
-
-<pre><code>require 'json'
-require 'open-uri'
-require 'net/http'
-1000.times do
-  uri=URI("http://test.net/api/format/json/")
-  req = Net::HTTP.get(uri)
-  @slides = JSON.parse(req)["data"]["list"]
-  p @slides[0]
-end
-</code></pre>
-
-<p>接口延迟约15ms,执行总时间1分25秒。当接口延迟5ms左右时执行总时间约25秒</p>
-
-<h3>异步模型</h3>
-
-<p>异步回调模型：</p>
-
-<pre><code>require 'rubygems'
-require 'eventmachine'
-require 'em-http-request'
-require 'json'
-1000.times do
-  EventMachine.run {
-    http = EM::HttpRequest.new("http://test.net/api/format/json/").get
-    http.errback { p 'Uh oh'; EM.stop }
-    http.callback {
-      req = http.response
-      @slides = JSON.parse(req)["data"]["list"]
-      p @slides[0]
-      EM.stop
-    }
-  }
-end
-</code></pre>
-
-<p>纤程模型：</p>
-
-<pre><code>require 'rubygems'
-require 'eventmachine'
-require 'em-http-request'
-require 'em-synchrony'
-require 'json'
-require 'em-synchrony/em-http'   
-1000.times do
-  EM.synchrony do
-    http = EM::HttpRequest.new("http://test.net/api/format/json/").get
-    req = http.response
-    @slides = JSON.parse(req)["data"]["list"]
-    p @slides[0]
-    EM.stop
-  end
-end
-</code></pre>
-
-<p>两种异步模型基本一样，在接口延迟15ms时测试均为50秒完成，接口延迟5ms时20+秒，和同步模型基本没有差别。</p>
-
-<h3>多线程模型</h3>
-
-<pre><code>require 'json'
-require 'open-uri'
-require 'net/http'
-def func1
-  uri=URI("http://test.net/api/format/json/")
-  req = Net::HTTP.get(uri)
-  @slides = JSON.parse(req)["data"]["list"]
-  p @slides[0]
-end
-200.times do
-  threads = []
-  5.times do 
-    threads &lt;&lt; Thread.new { func1 }
-  end
-  threads.each { |t| t.join }
-end
-</code></pre>
-
-<p>接口延迟15ms时，5并发执行200次测试42秒完成，最快，接口延迟5ms时8秒完成，最快。不过在测试10并发的时候会出现不稳定的情况，50并发测试高达3分半。</p>
-
-<h3>Node.js模型</h3>
-
-<pre><code>var http = require('http')
-var options = {
-  host: '117.79.93.206',
-  port: 80,
-  path: 'http://test.net/api/format/json/'
-};
-function get_message(){
-    http.get(options, function(res){
-        var body = '';
-        res.on('data', function(chunk) {
-            body += chunk;
-        });
-        res.on('end', function() {
-            var content = JSON.parse(body)
-            console.log(content.data.list[0]);
-        });
-        }).on('error', function(e) {
-        console.log("Got error: " + e.message);
-    });
-}
-for(i=0; i&lt;1000; i++){
-    get_message();
-}
-</code></pre>
-
-<p>node.js果然名不虚传，接口延迟15ms,下约4秒完成，接口延迟5ms下平均2秒钟就可以完成，秒杀ruby。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1244,6 +1174,10 @@ for(i=0; i&lt;1000; i++){
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/07/21/dashboard/">免费的Bootstrap DashBoard主题</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/13/eat/">懒人菜谱</a>
       </li>
     
@@ -1257,10 +1191,6 @@ for(i=0; i&lt;1000; i++){
     
       <li class="post">
         <a href="/blog/2014/02/11/app-an/">阅读类应用服务端通信分析</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a>
       </li>
     
   </ul>

@@ -9,8 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="数据类型： javascript中有六种基础数据类型：数字，字符串，布尔值，对象，函数，以及undefined。 运算符： 创建对象： 对象直接量： var empty = {}
-var book = { "main title" : "javascript" , "for" : "all &hellip;">
+  <meta name="description" content="计时器 setTimeout(fun() , 2000); //两秒后执行函数fun()
+setInterval(fun() , 2000); //每隔2秒执行一次fun() 对话框 alert() :打印js脚本返回值，一般只用于调试 confirm():要求用户确认或取消，返回布尔值 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -59,6 +59,139 @@ var book = { "main title" : "javascript" , "for" : "all &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/01/javascript%252Cdomyuan-su-de-cao-zuo/">Javascript权威指南笔记二：客户端js基础</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-01T16:21:00+08:00" pubdate data-updated="true">Apr 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>计时器</h3>
+
+<pre><code>setTimeout(fun() , 2000); //两秒后执行函数fun()
+setInterval(fun() , 2000); //每隔2秒执行一次fun()
+</code></pre>
+
+<h3>对话框</h3>
+
+<p>alert() :打印js脚本返回值，一般只用于调试  <br/>
+confirm():要求用户确认或取消，返回布尔值  <br/>
+prompt():让用户输入字符串，并返回该字符串  <br/>
+showModalDialog():第一个参数是url，第二个参数是任意值，可通过window.dialogArguments访问到，第三个参数包含以分号隔开的name=value对。 <br/>
+参数样例：&#8217;resizable:yes;scroll:yes;status:no;dialogWidth=320px;dialogHeight=230px;center=yes;help=no&#8217;</p>
+
+<h3>window对象</h3>
+
+<h4>location</h4>
+
+<p>当前显示文档的url
+window.location === document.location
+document.URL:文档首次载入后的URL字符串，如果片段标示符（如#top）发生改变，document.URL不会发生改变，而window.location会相应变化。</p>
+
+<p>URL分解：
+href：默认，获取完整url  <br/>
+search：获取？后的内容  <br/>
+protocol：返回当前url的协议  <br/>
+host：设置或返回主机名和端口号  <br/>
+hostname：设置或返回主机名 <br/>
+port：设置或返回端口号 <br/>
+pathname：设置或返回url的路径部分 <br/>
+hash：获取#后的内容</p>
+
+<p>location方法： <br/>
+assign() 加载新文档 <br/>
+reload() 刷新 <br/>
+replace() 加载新文档，并删除旧文档浏览记录</p>
+
+<h4>history</h4>
+
+<p>该窗口的浏览历史
+history方法：
+back() , forward():后退，前进 <br/>
+go()：接受一个整数参数，作为前进后退的步数</p>
+
+<h4>navigator</h4>
+
+<p>navigator属性引用的是Navigator对象，Navigator对象主要包含4种属性：</p>
+
+<p>userAgent：最常用的浏览器嗅探代码，http头中的的字符串<br/>
+appVersion：浏览器厂商和版本信息的详细字符串 <br/>
+platform：操作系统信息 <br/>
+appName：web浏览器的全称</p>
+
+<p>Navigator对象其他非标准化属性：
+onLine：判断浏览器是否连接网络</p>
+
+<h4>screen</h4>
+
+<p>height,width:屏幕宽高 <br/>
+availHeight , avaliWidth:除去任务栏等真实可用的宽高</p>
+
+<h4>open() &amp; close()</h4>
+
+<p>example:</p>
+
+<pre><code> window.open("url" , "窗口名" ,"width=400,height=350,resize=yes")
+ window.close()
+</code></pre>
+
+<h3>选取元素</h3>
+
+<h4>getElementById( )</h4>
+
+<p>获取设置了id的元素</p>
+
+<h4>getElementByName( )</h4>
+
+<p>获取设置了name属性的元素</p>
+
+<h4>getElementByTagName( )</h4>
+
+<p>获取标签名，example：</p>
+
+<pre><code>var ps = document.getElementByTagName("p") //获取所有的&lt;p&gt;元素
+var first_p = document.getElementByTagName("p")[0]  //获取第一个&lt;p&gt;元素
+</code></pre>
+
+<h4>getElementByClassName( )</h4>
+
+<p>获取类名</p>
+
+<h4>innerHTML</h4>
+
+<p>获取标签内的html文档</p>
+
+<h4>textContent = innerText</h4>
+
+<p>获取或修改标签内文本内容，textContent在一些IE版本中不支持</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -429,6 +562,10 @@ $ rake install #安装默认主题
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/07/21/dashboard/">免费的Bootstrap DashBoard主题</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/13/eat/">懒人菜谱</a>
       </li>
     
@@ -442,10 +579,6 @@ $ rake install #安装默认主题
     
       <li class="post">
         <a href="/blog/2014/02/11/app-an/">阅读类应用服务端通信分析</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a>
       </li>
     
   </ul>

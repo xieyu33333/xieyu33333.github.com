@@ -4,7 +4,7 @@
   <title><![CDATA[庇护祝福的分享]]></title>
   <link href="http://xieyu33333.github.com/atom.xml" rel="self"/>
   <link href="http://xieyu33333.github.com/"/>
-  <updated>2014-04-13T19:02:21+08:00</updated>
+  <updated>2014-07-21T09:43:05+08:00</updated>
   <id>http://xieyu33333.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,56 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[免费的Bootstrap DashBoard主题]]></title>
+    <link href="http://xieyu33333.github.com/blog/2014/07/21/dashboard/"/>
+    <updated>2014-07-21T09:39:00+08:00</updated>
+    <id>http://xieyu33333.github.com/blog/2014/07/21/dashboard</id>
+    <content type="html"><![CDATA[<p>DashBoard的形式是一个不错的选择，不过构建DashBoard是一个相当复杂的工程，需要合理的响应式设计和美观的图表样式，因此我找了几款不错的DashBoard主题以供参考：</p>
+
+<h3>AlmsaeedStudio</h3>
+
+<p><a href="http://almsaeedstudio.com/preview">预览</a> &amp;
+<a href="https://github.com/almasaeed2010/AdminLTE">源代码</a></p>
+
+<h3>Devoops</h3>
+
+<p><a href="http://devoops.me/themes/devoops/index.html">预览</a> &amp;
+<a href="https://github.com/devoopsme/devoops">源代码</a></p>
+
+<h3>Bootply</h3>
+
+<p><a href="http://www.bootply.com/render/85850#">预览</a> &amp;
+<a href="http://www.bootply.com/85850">源代码</a></p>
+
+<h3>prepbootstrap</h3>
+
+<p><a href="http://www.prepbootstrap.com/bootstrap-theme/lightway-admin/preview/index.html">预览</a> &amp;
+<a href="http://www.prepbootstrap.com/bootstrap-theme/lightway-admin">源代码</a></p>
+
+<h3>SB Admin</h3>
+
+<p><a href="http://startbootstrap.com/templates/sb-admin-v2/">预览</a> &amp;
+<a href="https://github.com/IronSummitMedia/startbootstrap/tree/master/templates/sb-admin-v2">源代码</a></p>
+
+<h3>Bootstrap-Admin-Theme</h3>
+
+<p><a href="http://vinceg.github.io/Bootstrap-Admin-Theme-3/stats.html">预览</a> &amp;
+<a href="https://github.com/VinceG/Bootstrap-Admin-Theme-3">源代码</a></p>
+
+<h3>相关博客</h3>
+
+<p><a href="http://www.daveismyname.com/free-bootstrap-admin-themes-bp#.U8v4p4CSy2I">free-bootstrap-admin-themes</a><br/>
+<a href="http://bootstrapthemes.quora.com/Top-30-Best-Quality-Bootstrap-Admin-Dashboard-Themes-And-Templates">Top-30-Best-Quality-Bootstrap-Admin-Dashboard-Themes</a><br/>
+<a href="http://speckyboy.com/2014/05/16/free-bootstrap-admin-themes/">some-bootstrap-admin-themes</a></p>
+
+<h3>付费主题</h3>
+
+<p><a href="https://wrapbootstrap.com/tag/dashboard">DashBoard</a> &amp;
+<a href="https://wrapbootstrap.com/themes/admin">admin</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[懒人菜谱]]></title>
@@ -1614,68 +1664,6 @@ end
     a.eql? b                          #=&gt;true 
     a.equal? b                       #=&gt;false    equal?只有当二者是同一个对象的时候才会为true
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ruby_string]]></title>
-    <link href="http://xieyu33333.github.com/blog/2013/06/17/ruby-string/"/>
-    <updated>2013-06-17T13:10:00+08:00</updated>
-    <id>http://xieyu33333.github.com/blog/2013/06/17/ruby-string</id>
-    <content type="html"><![CDATA[<h2>字符串连接</h2>
-
-<pre><code>+
-concat()
-&lt;&lt;                              #concat()的参数为整数则会转换成对应的字符串。
-</code></pre>
-
-<h2>正则匹配与替换</h2>
-
-<h3>match , =~ , !~ 匹配</h3>
-
-<pre><code>"name".match(/a/)         #=&gt;true
-"name" =~ /a/               #=&gt;1                       #肯定匹配
-"name" =~ /b/               #=&gt;nil
-"name"  !~ /b/                #=&gt;false                 #否定匹配
-</code></pre>
-
-<h3>delete() &amp; delete!()  删除</h3>
-
-<pre><code>example:
-    str="ababaaaaaccccb"
-    str.delete("ab")  #=&gt;"cccc"        #删除所有包含的字符串，而不是删除字符串组合
-    str.delete!("ab")      #=&gt;"cccc"
-    str #=&gt;"cccc"
-    str.delete!("ab")      #=&gt;"nil"
-    str #=&gt;"cccc"
-</code></pre>
-
-<h3>sub，gsub &amp;sub!,gsub! 替换</h3>
-
-<pre><code>"abcdefaaa".sub(/a/ , "x")  #=&gt; "xbcdeaaa"
-"abcdefaaa".sub(/a/ , "x")  #=&gt; "xbcdexxx"
-第一个参数可以是正则，也可是字符串
-</code></pre>
-
-<h3>slice()&amp;slice!()</h3>
-
-<pre><code>参数可以是索引值，索引范围(range) ， 正则 ， 字符串。返回匹配的字符串。
-"abcdaaa".slice(1) #=&gt;"b"
-"abcdaaa".slice(1..3) #=&gt; "bcd"
-"abcdaaa".slice(-3..-1) #=&gt; "aaa"
-"abcdaaa".slice(/a\w{3}a/) #=&gt; "abcda"
-"abcdaaa".slice("abc") #=&gt; "abc"
-
-slice!()会对原字符串进行切割，切掉匹配参数的部分
-str ="abcdaaa"
-str.slice!(0)
-str="bcdaaa"
-</code></pre>
-
-<p>scan(regexp)
-返回一个数组，所有匹配的字符串</p>
-
-<h3>split</h3>
 ]]></content>
   </entry>
   

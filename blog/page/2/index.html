@@ -9,10 +9,10 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="调用API构建前端 一般情况下，rails应用都是从数据库进行数据获取，而采用API调用的话，就不再需要model层了，只需要在控制器中用http库进行接口调用就可以了，大大简化了结构。
-example: require 'open-uri'
-require 'json'
-require 'net &hellip;">
+  <meta name="description" content="测试条件是对一个json接口进行1000次调用。 同步模型： require 'json'
+require 'open-uri'
+require 'net/http'
+1000.times do uri=URI("http://test.net/api/format/json/") req = &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -61,6 +61,151 @@ require 'net &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/">Ruby 同步/异步/多线程模型测试</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-25T11:30:00+08:00" pubdate data-updated="true">Dec 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>测试条件是对一个json接口进行1000次调用。</p>
+
+<h3>同步模型：</h3>
+
+<pre><code>require 'json'
+require 'open-uri'
+require 'net/http'
+1000.times do
+  uri=URI("http://test.net/api/format/json/")
+  req = Net::HTTP.get(uri)
+  @slides = JSON.parse(req)["data"]["list"]
+  p @slides[0]
+end
+</code></pre>
+
+<p>接口延迟约15ms,执行总时间1分25秒。当接口延迟5ms左右时执行总时间约25秒</p>
+
+<h3>异步模型</h3>
+
+<p>异步回调模型：</p>
+
+<pre><code>require 'rubygems'
+require 'eventmachine'
+require 'em-http-request'
+require 'json'
+1000.times do
+  EventMachine.run {
+    http = EM::HttpRequest.new("http://test.net/api/format/json/").get
+    http.errback { p 'Uh oh'; EM.stop }
+    http.callback {
+      req = http.response
+      @slides = JSON.parse(req)["data"]["list"]
+      p @slides[0]
+      EM.stop
+    }
+  }
+end
+</code></pre>
+
+<p>纤程模型：</p>
+
+<pre><code>require 'rubygems'
+require 'eventmachine'
+require 'em-http-request'
+require 'em-synchrony'
+require 'json'
+require 'em-synchrony/em-http'   
+1000.times do
+  EM.synchrony do
+    http = EM::HttpRequest.new("http://test.net/api/format/json/").get
+    req = http.response
+    @slides = JSON.parse(req)["data"]["list"]
+    p @slides[0]
+    EM.stop
+  end
+end
+</code></pre>
+
+<p>两种异步模型基本一样，在接口延迟15ms时测试均为50秒完成，接口延迟5ms时20+秒，和同步模型基本没有差别。</p>
+
+<h3>多线程模型</h3>
+
+<pre><code>require 'json'
+require 'open-uri'
+require 'net/http'
+def func1
+  uri=URI("http://test.net/api/format/json/")
+  req = Net::HTTP.get(uri)
+  @slides = JSON.parse(req)["data"]["list"]
+  p @slides[0]
+end
+200.times do
+  threads = []
+  5.times do 
+    threads &lt;&lt; Thread.new { func1 }
+  end
+  threads.each { |t| t.join }
+end
+</code></pre>
+
+<p>接口延迟15ms时，5并发执行200次测试42秒完成，最快，接口延迟5ms时8秒完成，最快。不过在测试10并发的时候会出现不稳定的情况，50并发测试高达3分半。</p>
+
+<h3>Node.js模型</h3>
+
+<pre><code>var http = require('http')
+var options = {
+  host: '117.79.93.206',
+  port: 80,
+  path: 'http://test.net/api/format/json/'
+};
+function get_message(){
+    http.get(options, function(res){
+        var body = '';
+        res.on('data', function(chunk) {
+            body += chunk;
+        });
+        res.on('end', function() {
+            var content = JSON.parse(body)
+            console.log(content.data.list[0]);
+        });
+        }).on('error', function(e) {
+        console.log("Got error: " + e.message);
+    });
+}
+for(i=0; i&lt;1000; i++){
+    get_message();
+}
+</code></pre>
+
+<p>node.js果然名不虚传，接口延迟15ms,下约4秒完成，接口延迟5ms下平均2秒钟就可以完成，秒杀ruby。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1013,95 +1158,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/17/ruby-string/">Ruby_string</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-17T13:10:00+08:00" pubdate data-updated="true">Jun 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>字符串连接</h2>
-
-<pre><code>+
-concat()
-&lt;&lt;                              #concat()的参数为整数则会转换成对应的字符串。
-</code></pre>
-
-<h2>正则匹配与替换</h2>
-
-<h3>match , =~ , !~ 匹配</h3>
-
-<pre><code>"name".match(/a/)         #=&gt;true
-"name" =~ /a/               #=&gt;1                       #肯定匹配
-"name" =~ /b/               #=&gt;nil
-"name"  !~ /b/                #=&gt;false                 #否定匹配
-</code></pre>
-
-<h3>delete() &amp; delete!()  删除</h3>
-
-<pre><code>example:
-    str="ababaaaaaccccb"
-    str.delete("ab")  #=&gt;"cccc"        #删除所有包含的字符串，而不是删除字符串组合
-    str.delete!("ab")      #=&gt;"cccc"
-    str #=&gt;"cccc"
-    str.delete!("ab")      #=&gt;"nil"
-    str #=&gt;"cccc"
-</code></pre>
-
-<h3>sub，gsub &amp;sub!,gsub! 替换</h3>
-
-<pre><code>"abcdefaaa".sub(/a/ , "x")  #=&gt; "xbcdeaaa"
-"abcdefaaa".sub(/a/ , "x")  #=&gt; "xbcdexxx"
-第一个参数可以是正则，也可是字符串
-</code></pre>
-
-<h3>slice()&amp;slice!()</h3>
-
-<pre><code>参数可以是索引值，索引范围(range) ， 正则 ， 字符串。返回匹配的字符串。
-"abcdaaa".slice(1) #=&gt;"b"
-"abcdaaa".slice(1..3) #=&gt; "bcd"
-"abcdaaa".slice(-3..-1) #=&gt; "aaa"
-"abcdaaa".slice(/a\w{3}a/) #=&gt; "abcda"
-"abcdaaa".slice("abc") #=&gt; "abc"
-
-slice!()会对原字符串进行切割，切掉匹配参数的部分
-str ="abcdaaa"
-str.slice!(0)
-str="bcdaaa"
-</code></pre>
-
-<p>scan(regexp)
-返回一个数组，所有匹配的字符串</p>
-
-<h3>split</h3>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1119,6 +1175,10 @@ str="bcdaaa"
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/07/21/dashboard/">免费的Bootstrap DashBoard主题</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/13/eat/">懒人菜谱</a>
       </li>
     
@@ -1132,10 +1192,6 @@ str="bcdaaa"
     
       <li class="post">
         <a href="/blog/2014/02/11/app-an/">阅读类应用服务端通信分析</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/07/node-note-1/">Node学习笔记一</a>
       </li>
     
   </ul>

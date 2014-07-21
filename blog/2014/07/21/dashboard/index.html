@@ -5,14 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ruby 同步/异步/多线程模型测试 - 庇护祝福的分享</title>
+  <title>免费的Bootstrap DashBoard主题 - 庇护祝福的分享</title>
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="测试条件是对一个json接口进行1000次调用。 同步模型： require 'json'
-require 'open-uri'
-require 'net/http'
-1000.times do uri=URI("http://test.net/api/format/json/") req = &hellip;">
+  <meta name="description" content="DashBoard的形式是一个不错的选择，不过构建DashBoard是一个相当复杂的工程，需要合理的响应式设计和美观的图表样式，因此我找了几款不错的DashBoard主题以供参考： AlmsaeedStudio 预览 &amp;
+源代码 Devoops 预览 &amp;
+源代码 Bootply &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +21,7 @@ require 'net/http'
   <meta name="baidu-tc-verification" content="ab4be6be306aae217340419193ba5011" />
 
   
-  <link rel="canonical" href="http://xieyu33333.github.com/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce">
+  <link rel="canonical" href="http://xieyu33333.github.com/blog/2014/07/21/dashboard">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="庇护祝福的分享" type="application/atom+xml">
@@ -64,7 +63,7 @@ require 'net/http'
   
   <header>
     
-      <h1 class="entry-title">Ruby 同步/异步/多线程模型测试</h1>
+      <h1 class="entry-title">免费的Bootstrap DashBoard主题</h1>
     
     
       <p class="meta">
@@ -80,123 +79,55 @@ require 'net/http'
   
 
 
-<time datetime="2013-12-25T11:30:00+08:00" pubdate data-updated="true">Dec 25<span>th</span>, 2013</time>
+<time datetime="2014-07-21T09:39:00+08:00" pubdate data-updated="true">Jul 21<span>st</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>测试条件是对一个json接口进行1000次调用。</p>
+<div class="entry-content"><p>DashBoard的形式是一个不错的选择，不过构建DashBoard是一个相当复杂的工程，需要合理的响应式设计和美观的图表样式，因此我找了几款不错的DashBoard主题以供参考：</p>
 
-<h3>同步模型：</h3>
+<h3>AlmsaeedStudio</h3>
 
-<pre><code>require 'json'
-require 'open-uri'
-require 'net/http'
-1000.times do
-  uri=URI("http://test.net/api/format/json/")
-  req = Net::HTTP.get(uri)
-  @slides = JSON.parse(req)["data"]["list"]
-  p @slides[0]
-end
-</code></pre>
+<p><a href="http://almsaeedstudio.com/preview">预览</a> &amp;
+<a href="https://github.com/almasaeed2010/AdminLTE">源代码</a></p>
 
-<p>接口延迟约15ms,执行总时间1分25秒。当接口延迟5ms左右时执行总时间约25秒</p>
+<h3>Devoops</h3>
 
-<h3>异步模型</h3>
+<p><a href="http://devoops.me/themes/devoops/index.html">预览</a> &amp;
+<a href="https://github.com/devoopsme/devoops">源代码</a></p>
 
-<p>异步回调模型：</p>
+<h3>Bootply</h3>
 
-<pre><code>require 'rubygems'
-require 'eventmachine'
-require 'em-http-request'
-require 'json'
-1000.times do
-  EventMachine.run {
-    http = EM::HttpRequest.new("http://test.net/api/format/json/").get
-    http.errback { p 'Uh oh'; EM.stop }
-    http.callback {
-      req = http.response
-      @slides = JSON.parse(req)["data"]["list"]
-      p @slides[0]
-      EM.stop
-    }
-  }
-end
-</code></pre>
+<p><a href="http://www.bootply.com/render/85850#">预览</a> &amp;
+<a href="http://www.bootply.com/85850">源代码</a></p>
 
-<p>纤程模型：</p>
+<h3>prepbootstrap</h3>
 
-<pre><code>require 'rubygems'
-require 'eventmachine'
-require 'em-http-request'
-require 'em-synchrony'
-require 'json'
-require 'em-synchrony/em-http'   
-1000.times do
-  EM.synchrony do
-    http = EM::HttpRequest.new("http://test.net/api/format/json/").get
-    req = http.response
-    @slides = JSON.parse(req)["data"]["list"]
-    p @slides[0]
-    EM.stop
-  end
-end
-</code></pre>
+<p><a href="http://www.prepbootstrap.com/bootstrap-theme/lightway-admin/preview/index.html">预览</a> &amp;
+<a href="http://www.prepbootstrap.com/bootstrap-theme/lightway-admin">源代码</a></p>
 
-<p>两种异步模型基本一样，在接口延迟15ms时测试均为50秒完成，接口延迟5ms时20+秒，和同步模型基本没有差别。</p>
+<h3>SB Admin</h3>
 
-<h3>多线程模型</h3>
+<p><a href="http://startbootstrap.com/templates/sb-admin-v2/">预览</a> &amp;
+<a href="https://github.com/IronSummitMedia/startbootstrap/tree/master/templates/sb-admin-v2">源代码</a></p>
 
-<pre><code>require 'json'
-require 'open-uri'
-require 'net/http'
-def func1
-  uri=URI("http://test.net/api/format/json/")
-  req = Net::HTTP.get(uri)
-  @slides = JSON.parse(req)["data"]["list"]
-  p @slides[0]
-end
-200.times do
-  threads = []
-  5.times do 
-    threads &lt;&lt; Thread.new { func1 }
-  end
-  threads.each { |t| t.join }
-end
-</code></pre>
+<h3>Bootstrap-Admin-Theme</h3>
 
-<p>接口延迟15ms时，5并发执行200次测试42秒完成，最快，接口延迟5ms时8秒完成，最快。不过在测试10并发的时候会出现不稳定的情况，50并发测试高达3分半。</p>
+<p><a href="http://vinceg.github.io/Bootstrap-Admin-Theme-3/stats.html">预览</a> &amp;
+<a href="https://github.com/VinceG/Bootstrap-Admin-Theme-3">源代码</a></p>
 
-<h3>Node.js模型</h3>
+<h3>相关博客</h3>
 
-<pre><code>var http = require('http')
-var options = {
-  host: '117.79.93.206',
-  port: 80,
-  path: 'http://test.net/api/format/json/'
-};
-function get_message(){
-    http.get(options, function(res){
-        var body = '';
-        res.on('data', function(chunk) {
-            body += chunk;
-        });
-        res.on('end', function() {
-            var content = JSON.parse(body)
-            console.log(content.data.list[0]);
-        });
-        }).on('error', function(e) {
-        console.log("Got error: " + e.message);
-    });
-}
-for(i=0; i&lt;1000; i++){
-    get_message();
-}
-</code></pre>
+<p><a href="http://www.daveismyname.com/free-bootstrap-admin-themes-bp#.U8v4p4CSy2I">free-bootstrap-admin-themes</a><br/>
+<a href="http://bootstrapthemes.quora.com/Top-30-Best-Quality-Bootstrap-Admin-Dashboard-Themes-And-Templates">Top-30-Best-Quality-Bootstrap-Admin-Dashboard-Themes</a><br/>
+<a href="http://speckyboy.com/2014/05/16/free-bootstrap-admin-themes/">some-bootstrap-admin-themes</a></p>
 
-<p>node.js果然名不虚传，接口延迟15ms,下约4秒完成，接口延迟5ms下平均2秒钟就可以完成，秒杀ruby。</p>
+<h3>付费主题</h3>
+
+<p><a href="https://wrapbootstrap.com/tag/dashboard">DashBoard</a> &amp;
+<a href="https://wrapbootstrap.com/themes/admin">admin</a></p>
 </div>
 
 
@@ -219,12 +150,12 @@ for(i=0; i&lt;1000; i++){
   
 
 
-<time datetime="2013-12-25T11:30:00+08:00" pubdate data-updated="true">Dec 25<span>th</span>, 2013</time>
+<time datetime="2014-07-21T09:39:00+08:00" pubdate data-updated="true">Jul 21<span>st</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/eventmachine/'>eventmachine</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/yi-bu/'>异步</a>
+    <a class='category' href='/blog/categories/bootstrap/'>Bootstrap</a>, <a class='category' href='/blog/categories/dashboard/'>DashBoard</a>, <a class='category' href='/blog/categories/css/'>css</a>
   
 </span>
 
@@ -233,7 +164,7 @@ for(i=0; i&lt;1000; i++){
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2013/12/25/ruby-tong-bu-slash-yi-bu-slash-bing-fa-mo-xing-ping-ce/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xieyu33333.github.com/blog/2014/07/21/dashboard/" data-via="xieyu33333@gmail.com" data-counturl="http://xieyu33333.github.com/blog/2014/07/21/dashboard/" >Tweet</a>
   
   
   
@@ -244,10 +175,8 @@ for(i=0; i&lt;1000; i++){
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/12/20/railszhong-jian-ceng-jie-jue-fang-an/" title="Previous Post: rails中间层解决方案">&laquo; rails中间层解决方案</a>
+        <a class="basic-alignment left" href="/blog/2014/04/13/eat/" title="Previous Post: 懒人菜谱">&laquo; 懒人菜谱</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/12/30/markdownzhuan-huan-wei-pdffang-an/" title="Next Post: markdown转换为pdf的解决方案">markdown转换为pdf的解决方案 &raquo;</a>
       
     </p>
   </footer>
